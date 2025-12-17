@@ -65,6 +65,11 @@
     </table>
   </div>
   <script>
+    // If you host the backend separately (e.g., Render/Railway), set it once in the browser console:
+    // localStorage.setItem('apiBase', 'https://YOUR-BACKEND-DOMAIN'); location.reload();
+    const API_BASE = (localStorage.getItem('apiBase') || '').trim().replace(/\/+$/, '');
+    const apiUrl = (p) => (API_BASE ? `${API_BASE}${p}` : p);
+
         // Language switcher logic
         function setLang(lang) {
           localStorage.setItem('lang', lang);
@@ -115,7 +120,7 @@
       const tbody = document.getElementById('quotes-tbody');
       tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
       try {
-        const res = await fetch('/api/quotes');
+        const res = await fetch(apiUrl('/api/quotes'));
         const data = await res.json();
         if (data.quotes && data.quotes.length) {
           tbody.innerHTML = data.quotes.map(q => `
@@ -138,7 +143,7 @@
 
     // --- Settings (FAQ/Shop Info) ---
     async function loadSettings() {
-      const res = await fetch('/api/settings');
+      const res = await fetch(apiUrl('/api/settings'));
       const data = await res.json();
       document.getElementById('shopName').value = data.shopInfo.name || '';
       document.getElementById('shopAddress').value = data.shopInfo.address || '';
@@ -192,7 +197,7 @@
         hours: document.getElementById('shopHours').value
       };
       document.getElementById('settings-status').textContent = 'Saving...';
-      const res = await fetch('/api/settings', {
+      const res = await fetch(apiUrl('/api/settings'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ faqs, shopInfo })

@@ -32,6 +32,20 @@ npm start
 - Home: `http://localhost:3000/`
 - Admin: `http://localhost:3000/admin.html`
 
+## Deploy
+### Frontend (Vercel)
+This repo includes `vercel.json` so Vercel serves the static site from `frontend/`.
+
+### Backend (separate host)
+The backend writes to JSON files under `backend/data/`, so it should be deployed to a traditional Node host (e.g., Render/Railway).
+
+After deploying the backend, set the API base URL in the browser once:
+
+```js
+localStorage.setItem('apiBase', 'https://YOUR-BACKEND-DOMAIN');
+location.reload();
+```
+
 ## Notes
 - Data is stored in JSON files under `backend/data/`.
 - Update phone/WhatsApp numbers in the frontend if needed.

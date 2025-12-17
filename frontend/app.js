@@ -3,6 +3,13 @@ let currentLang = localStorage.getItem('lang') || 'en';
 let activeProductKey = null;
 let reviewsCache = null;
 
+// --- API base (for separate backend hosting) ---
+function apiUrl(pathname) {
+  const rawBase = (window.API_BASE || localStorage.getItem('apiBase') || '').trim();
+  const base = rawBase.replace(/\/+$/, '');
+  return base ? `${base}${pathname}` : pathname;
+}
+
 // --- Theme handling ---
 function applyTheme(theme) {
   const safeTheme = theme === 'dark' ? 'dark' : 'light';
@@ -102,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 async function loadSettingsToHomepage() {
   try {
-    const res = await fetch('/api/settings');
+    const res = await fetch(apiUrl('/api/settings'));
     const data = await res.json();
     // FAQs
     const faqList = document.getElementById('faq-list');
@@ -179,7 +186,7 @@ async function loadReviews(useCache = false) {
   }
   list.innerHTML = `<div>${t('loadingReviews', currentLang)}</div>`;
   try {
-    const res = await fetch('/api/reviews');
+    const res = await fetch(apiUrl('/api/reviews'));
     const data = await res.json();
     reviewsCache = Array.isArray(data.reviews) ? data.reviews : [];
     renderReviews(list, reviewsCache);
@@ -203,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!data.name || !data.rating || !data.comment) return;
       form.querySelector('button').disabled = true;
       try {
-        const res = await fetch('/api/reviews', {
+        const res = await fetch(apiUrl('/api/reviews'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -399,7 +406,7 @@ if (quoteForm) {
       alert(t('invalidPhone', currentLang));
       return;
     }
-    const res = await fetch('/api/quotes', {
+    const res = await fetch(apiUrl('/api/quotes'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
