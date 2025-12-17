@@ -113,30 +113,35 @@ async function loadSettingsToHomepage() {
     const data = await res.json();
     // FAQs
     const faqList = document.getElementById('faq-list');
-    if (faqList && data.faqs) {
-      faqList.innerHTML = data.faqs.map(faq => `
-        <div class="faq-item">
-          <button class="faq-question">${faq.q}</button>
-          <div class="faq-answer">${faq.a}</div>
-        </div>
-      `).join('');
-      // Re-apply accordion logic
-      faqList.querySelectorAll('.faq-question').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const answer = this.nextElementSibling;
-          if (answer.style.maxHeight) {
-            answer.style.maxHeight = null;
-            answer.style.padding = null;
-          } else {
-            faqList.querySelectorAll('.faq-answer').forEach(a => {
-              a.style.maxHeight = null;
-              a.style.padding = null;
-            });
-            answer.style.maxHeight = answer.scrollHeight + 'px';
-            answer.style.padding = '0.7em 1em';
-          }
+    if (faqList) {
+      const faqs = Array.isArray(data.faqs) ? data.faqs : [];
+      if (faqs.length) {
+        faqList.innerHTML = faqs.map(faq => `
+          <div class="faq-item">
+            <button class="faq-question">${faq.q}</button>
+            <div class="faq-answer">${faq.a}</div>
+          </div>
+        `).join('');
+        // Re-apply accordion logic
+        faqList.querySelectorAll('.faq-question').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const answer = this.nextElementSibling;
+            if (answer.style.maxHeight) {
+              answer.style.maxHeight = null;
+              answer.style.padding = null;
+            } else {
+              faqList.querySelectorAll('.faq-answer').forEach(a => {
+                a.style.maxHeight = null;
+                a.style.padding = null;
+              });
+              answer.style.maxHeight = answer.scrollHeight + 'px';
+              answer.style.padding = '0.7em 1em';
+            }
+          });
         });
-      });
+      } else {
+        faqList.innerHTML = `<div class="faq-empty">${t('noFaqs', currentLang)}</div>`;
+      }
     }
     // Shop Info
     if (data.shopInfo) {
@@ -159,7 +164,10 @@ async function loadSettingsToHomepage() {
       const footerHours = document.getElementById('footer-hours');
       if (footerHours) footerHours.innerHTML = (data.shopInfo.hours || t('defaultHoursDetail', currentLang)).replace(/, /g, '<br />');
     }
-  } catch {}
+  } catch {
+    const faqList = document.getElementById('faq-list');
+    if (faqList) faqList.innerHTML = `<div class="faq-empty">${t('noFaqs', currentLang)}</div>`;
+  }
 }
 document.addEventListener('DOMContentLoaded', loadSettingsToHomepage);
 // --- Reviews ---

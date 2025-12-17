@@ -407,6 +407,13 @@ html[data-theme="dark"] .faq-answer {
   transition: max-height 0.3s ease, padding 0.3s;
   padding: 0 1em;
 }
+.faq-empty {
+  padding: 1em 0.2em;
+  color: #666;
+}
+html[data-theme="dark"] .faq-empty {
+  color: #cfcfcf;
+}
 body {
   font-family: 'Inter', Arial, sans-serif;
   margin: 0;
