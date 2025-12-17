@@ -418,6 +418,37 @@ html[data-theme="dark"] .mobile-menu-btn {
 html[data-theme="dark"] .faq-empty {
   color: #cfcfcf;
 }
+
+/* --- Mobile hamburger menu (final override to win cascade) --- */
+@media (max-width: 900px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .nav {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    left: 0;
+    background: #fff;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    box-shadow: 0 4px 16px #0002;
+    padding: 0.5em 0;
+    display: none;
+    z-index: 15;
+  }
+  .nav.open {
+    display: flex;
+  }
+  .nav a, .nav-btn {
+    width: 100%;
+    border-radius: 0;
+    padding: 1em 2em;
+    border-bottom: 1px solid #f3f3f3;
+  }
+}
 body {
   font-family: 'Inter', Arial, sans-serif;
   margin: 0;
