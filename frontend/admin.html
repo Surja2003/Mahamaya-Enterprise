@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Mahamaya Enterprise</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="lang.js"></script>
+  <style>
+    .admin-container { max-width: 900px; margin: 2em auto; background: #fff; border-radius: 1em; box-shadow: 0 2px 12px #0002; padding: 2em; }
+    .admin-title { font-size: 2em; font-weight: 700; margin-bottom: 1em; }
+    .quotes-table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+    .quotes-table th, .quotes-table td { border: 1px solid #eee; padding: 0.7em 0.5em; text-align: left; }
+    .quotes-table th { background: #f7f8f6; }
+    .quotes-table tr:nth-child(even) { background: #fafbfa; }
+    .quotes-table tr:hover { background: #fffbe6; }
+    .quote-actions button { margin-right: 0.5em; }
+    @media (max-width: 700px) {
+      .admin-container { padding: 0.5em; }
+      .quotes-table th, .quotes-table td { font-size: 0.95em; padding: 0.4em 0.2em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="lang-switcher">
+    <select id="lang-switcher" aria-label="Language" data-i18n-aria-label="languageLabel">
+      <option value="en">English</option>
+      <option value="bn">বাংলা</option>
+    </select>
+  </div>
+  <div class="admin-container">
+    <div class="admin-title" data-i18n="quoteDashboard">Quote Requests Dashboard</div>
+    <hr class="admin-hr" />
+    <div class="admin-title admin-title-small" data-i18n="editFaq">Edit FAQs & Shop Info</div>
+    <form id="settings-form">
+      <fieldset class="admin-fieldset">
+        <legend><b data-i18n="shopInfoLegend">Shop Info</b></legend>
+        <label for="shopName"><span data-i18n="shopNameLabel">Name:</span> <input type="text" name="shopName" id="shopName" required /></label><br />
+        <label for="shopAddress"><span data-i18n="shopAddressLabel">Address:</span> <input type="text" name="shopAddress" id="shopAddress" required /></label><br />
+        <label for="shopPhone"><span data-i18n="shopPhoneLabel">Phone:</span> <input type="text" name="shopPhone" id="shopPhone" required /></label><br />
+        <label for="shopWhatsapp"><span data-i18n="shopWhatsappLabel">WhatsApp:</span> <input type="text" name="shopWhatsapp" id="shopWhatsapp" required /></label><br />
+        <label for="shopHours"><span data-i18n="shopHoursLabel">Hours:</span> <input type="text" name="shopHours" id="shopHours" required /></label>
+      </fieldset>
+      <fieldset>
+        <legend><b data-i18n="faqsLegend">FAQs</b></legend>
+        <div id="faqs-list"></div>
+        <button type="button" id="add-faq" data-i18n="addFaq">Add FAQ</button>
+      </fieldset>
+      <button type="submit" class="btn primary admin-save-btn" data-i18n="saveSettings">Save Settings</button>
+      <span id="settings-status" class="admin-status"></span>
+    </form>
+    <table class="quotes-table" id="quotes-table">
+      <thead>
+        <tr>
+          <th data-i18n="topic">Topic</th>
+          <th data-i18n="name">Name</th>
+          <th data-i18n="phone">Phone</th>
+          <th data-i18n="requirement">Requirement</th>
+          <th data-i18n="date">Date</th>
+        </tr>
+      </thead>
+      <tbody id="quotes-tbody">
+        <tr><td colspan="5" data-i18n="loadingQuotes">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <script>
+        // Language switcher logic
+        function setLang(lang) {
+          localStorage.setItem('lang', lang);
+          document.documentElement.lang = lang;
+          if (window.applyTranslations) window.applyTranslations(lang);
+        }
+        document.getElementById('lang-switcher').value = localStorage.getItem('lang') || 'en';
+        document.getElementById('lang-switcher').addEventListener('change', function() {
+          setLang(this.value);
+        });
+        setLang(document.getElementById('lang-switcher').value);
+    // --- Language translation logic ---
+    function applyTranslations(lang) {
+      document.title = t('adminTitle', lang);
+      const staticMap = [
+        ['.admin-title', 'adminTitle'],
+        ['button#add-faq', 'addFaq'],
+        ['button[type="submit"].primary', 'saveSettings'],
+        ['label[for="shopName"], label:contains("Name")', 'name'],
+        ['label[for="shopAddress"], label:contains("Address")', 'address'],
+        ['label[for="shopPhone"], label:contains("Phone")', 'shopPhone'],
+        ['label[for="shopWhatsapp"], label:contains("WhatsApp")', 'shopWhatsapp'],
+        ['label[for="shopHours"], label:contains("Hours")', 'shopHours'],
+        ['legend b', 'editFaq'],
+      ];
+      staticMap.forEach(([selector, key]) => {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = t(key, lang);
+      });
+      // FAQ placeholders
+      document.querySelectorAll('input[name="faq-q"]').forEach(i => i.placeholder = t('question', lang));
+      document.querySelectorAll('input[name="faq-a"]').forEach(i => i.placeholder = t('answer', lang));
+      document.querySelectorAll('.remove-faq').forEach(b => b.textContent = t('remove', lang));
+      // Status
+      const status = document.getElementById('settings-status');
+      if (status && status.textContent) {
+        if (status.textContent.includes('Saving')) status.textContent = t('saving', lang);
+        if (status.textContent.includes('Saved')) status.textContent = t('saved', lang);
+        if (status.textContent.includes('Failed')) status.textContent = t('failedSave', lang);
+      }
+    }
+    window.applyTranslations = applyTranslations;
+    document.addEventListener('DOMContentLoaded', function() {
+      const lang = localStorage.getItem('lang') || 'en';
+      applyTranslations(lang);
+    });
+    async function loadQuotes() {
+      const tbody = document.getElementById('quotes-tbody');
+      tbody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+      try {
+        const res = await fetch('/api/quotes');
+        const data = await res.json();
+        if (data.quotes && data.quotes.length) {
+          tbody.innerHTML = data.quotes.map(q => `
+            <tr>
+              <td>${q.topic || ''}</td>
+              <td>${q.name || ''}</td>
+              <td>${q.phone || ''}</td>
+              <td>${q.requirement || ''}</td>
+              <td>${q.createdAt ? new Date(q.createdAt).toLocaleString() : ''}</td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = '<tr><td colspan="5">No quotes found.</td></tr>';
+        }
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="5">Failed to load quotes.</td></tr>';
+      }
+    }
+    loadQuotes();
+
+    // --- Settings (FAQ/Shop Info) ---
+    async function loadSettings() {
+      const res = await fetch('/api/settings');
+      const data = await res.json();
+      document.getElementById('shopName').value = data.shopInfo.name || '';
+      document.getElementById('shopAddress').value = data.shopInfo.address || '';
+      document.getElementById('shopPhone').value = data.shopInfo.phone || '';
+      document.getElementById('shopWhatsapp').value = data.shopInfo.whatsapp || '';
+      document.getElementById('shopHours').value = data.shopInfo.hours || '';
+      renderFaqs(data.faqs || []);
+    }
+    function renderFaqs(faqs) {
+      const faqsList = document.getElementById('faqs-list');
+      faqsList.innerHTML = '';
+      faqs.forEach((faq, i) => {
+        const div = document.createElement('div');
+        div.classList.add('faq-admin-item');
+        div.innerHTML = `
+          <input type="text" name="faq-q" value="${faq.q.replace(/"/g, '&quot;')}" placeholder="Question" class="faq-q-input" required />
+          <input type="text" name="faq-a" value="${faq.a.replace(/"/g, '&quot;')}" placeholder="Answer" class="faq-a-input" required />
+          <button type="button" class="remove-faq">Remove</button>
+        `;
+        div.querySelector('.remove-faq').onclick = () => {
+          div.remove();
+        };
+        faqsList.appendChild(div);
+      });
+    }
+    document.getElementById('add-faq').onclick = () => {
+      const faqsList = document.getElementById('faqs-list');
+      const div = document.createElement('div');
+      div.classList.add('faq-admin-item');
+      div.innerHTML = `
+        <input type="text" name="faq-q" placeholder="Question" class="faq-q-input" required />
+        <input type="text" name="faq-a" placeholder="Answer" class="faq-a-input" required />
+        <button type="button" class="remove-faq">Remove</button>
+      `;
+      div.querySelector('.remove-faq').onclick = () => {
+        div.remove();
+      };
+      faqsList.appendChild(div);
+    };
+    document.getElementById('settings-form').onsubmit = async e => {
+      e.preventDefault();
+      const faqs = Array.from(document.querySelectorAll('#faqs-list > div')).map(div => ({
+        q: div.querySelector('input[name="faq-q"]').value,
+        a: div.querySelector('input[name="faq-a"]').value
+      })).filter(f => f.q && f.a);
+      const shopInfo = {
+        name: document.getElementById('shopName').value,
+        address: document.getElementById('shopAddress').value,
+        phone: document.getElementById('shopPhone').value,
+        whatsapp: document.getElementById('shopWhatsapp').value,
+        hours: document.getElementById('shopHours').value
+      };
+      document.getElementById('settings-status').textContent = 'Saving...';
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ faqs, shopInfo })
+      });
+      if (res.ok) {
+        document.getElementById('settings-status').textContent = 'Saved!';
+      } else {
+        document.getElementById('settings-status').textContent = 'Failed to save.';
+      }
+    };
+    loadSettings();
+  </script>
+</body>
+</html>

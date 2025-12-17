@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mahamaya Enterprise | Hardware, Paint, Electrical, Construction Materials</title>
+  <meta name="description" content="Mahamaya Enterprise supplies hardware, paint, electrical, and construction materials in Eraur, Bhatar. Trusted local supplier for rods, cement, bricks, sand, Berger paint, and more." />
+  <meta name="keywords" content="hardware, paint, electrical, construction, cement, rod, bricks, sand, Berger, Eraur, Bhatar, Mahamaya Enterprise" />
+  <meta name="author" content="Mahamaya Enterprise" />
+  <meta property="og:title" content="Mahamaya Enterprise" />
+  <meta property="og:description" content="Quality & Trust Since [Year]. Hardware, paint, electrical, and construction materials supplier in Eraur, Bhatar." />
+  <meta property="og:image" content="/logo.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mahamaya-enterprise.example.com/" />
+  <link rel="canonical" href="https://mahamaya-enterprise.example.com/" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="lang.js"></script>
+  <link rel="icon" href="favicon.ico" />
+  <!-- Google Analytics (replace with your GA ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Mahamaya Enterprise Logo" class="logo" />
+      <div>
+        <div class="brand-title" data-i18n="brandTitle">Mahamaya Enterprise</div>
+        <div class="brand-tagline" data-i18n="brandTagline">Hardware · Paint · Electrical</div>
+      </div>
+    </div>
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" data-i18n-aria-label="menuToggleLabel">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <nav class="nav" id="main-nav">
+      <div class="lang-switcher nav-inline">
+        <select id="lang-switcher" aria-label="Language" data-i18n-aria-label="languageLabel">
+          <option value="en">English</option>
+          <option value="bn">বাংলা</option>
+        </select>
+      </div>
+      <button type="button" class="nav-btn theme-toggle" id="theme-toggle" data-i18n="themeDark" aria-label="Theme" data-i18n-aria-label="themeLabel"></button>
+      <a href="#products" data-i18n="navProducts">Products</a>
+      <a href="#contact" data-i18n="navContact">Contact</a>
+      <a href="tel:943466190" class="nav-btn call" data-i18n="navCall">Call</a>
+      <a href="#" class="nav-btn whatsapp" data-i18n="navWhatsApp">WhatsApp</a>
+      <a href="#quote-form" class="nav-btn quote" data-i18n="navQuote">Quote</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="badge" data-i18n="heroBadge">Trusted local supplier — Eraur · Bhatar</span>
+        <h1 data-i18n-html="heroHeadline">Build with confidence —<br />materials that arrive on time.</h1>
+        <p data-i18n="heroParagraph">All hardware & building materials — reliable stock, fair rates, quick service. Get updates for today’s rod/cement rate, Berger paint shades, electrical essentials, water line products, and more.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn primary" id="whatsapp-cta" data-i18n="heroWhatsappCta">Get price on WhatsApp</a>
+          <a href="#products" class="btn" data-i18n="browseProducts">Browse products</a>
+          <button class="btn" id="copy-call" data-i18n="copyCall">Copy call number</button>
+        </div>
+        <div class="hero-info">
+          <div data-i18n="heroInfoDelivery">Delivery support</div>
+          <div data-i18n="heroInfoStock">Genuine stock</div>
+          <div data-i18n-html="heroInfoHours">Open daily<br />7:00 AM – 1:00 PM · 4:00 PM – 8:30 PM</div>
+        </div>
+        <div class="visit-shop" data-i18n-html="visitShop">Visit the shop<br />Vill + PO - Eraur, P.S - Bhatar, District - Purba Bardhaman, PIN - 713121</div>
+      </div>
+      <form class="quote-form" id="quote-form">
+        <h2 data-i18n="quoteHeading">Quick quote request</h2>
+        <label for="topic-select">
+          <span data-i18n="topic">Topic</span>
+          <select name="topic" id="topic-select">
+            <option value="Rod / TMT" data-i18n-option="rod">Rod / TMT</option>
+            <option value="Cement" data-i18n-option="cement">Cement</option>
+            <option value="Bricks" data-i18n-option="bricks">Bricks</option>
+            <option value="Sand & Stone" data-i18n-option="sand">Sand</option>
+          </select>
+        </label>
+        <label for="name">
+          <span data-i18n="yourName">Your name</span>
+          <input type="text" name="name" id="name" maxlength="40" data-i18n-placeholder="yourName" />
+        </label>
+        <label for="phone">
+          <span data-i18n="phone">Phone</span>
+          <input type="tel" name="phone" id="phone" maxlength="15" required pattern="[0-9]{10,15}" data-i18n-placeholder="phone" />
+        </label>
+        <label for="requirement">
+          <span data-i18n="requirement">Requirement</span>
+          <textarea name="requirement" id="requirement" maxlength="200" data-i18n-placeholder="requirementPlaceholder"></textarea>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn primary" data-i18n="saveRequest">Save request</button>
+          <button type="button" class="btn whatsapp" id="send-whatsapp" data-i18n="sendWhatsapp">Send on WhatsApp</button>
+        </div>
+      </form>
+    </section>
+    <section id="products" class="products-section">
+      <h2 data-i18n="products">Products we supply</h2>
+      <p data-i18n="productsIntro">Click a product to see details. Prices are shared on call/WhatsApp.</p>
+      <div class="product-cards" id="product-cards"></div>
+      <!-- Product Modal -->
+      <div id="product-modal" class="modal" hidden>
+        <div class="modal-content">
+          <span class="close" id="close-modal">&times;</span>
+          <img id="modal-img" class="modal-img" src="" alt="Product image" />
+          <h3 id="modal-title"></h3>
+          <p id="modal-desc"></p>
+          <ul id="modal-features"></ul>
+        </div>
+      </div>
+    </section>
+    <section class="featured-items">
+      <h2 data-i18n="featured">Featured items (tap to add to quote)</h2>
+      <div class="featured-list" id="featured-list"></div>
+    </section>
+    <section class="why-choose">
+      <h2 data-i18n="whyChoose">Why customers choose us</h2>
+      <ul>
+        <li data-i18n="whyPointCommunication">Clear communication</li>
+        <li data-i18n="whyPointBulk">Bulk order support</li>
+        <li data-i18n="whyPointStock">Reliable stock</li>
+      </ul>
+    </section>
+    <section class="customer-notes">
+      <h2 data-i18n="customerReviews">Customer reviews</h2>
+      <form id="review-form" class="review-form">
+        <input type="text" name="name" maxlength="30" required placeholder="Your name" data-i18n-placeholder="yourName" />
+        <select name="rating" required title="Rating" aria-label="Rating" data-i18n-aria-label="rating" data-i18n-title="rating">
+          <option value="" data-i18n-option="rating">Rating</option>
+          <option value="5">★★★★★</option>
+          <option value="4">★★★★☆</option>
+          <option value="3">★★★☆☆</option>
+          <option value="2">★★☆☆☆</option>
+          <option value="1">★☆☆☆☆</option>
+        </select>
+        <label for="comment">
+          <span data-i18n="feedback">Feedback</span>
+          <input type="text" name="comment" id="comment" maxlength="120" required title="Feedback" data-i18n-title="feedback" placeholder="Your feedback" data-i18n-placeholder="feedback" />
+        </label>
+        <button type="submit" class="btn primary" data-i18n="submitReview">Submit review</button>
+      </form>
+      <div class="notes-list" id="reviews-list">
+        <div data-i18n="loadingReviews">Loading reviews...</div>
+      </div>
+    </section>
+    <section class="faq">
+      <h2 data-i18n="faq">FAQ</h2>
+      <div class="faq-list" id="faq-list"></div>
+    </section>
+    <section id="contact" class="contact-section">
+      <h2 data-i18n="contactLocation">Contact & location</h2>
+      <div class="contact-details">
+        <div class="address">
+          <strong data-i18n="addressLabel">Address</strong><br /><span id="shop-address" data-i18n="defaultShopAddress">Vill + PO - Eraur, P.S - Bhatar, District - Purba Bardhaman, PIN - 713121</span>
+        </div>
+        <div class="hours">
+          <strong data-i18n="hoursLabel">Hours</strong><br /><span id="shop-hours" data-i18n-html="defaultHoursDetail">Morning: 7:00 AM – 1:00 PM<br />Evening: 4:00 PM – 8:30 PM</span>
+        </div>
+        <div class="contact-actions">
+          <a href="https://wa.me/919999999999" class="btn whatsapp" data-i18n="contactWhatsappBtn">WhatsApp</a>
+          <a href="tel:943466190" class="btn call" data-i18n="contactCallBtn">Call</a>
+          <a href="https://maps.google.com/?q=Eraur,713121" class="btn" data-i18n="contactDirectionsBtn">Directions</a>
+        </div>
+      </div>
+      <div class="map">
+        <iframe src="https://www.google.com/maps?q=Eraur,713121&output=embed" width="100%" height="200" class="map-iframe" allowfullscreen="" loading="lazy" title="Google Map of Eraur, 713121" data-i18n-title="mapTitle"></iframe>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+      <!-- Floating WhatsApp/Call Button -->
+      <div class="floating-contact">
+        <a href="https://wa.me/919999999999" class="float-btn whatsapp" title="Chat on WhatsApp" data-i18n-title="floatingChatTitle" target="_blank" rel="noopener">💬</a>
+        <a href="tel:943466190" class="float-btn call" title="Call now" data-i18n-title="floatingCallTitle">📞</a>
+      </div>
+    <div class="footer-brand">
+      <img src="logo.png" alt="Mahamaya Enterprise Logo" class="logo" />
+      <div>
+        <div class="brand-title" data-i18n="brandTitle">Mahamaya Enterprise</div>
+        <div class="brand-tagline" id="brand-tagline" data-i18n="brandTagline">Hardware · Paint · Electrical</div>
+      </div>
+    </div>
+    <div class="footer-contact">
+      <div><span data-i18n="footerPhoneLabel">Phone:</span> <a href="#" id="footer-phone-link">943466190</a></div>
+      <div><span data-i18n="footerWhatsappLabel">WhatsApp:</span> <a href="#" id="footer-whatsapp-link">9475653294</a></div>
+      <div><span data-i18n="footerAddressLabel">Address:</span> <span id="footer-address" data-i18n="defaultShortAddress">Eraur, 713121</span></div>
+    </div>
+    <div class="footer-hours">
+      <div id="footer-hours" data-i18n-html="defaultHoursDetail">Morning: 7:00 AM – 1:00 PM<br />Evening: 4:00 PM – 8:30 PM</div>
+      <div data-i18n="footerOpenNote">Open all days (confirm on festivals)</div>
+    </div>
+    <div class="footer-note" data-i18n="footerNote">© 2025 Mahamaya Enterprise. All rights reserved.</div>
+  </footer>
+  <script src="app.js"></script>
+  <script>
+    // Language switcher logic
+    function setLang(lang) {
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang;
+      if (window.applyTranslations) window.applyTranslations(lang);
+    }
+    document.getElementById('lang-switcher').value = localStorage.getItem('lang') || 'en';
+    document.getElementById('lang-switcher').addEventListener('change', function() {
+      setLang(this.value);
+    });
+    setLang(document.getElementById('lang-switcher').value);
+  </script>
+</body>
+</html>

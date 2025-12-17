@@ -1,0 +1,15 @@
+{
+  "faqs": [
+    {"q": "Do you deliver to construction sites?", "a": "Yes, we deliver to construction sites in and around Eraur, Bhatar, and nearby areas. Delivery options and charges depend on location and order size."},
+    {"q": "Can I get today’s rod/cement rate?", "a": "Absolutely! Please call or WhatsApp us for the latest daily rates on rods, cement, and other materials. Rates may vary based on market and quantity."},
+    {"q": "Do you keep Berger Paint color options?", "a": "Yes, we stock Berger paint colors, primers, and putty. We can suggest shades and finishes for your project. Contact us for availability."},
+    {"q": "What is your shop timing?", "a": "Our shop is open daily: Morning 7:00 AM – 1:00 PM, Evening 4:00 PM – 8:30 PM. Please confirm on festivals."}
+  ],
+  "shopInfo": {
+    "name": "Mahamaya Enterprise",
+    "address": "Vill + PO - Eraur, P.S - Bhatar, District - Purba Bardhaman, PIN - 713121",
+    "phone": "943466190",
+    "whatsapp": "9475653294",
+    "hours": "Morning: 7:00 AM – 1:00 PM, Evening: 4:00 PM – 8:30 PM"
+  }
+}
