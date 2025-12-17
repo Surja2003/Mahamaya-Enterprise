@@ -291,7 +291,7 @@ const PRODUCT_DATA = [
     nameKey: 'productBricksName',
     descKey: 'productBricksDesc',
     featureKeys: ['productBricksFeature1', 'productBricksFeature2', 'productBricksFeature3'],
-    img: 'assets/red-bricks.jpg', // Red bricks
+    img: 'assets/red-bricks.webp', // Red bricks
   },
   {
     key: 'sand',
