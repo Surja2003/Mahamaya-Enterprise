@@ -301,14 +301,18 @@ html[data-theme="dark"] .faq-answer {
   cursor: pointer;
   margin-left: 1em;
   z-index: 20;
+  color: #222;
 }
 .mobile-menu-btn .bar {
   width: 28px;
   height: 3px;
-  background: #222;
+  background: currentColor;
   margin: 4px 0;
   border-radius: 2px;
   transition: all 0.3s;
+}
+html[data-theme="dark"] .mobile-menu-btn {
+  color: #eaeaea;
 }
 
 @media (max-width: 900px) {

@@ -3,6 +3,58 @@ let currentLang = localStorage.getItem('lang') || 'en';
 let activeProductKey = null;
 let reviewsCache = null;
 
+// --- Mobile nav (hamburger) ---
+function updateMobileMenuA11y() {
+  const btn = document.getElementById('mobile-menu-btn');
+  const nav = document.getElementById('main-nav');
+  if (!btn || !nav) return;
+  const isOpen = nav.classList.contains('open');
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  btn.setAttribute('aria-label', t(isOpen ? 'menuCloseLabel' : 'menuOpenLabel', currentLang));
+}
+
+function initMobileMenu() {
+  const btn = document.getElementById('mobile-menu-btn');
+  const nav = document.getElementById('main-nav');
+  if (!btn || !nav) return;
+
+  const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
+  const setOpen = (open) => {
+    nav.classList.toggle('open', !!open);
+    updateMobileMenuA11y();
+  };
+
+  setOpen(false);
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    setOpen(!nav.classList.contains('open'));
+  });
+
+  nav.addEventListener('click', (e) => {
+    const link = e.target && e.target.closest && e.target.closest('a');
+    if (link && isMobile()) setOpen(false);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!isMobile()) return;
+    if (!nav.classList.contains('open')) return;
+    if (e.target === btn || btn.contains(e.target)) return;
+    if (nav.contains(e.target)) return;
+    setOpen(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (!nav.classList.contains('open')) return;
+    setOpen(false);
+  });
+
+  window.addEventListener('resize', () => {
+    if (!isMobile()) setOpen(false);
+  });
+}
+
 // --- API base (for separate backend hosting) ---
 function apiUrl(pathname) {
   const rawBase = (window.API_BASE || localStorage.getItem('apiBase') || '').trim();
@@ -30,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load persisted theme first
   const savedTheme = localStorage.getItem('theme') || 'light';
   applyTheme(savedTheme);
+
+  initMobileMenu();
 
   const btn = document.getElementById('theme-toggle');
   if (btn) {
@@ -83,6 +137,7 @@ function applyTranslations(lang) {
   }
   loadReviews(true);
   updateThemeToggleLabel();
+  updateMobileMenuA11y();
 }
 
 window.applyTranslations = applyTranslations;
