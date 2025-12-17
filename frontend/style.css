@@ -354,9 +354,24 @@ html[data-theme="dark"] .mobile-menu-btn {
     gap: 1em;
     padding: 1.2em 0.5em 1em 0.5em;
   }
+  .products-section,
+  .featured-items,
+  .why-choose,
+  .customer-notes,
+  .faq,
+  .contact-section {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
   .product-cards, .featured-list, .customer-notes .notes-list {
     flex-direction: column;
     gap: 1em;
+  }
+  .product-card,
+  .featured-item,
+  .note {
+    width: 100%;
+    max-width: none;
   }
   .quote-form {
     max-width: 100%;
@@ -603,6 +618,7 @@ body {
   flex-wrap: wrap;
   gap: 1.5em;
   margin-top: 1em;
+  justify-content: center;
 }
 .product-card {
   background: #fff;
@@ -633,6 +649,7 @@ body {
   flex-wrap: wrap;
   gap: 1em;
   margin-top: 1em;
+  justify-content: center;
 }
 .featured-item {
   background: #f7f8f6;

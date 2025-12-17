@@ -291,20 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 });
-// --- Mobile menu toggle ---
-document.addEventListener('DOMContentLoaded', () => {
-  const menuBtn = document.getElementById('mobile-menu-btn');
-  const nav = document.getElementById('main-nav');
-  if (menuBtn && nav) {
-    menuBtn.addEventListener('click', () => {
-      nav.classList.toggle('open');
-    });
-    // Optional: close menu on nav link click (mobile UX)
-    nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => nav.classList.remove('open'));
-    });
-  }
-});
 // --- FAQ Accordion Logic ---
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.faq-question').forEach(btn => {
