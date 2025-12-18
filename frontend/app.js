@@ -2,6 +2,26 @@
 let currentLang = localStorage.getItem('lang') || 'en';
 let activeProductKey = null;
 let reviewsCache = null;
+let shopInfoCache = null;
+
+const FALLBACK_WHATSAPP = '9475653294';
+
+function normalizeWhatsappNumber(raw, defaultCountryCode = '91') {
+  const digits = String(raw || '').replace(/\D/g, '');
+  if (!digits) return '';
+  // Common India formats: 10-digit, 0XXXXXXXXXX, 91XXXXXXXXXX
+  if (digits.length === 10) return `${defaultCountryCode}${digits}`;
+  if (digits.length === 11 && digits.startsWith('0')) return `${defaultCountryCode}${digits.slice(1)}`;
+  return digits;
+}
+
+function buildWaMeUrl(rawNumber, text) {
+  const normalized = normalizeWhatsappNumber(rawNumber);
+  if (!normalized) return 'https://wa.me/';
+  const base = `https://wa.me/${normalized}`;
+  if (!text) return base;
+  return `${base}?text=${encodeURIComponent(text)}`;
+}
 
 // --- Mobile nav (hamburger) ---
 function updateMobileMenuA11y() {
@@ -200,6 +220,7 @@ async function loadSettingsToHomepage() {
     }
     // Shop Info
     if (data.shopInfo) {
+      shopInfoCache = data.shopInfo;
       const taglineEl = document.getElementById('brand-tagline');
       if (taglineEl) taglineEl.textContent = data.shopInfo.tagline || t('brandTagline', currentLang);
       const addressEl = document.getElementById('shop-address');
@@ -212,8 +233,16 @@ async function loadSettingsToHomepage() {
       }
       if (document.getElementById('footer-whatsapp-link')) {
         document.getElementById('footer-whatsapp-link').textContent = data.shopInfo.whatsapp || '';
-        document.getElementById('footer-whatsapp-link').href = 'https://wa.me/' + (data.shopInfo.whatsapp || '');
+        document.getElementById('footer-whatsapp-link').href = buildWaMeUrl(data.shopInfo.whatsapp || FALLBACK_WHATSAPP);
       }
+
+      // Update any WhatsApp anchor links on the page (nav, contact, floating)
+      const waUrl = buildWaMeUrl(data.shopInfo.whatsapp || FALLBACK_WHATSAPP);
+      document.querySelectorAll('a.whatsapp').forEach(a => {
+        a.href = waUrl;
+        if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
+        if (!a.getAttribute('rel')) a.setAttribute('rel', 'noopener');
+      });
       const footerAddress = document.getElementById('footer-address');
       if (footerAddress) footerAddress.textContent = data.shopInfo.address || t('defaultShortAddress', currentLang);
       const footerHours = document.getElementById('footer-hours');
@@ -481,7 +510,7 @@ if (sendWhatsappBtn) {
       `${t('messagePhone', currentLang)}: ${data.phone}`,
       `${t('messageRequirement', currentLang)}: ${data.requirement}`
     ].join('\n');
-    const url = `https://wa.me/919999999999?text=${encodeURIComponent(msg)}`;
+    const url = buildWaMeUrl((shopInfoCache && shopInfoCache.whatsapp) || FALLBACK_WHATSAPP, msg);
     window.open(url, '_blank');
   });
 }
@@ -489,7 +518,8 @@ if (sendWhatsappBtn) {
 if (whatsappCta) {
   whatsappCta.addEventListener('click', (e) => {
     e.preventDefault();
-    window.open('https://wa.me/919999999999', '_blank');
+    const url = buildWaMeUrl((shopInfoCache && shopInfoCache.whatsapp) || FALLBACK_WHATSAPP);
+    window.open(url, '_blank');
   });
 }
 
