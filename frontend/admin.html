@@ -2,27 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Admin Dashboard - Mahamaya Enterprise</title>
   <link rel="stylesheet" href="style.css" />
   <script src="lang.js"></script>
   <style>
-    .admin-container { max-width: 900px; margin: 2em auto; background: #fff; border-radius: 1em; box-shadow: 0 2px 12px #0002; padding: 2em; }
+    .admin-container { max-width: 900px; margin: 2em auto; border-radius: 1em; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 2em; }
     .admin-title { font-size: 2em; font-weight: 700; margin-bottom: 1em; }
     .quotes-table { width: 100%; border-collapse: collapse; margin-top: 1em; }
-    .quotes-table th, .quotes-table td { border: 1px solid #eee; padding: 0.7em 0.5em; text-align: left; }
-    .quotes-table th { background: #f7f8f6; }
-    .quotes-table tr:nth-child(even) { background: #fafbfa; }
-    .quotes-table tr:hover { background: #fffbe6; }
     .quote-actions button { margin-right: 0.5em; }
+    .admin-toolbar { display: flex; flex-wrap: wrap; gap: 0.75em; align-items: center; margin-bottom: 1em; }
     @media (max-width: 700px) {
-      .admin-container { padding: 0.5em; }
-      .quotes-table th, .quotes-table td { font-size: 0.95em; padding: 0.4em 0.2em; }
+      .admin-container { padding: 1em; margin: 1em 0.75em; }
     }
   </style>
 </head>
 <body>
-  <div class="lang-switcher">
+  <div class="admin-toolbar" style="position: absolute; top: 1em; right: 1em; z-index: 10; display: flex; gap: 0.5em; align-items: center;">
+    <button type="button" class="nav-btn theme-toggle" id="admin-theme-toggle" aria-label="Toggle theme"></button>
     <select id="lang-switcher" aria-label="Language" data-i18n-aria-label="languageLabel">
       <option value="en">English</option>
       <option value="bn">বাংলা</option>
@@ -49,6 +46,7 @@
       <button type="submit" class="btn primary admin-save-btn" data-i18n="saveSettings">Save Settings</button>
       <span id="settings-status" class="admin-status"></span>
     </form>
+    <div class="quotes-wrapper">
     <table class="quotes-table" id="quotes-table">
       <thead>
         <tr>
@@ -63,6 +61,7 @@
         <tr><td colspan="5" data-i18n="loadingQuotes">Loading...</td></tr>
       </tbody>
     </table>
+    </div>
   </div>
   <script>
     // If you host the backend separately (e.g., Render/Railway), set it once in the browser console:
@@ -81,6 +80,22 @@
           setLang(this.value);
         });
         setLang(document.getElementById('lang-switcher').value);
+
+    // --- Theme (dark mode) ---
+    function applyTheme(theme) {
+      const safe = theme === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', safe);
+      localStorage.setItem('theme', safe);
+      const btn = document.getElementById('admin-theme-toggle');
+      if (btn) btn.textContent = safe === 'dark' ? (t('themeLight', document.getElementById('lang-switcher').value) || 'Light') : (t('themeDark', document.getElementById('lang-switcher').value) || 'Dark');
+    }
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+    document.getElementById('admin-theme-toggle').addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme') || 'light';
+      applyTheme(cur === 'dark' ? 'light' : 'dark');
+    });
+
     // --- Language translation logic ---
     function applyTranslations(lang) {
       document.title = t('adminTitle', lang);
