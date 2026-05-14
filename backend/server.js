@@ -19,7 +19,20 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.use(helmet({ contentSecurityPolicy: false }));
-app.use(cors());
+app.use(cors({
+  origin: (origin, cb) => {
+    const allowed = [
+      'https://mahamaya-enterprise.vercel.app',
+      'https://mahamaya-enterprise.onrender.com',
+      /^http:\/\/localhost(:\d+)?$/,
+      /^http:\/\/127\.0\.0\.1(:\d+)?$/
+    ];
+    if (!origin) return cb(null, true); // allow server-to-server, curl, etc.
+    const ok = allowed.some(p => typeof p === 'string' ? p === origin : p.test(origin));
+    cb(ok ? null : new Error('CORS: origin not allowed'), ok);
+  },
+  credentials: true
+}));
 app.use(express.json({ limit: '2mb' }));
 app.use(morgan('dev'));
 

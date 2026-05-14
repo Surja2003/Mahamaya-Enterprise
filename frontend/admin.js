@@ -1,4 +1,4 @@
-﻿const API_BASE=(localStorage.getItem('apiBase')||'').trim().replace(/\/+$/,'');
+const API_BASE=(localStorage.getItem('apiBase')||'https://mahamaya-enterprise.onrender.com').trim().replace(/\/+$/,'');
 const api=p=>API_BASE?`${API_BASE}${p}`:p;
 const Rs=v=>`Rs. ${Number(v||0).toLocaleString('en-IN')}`;
 let TOKEN='',PRODUCTS=[],ORDERS=[],editingProductId=null;
