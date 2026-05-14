@@ -1,0 +1,16 @@
+{
+  "name": "Mahamaya Enterprise Hardware Store",
+  "short_name": "Mahamaya",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f7f0e7",
+  "theme_color": "#1f3c3a",
+  "icons": [
+    {
+      "src": "/assets/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

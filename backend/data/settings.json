@@ -10,6 +10,12 @@
     "address": "Vill + PO - Eraur, P.S - Bhatar, District - Purba Bardhaman, PIN - 713121",
     "phone": "943466190",
     "whatsapp": "9475653294",
-    "hours": "Morning: 7:00 AM – 1:00 PM, Evening: 4:00 PM – 8:30 PM"
-  }
+    "hours": "Morning: 7:00 AM - 1:00 PM, Evening: 4:00 PM - 8:30 PM",
+    "email": ""
+  },
+  "shipping": {
+    "fee": 150,
+    "freeAbove": 5000
+  },
+  "announcement": "Daily rates available on WhatsApp."
 }

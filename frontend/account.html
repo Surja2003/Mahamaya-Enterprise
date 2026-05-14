@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Account | Mahamaya Enterprise</title>
+  <meta name="theme-color" content="#1f3c3a" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="assets/icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-account" data-page="account">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-pill">Verified stock</span>
+      <span id="topbar-location">Eraur, Bhatar</span>
+      <span id="topbar-announcement" class="topbar-announcement hidden"></span>
+    </div>
+    <div class="topbar-right">
+      <a id="topbar-phone" href="tel:943466190">Call: 943466190</a>
+      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">ME</div>
+      <div>
+        <div class="brand-title">Mahamaya Enterprise</div>
+        <div class="brand-tagline">Hardware, fixtures, and site supplies</div>
+      </div>
+    </a>
+    <div class="header-actions">
+      <a class="header-link" href="track.html">Track order</a>
+      <a class="header-link" href="index.html">Shop</a>
+      <button class="header-icon" id="wishlist-btn" type="button">Wishlist <span id="wishlist-count">0</span></button>
+      <button class="header-icon" id="cart-btn" type="button">Cart <span id="cart-count">0</span></button>
+    </div>
+  </header>
+
+  <main class="account-layout">
+    <section class="auth-card">
+      <h1>Sign in</h1>
+      <form id="login-form">
+        <label>
+          Email
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" required />
+        </label>
+        <button class="btn btn-accent" type="submit">Sign in</button>
+        <div id="login-message" class="form-message"></div>
+      </form>
+    </section>
+    <section class="auth-card">
+      <h1>Create account</h1>
+      <form id="signup-form">
+        <label>
+          Full name
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Phone (optional)
+          <input type="tel" name="phone" />
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" required />
+        </label>
+        <button class="btn btn-dark" type="submit">Create account</button>
+        <div id="signup-message" class="form-message"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <h3>Mahamaya Enterprise</h3>
+      <p>Eraur, Bhatar - Purba Bardhaman</p>
+    </div>
+    <div>
+      <p>Need a custom quote?</p>
+      <a class="btn btn-dark" href="checkout.html">Request bulk pricing</a>
+    </div>
+    <div>
+      <p>Track order</p>
+      <a href="track.html">Check your order status</a>
+    </div>
+  </footer>
+
+  <div class="drawer" id="cart-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h3>Your cart</h3>
+      <button class="icon-btn" id="close-cart" type="button">Close</button>
+    </div>
+    <div id="cart-items" class="drawer-body"></div>
+    <div class="drawer-footer">
+      <div class="totals">
+        <span>Subtotal</span>
+        <strong id="cart-subtotal">0</strong>
+      </div>
+      <a class="btn btn-accent" href="checkout.html">Checkout</a>
+    </div>
+  </div>
+
+  <div class="drawer" id="wishlist-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h3>Wishlist</h3>
+      <button class="icon-btn" id="close-wishlist" type="button">Close</button>
+    </div>
+    <div id="wishlist-items" class="drawer-body"></div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

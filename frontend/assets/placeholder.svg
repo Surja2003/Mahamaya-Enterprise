@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="Product image placeholder">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6efe6" />
+      <stop offset="100%" stop-color="#eadfce" />
+    </linearGradient>
+    <pattern id="p" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="6" cy="6" r="2" fill="#d9c8b1" />
+      <circle cx="18" cy="18" r="2" fill="#d9c8b1" />
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#g)" />
+  <rect width="800" height="600" fill="url(#p)" opacity="0.4" />
+  <g fill="#6b5b4a" font-family="Arial, sans-serif" font-size="32" font-weight="700">
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">Mahamaya Hardware</text>
+  </g>
+</svg>

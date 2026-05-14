@@ -3,214 +3,203 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Mahamaya Enterprise | Hardware, Paint, Electrical, Construction Materials</title>
-  <meta name="description" content="Mahamaya Enterprise supplies hardware, paint, electrical, and construction materials in Eraur, Bhatar. Trusted local supplier for rods, cement, bricks, sand, Berger paint, and more." />
-  <meta name="keywords" content="hardware, paint, electrical, construction, cement, rod, bricks, sand, Berger, Eraur, Bhatar, Mahamaya Enterprise" />
-  <meta name="author" content="Mahamaya Enterprise" />
-  <meta property="og:title" content="Mahamaya Enterprise" />
-  <meta property="og:description" content="Quality & Trust Since [Year]. Hardware, paint, electrical, and construction materials supplier in Eraur, Bhatar." />
-  <meta property="og:image" content="/logo.png" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mahamaya-enterprise.example.com/" />
-  <link rel="canonical" href="https://mahamaya-enterprise.example.com/" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="lang.js"></script>
+  <title>Mahamaya Enterprise | Hardware Marketplace</title>
+  <meta name="description" content="Shop hardware, electrical, plumbing, paint, tools, and building supplies with verified stock and fast delivery." />
+  <meta name="keywords" content="hardware, fixtures, tools, plumbing, electrical, paint, construction, mahayama" />
+  <meta name="theme-color" content="#1f3c3a" />
   <link rel="icon" href="favicon.ico" />
-  <!-- Google Analytics (replace with your GA ID) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="assets/icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <header class="header">
-    <div class="brand">
-      <img src="logo.png" alt="Mahamaya Enterprise Logo" class="logo" />
-      <div>
-        <div class="brand-title" data-i18n="brandTitle">Mahamaya Enterprise</div>
-        <div class="brand-tagline" data-i18n="brandTagline">Hardware · Paint · Electrical</div>
-      </div>
+<body class="page-shop" data-page="shop">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-pill">Verified stock</span>
+      <span id="topbar-location">Eraur, Bhatar</span>
+      <span id="topbar-announcement" class="topbar-announcement hidden"></span>
     </div>
-    <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" data-i18n-aria-label="menuToggleLabel">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-    <nav class="nav" id="main-nav">
-      <div class="lang-switcher nav-inline">
-        <select id="lang-switcher" aria-label="Language" data-i18n-aria-label="languageLabel">
-          <option value="en">English</option>
-          <option value="bn">বাংলা</option>
-        </select>
+    <div class="topbar-right">
+      <a id="topbar-phone" href="tel:943466190">Call: 943466190</a>
+      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">ME</div>
+      <div>
+        <div class="brand-title">Mahamaya Enterprise</div>
+        <div class="brand-tagline">Hardware, fixtures, and site supplies</div>
       </div>
-      <button type="button" class="nav-btn theme-toggle" id="theme-toggle" data-i18n="themeDark" aria-label="Theme" data-i18n-aria-label="themeLabel"></button>
-      <a href="#products" data-i18n="navProducts">Products</a>
-      <a href="#contact" data-i18n="navContact">Contact</a>
-      <a href="tel:943466190" class="nav-btn call" data-i18n="navCall">Call</a>
-      <a href="#" class="nav-btn whatsapp" data-i18n="navWhatsApp">WhatsApp</a>
-      <a href="#quote-form" class="nav-btn quote" data-i18n="navQuote">Quote</a>
-    </nav>
+    </a>
+    <div class="search-wrap">
+      <input id="search-input" type="search" placeholder="Search tools, pipes, switches, paints..." />
+      <button id="search-btn" class="btn btn-accent" type="button">Search</button>
+    </div>
+    <div class="header-actions">
+      <a class="header-link" href="track.html">Track order</a>
+      <a class="header-link" href="account.html">Account</a>
+      <button class="header-icon" id="wishlist-btn" type="button">Wishlist <span id="wishlist-count">0</span></button>
+      <button class="header-icon" id="cart-btn" type="button">Cart <span id="cart-count">0</span></button>
+    </div>
   </header>
+
+  <nav class="category-nav">
+    <button class="filter-toggle" id="filter-toggle" type="button">Filters</button>
+    <div class="category-list" id="category-list"></div>
+  </nav>
+
   <main>
     <section class="hero">
-      <div class="hero-content">
-        <span class="badge" data-i18n="heroBadge">Trusted local supplier — Eraur · Bhatar</span>
-        <h1 data-i18n-html="heroHeadline">Build with confidence —<br />materials that arrive on time.</h1>
-        <p data-i18n="heroParagraph">All hardware & building materials — reliable stock, fair rates, quick service. Get updates for today’s rod/cement rate, Berger paint shades, electrical essentials, water line products, and more.</p>
+      <div class="hero-copy">
+        <p class="eyebrow">Builder ready catalog</p>
+        <h1>Every site supply in one place.</h1>
+        <p>Daily rate updates, bulk pricing, and verified stock across hardware, electrical, plumbing, paints, and tools.</p>
         <div class="hero-actions">
-          <a href="#" class="btn primary" id="whatsapp-cta" data-i18n="heroWhatsappCta">Get price on WhatsApp</a>
-          <a href="#products" class="btn" data-i18n="browseProducts">Browse products</a>
-          <button class="btn" id="copy-call" data-i18n="copyCall">Copy call number</button>
+          <a class="btn btn-dark" href="checkout.html">Quick order</a>
+          <a class="btn btn-ghost" href="#shop">Browse all items</a>
         </div>
-        <div class="hero-info">
-          <div data-i18n="heroInfoDelivery">Delivery support</div>
-          <div data-i18n="heroInfoStock">Genuine stock</div>
-          <div data-i18n-html="heroInfoHours">Open daily<br />7:00 AM – 1:00 PM · 4:00 PM – 8:30 PM</div>
-        </div>
-        <div class="visit-shop" data-i18n-html="visitShop">Visit the shop<br />Vill + PO - Eraur, P.S - Bhatar, District - Purba Bardhaman, PIN - 713121</div>
       </div>
-      <form class="quote-form" id="quote-form">
-        <h2 data-i18n="quoteHeading">Quick quote request</h2>
-        <label for="topic-select">
-          <span data-i18n="topic">Topic</span>
-          <select name="topic" id="topic-select">
-            <option value="Rod / TMT" data-i18n-option="rod">Rod / TMT</option>
-            <option value="Cement" data-i18n-option="cement">Cement</option>
-            <option value="Bricks" data-i18n-option="bricks">Bricks</option>
-            <option value="Sand & Stone" data-i18n-option="sand">Sand</option>
-          </select>
-        </label>
-        <label for="name">
-          <span data-i18n="yourName">Your name</span>
-          <input type="text" name="name" id="name" maxlength="40" data-i18n-placeholder="yourName" />
-        </label>
-        <label for="phone">
-          <span data-i18n="phone">Phone</span>
-          <input type="tel" name="phone" id="phone" maxlength="15" required pattern="[0-9]{10,15}" data-i18n-placeholder="phone" />
-        </label>
-        <label for="requirement">
-          <span data-i18n="requirement">Requirement</span>
-          <textarea name="requirement" id="requirement" maxlength="200" data-i18n-placeholder="requirementPlaceholder"></textarea>
-        </label>
-        <div class="form-actions">
-          <button type="submit" class="btn primary" data-i18n="saveRequest">Save request</button>
-          <button type="button" class="btn whatsapp" id="send-whatsapp" data-i18n="sendWhatsapp">Send on WhatsApp</button>
-        </div>
-      </form>
-    </section>
-    <section id="products" class="products-section">
-      <h2 data-i18n="products">Products we supply</h2>
-      <p data-i18n="productsIntro">Click a product to see details. Prices are shared on call/WhatsApp.</p>
-      <div class="product-cards" id="product-cards"></div>
-      <!-- Product Modal -->
-      <div id="product-modal" class="modal" hidden>
-        <div class="modal-content">
-          <span class="close" id="close-modal">&times;</span>
-          <img id="modal-img" class="modal-img" src="" alt="Product image" />
-          <h3 id="modal-title"></h3>
-          <p id="modal-desc"></p>
-          <ul id="modal-features"></ul>
+      <div class="hero-card">
+        <div class="hero-card-title">Today’s highlight</div>
+        <div class="hero-card-body">
+          <h3>Steel + Cement combo</h3>
+          <p>Priority dispatch for bulk orders above 100 bags or 5 tons.</p>
+          <button class="btn btn-accent" id="hero-cta" type="button">Get instant quote</button>
         </div>
       </div>
     </section>
-    <section class="featured-items">
-      <h2 data-i18n="featured">Featured items (tap to add to quote)</h2>
-      <div class="featured-list" id="featured-list"></div>
-    </section>
-    <section class="why-choose">
-      <h2 data-i18n="whyChoose">Why customers choose us</h2>
-      <ul>
-        <li data-i18n="whyPointCommunication">Clear communication</li>
-        <li data-i18n="whyPointBulk">Bulk order support</li>
-        <li data-i18n="whyPointStock">Reliable stock</li>
-      </ul>
-    </section>
-    <section class="customer-notes">
-      <h2 data-i18n="customerReviews">Customer reviews</h2>
-      <form id="review-form" class="review-form">
-        <input type="text" name="name" maxlength="30" required placeholder="Your name" data-i18n-placeholder="yourName" />
-        <select name="rating" required title="Rating" aria-label="Rating" data-i18n-aria-label="rating" data-i18n-title="rating">
-          <option value="" data-i18n-option="rating">Rating</option>
-          <option value="5">★★★★★</option>
-          <option value="4">★★★★☆</option>
-          <option value="3">★★★☆☆</option>
-          <option value="2">★★☆☆☆</option>
-          <option value="1">★☆☆☆☆</option>
-        </select>
-        <label for="comment">
-          <span data-i18n="feedback">Feedback</span>
-          <input type="text" name="comment" id="comment" maxlength="120" required title="Feedback" data-i18n-title="feedback" placeholder="Your feedback" data-i18n-placeholder="feedback" />
-        </label>
-        <button type="submit" class="btn primary" data-i18n="submitReview">Submit review</button>
-      </form>
-      <div class="notes-list" id="reviews-list">
-        <div data-i18n="loadingReviews">Loading reviews...</div>
+
+    <section id="shop" class="shop-layout">
+      <aside class="filters" id="filters">
+        <div class="filter-group">
+          <h3>Category</h3>
+          <div id="filter-categories" class="filter-list"></div>
+        </div>
+        <div class="filter-group">
+          <h3>Brand</h3>
+          <div id="filter-brands" class="filter-list"></div>
+        </div>
+        <div class="filter-group">
+          <h3>Price range</h3>
+          <div class="price-range">
+            <input id="min-price" type="number" placeholder="Min" />
+            <input id="max-price" type="number" placeholder="Max" />
+          </div>
+          <button class="btn btn-ghost" id="apply-price" type="button">Apply</button>
+        </div>
+        <div class="filter-group">
+          <h3>Quick filters</h3>
+          <label class="check-pill"><input id="filter-featured" type="checkbox" /> Featured</label>
+          <label class="check-pill"><input id="filter-bestseller" type="checkbox" /> Best sellers</label>
+          <label class="check-pill"><input id="filter-instock" type="checkbox" /> In stock</label>
+        </div>
+        <button class="btn btn-light" id="clear-filters" type="button">Clear filters</button>
+      </aside>
+
+      <div class="shop-main">
+        <div class="shop-toolbar">
+          <div class="results" id="results-count">0 items</div>
+          <div class="sort-wrap">
+            <label for="sort-select">Sort by</label>
+            <select id="sort-select">
+              <option value="popular">Popularity</option>
+              <option value="rating">Rating</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="newest">Newest</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="active-filters" class="active-filters"></div>
+        <div id="product-grid" class="product-grid"></div>
+        <button id="load-more" class="btn btn-ghost" type="button">Load more</button>
       </div>
     </section>
-    <section class="faq">
-      <h2 data-i18n="faq">FAQ</h2>
-      <div class="faq-list" id="faq-list"></div>
+
+    <section class="recently-viewed hidden" id="recently-viewed-section">
+      <h2 class="section-title">Recently viewed</h2>
+      <div id="recently-viewed-grid" class="product-grid"></div>
     </section>
-    <section id="contact" class="contact-section">
-      <h2 data-i18n="contactLocation">Contact & location</h2>
-      <div class="contact-details">
-        <div class="address">
-          <strong data-i18n="addressLabel">Address</strong><br /><span id="shop-address" data-i18n="defaultShopAddress">Vill + PO - Eraur, P.S - Bhatar, District - Purba Bardhaman, PIN - 713121</span>
-        </div>
-        <div class="hours">
-          <strong data-i18n="hoursLabel">Hours</strong><br /><span id="shop-hours" data-i18n-html="defaultHoursDetail">Morning: 7:00 AM – 1:00 PM<br />Evening: 4:00 PM – 8:30 PM</span>
-        </div>
-        <div class="contact-actions">
-          <a href="#" class="btn whatsapp" data-i18n="contactWhatsappBtn">WhatsApp</a>
-          <a href="tel:943466190" class="btn call" data-i18n="contactCallBtn">Call</a>
-          <a href="https://maps.google.com/?q=Eraur,713121" class="btn" data-i18n="contactDirectionsBtn">Directions</a>
-        </div>
+
+    <section class="trust-strip">
+      <div>
+        <h4>Same day dispatch</h4>
+        <p>Fast coordination for local delivery and pickup.</p>
       </div>
-      <div class="map">
-        <iframe src="https://www.google.com/maps?q=Eraur,713121&output=embed" width="100%" height="200" class="map-iframe" allowfullscreen="" loading="lazy" title="Google Map of Eraur, 713121" data-i18n-title="mapTitle"></iframe>
+      <div>
+        <h4>GST billing ready</h4>
+        <p>Invoices available for contractors and firms.</p>
+      </div>
+      <div>
+        <h4>Bulk order specialists</h4>
+        <p>Dedicated support for project scale orders.</p>
       </div>
     </section>
   </main>
-  <footer class="footer">
-      <!-- Floating WhatsApp/Call Button -->
-      <div class="floating-contact">
-        <a href="#" class="float-btn whatsapp" title="Chat on WhatsApp" data-i18n-title="floatingChatTitle" target="_blank" rel="noopener">💬</a>
-        <a href="tel:943466190" class="float-btn call" title="Call now" data-i18n-title="floatingCallTitle">📞</a>
-      </div>
-    <div class="footer-brand">
-      <img src="logo.png" alt="Mahamaya Enterprise Logo" class="logo" />
-      <div>
-        <div class="brand-title" data-i18n="brandTitle">Mahamaya Enterprise</div>
-        <div class="brand-tagline" id="brand-tagline" data-i18n="brandTagline">Hardware · Paint · Electrical</div>
-      </div>
+
+  <footer class="site-footer">
+    <div>
+      <h3>Mahamaya Enterprise</h3>
+      <p>Eraur, Bhatar - Purba Bardhaman</p>
     </div>
-    <div class="footer-contact">
-      <div><span data-i18n="footerPhoneLabel">Phone:</span> <a href="#" id="footer-phone-link">943466190</a></div>
-      <div><span data-i18n="footerWhatsappLabel">WhatsApp:</span> <a href="#" id="footer-whatsapp-link">9475653294</a></div>
-      <div><span data-i18n="footerAddressLabel">Address:</span> <span id="footer-address" data-i18n="defaultShortAddress">Eraur, 713121</span></div>
+    <div>
+      <p>Need a custom quote?</p>
+      <a class="btn btn-dark" href="checkout.html">Request bulk pricing</a>
     </div>
-    <div class="footer-hours">
-      <div id="footer-hours" data-i18n-html="defaultHoursDetail">Morning: 7:00 AM – 1:00 PM<br />Evening: 4:00 PM – 8:30 PM</div>
-      <div data-i18n="footerOpenNote">Open all days (confirm on festivals)</div>
+    <div>
+      <p>Admin</p>
+      <a href="admin.html">Go to admin panel</a>
+      <br />
+      <a href="track.html">Track order</a>
     </div>
-    <div class="footer-note" data-i18n="footerNote">© 2025 Mahamaya Enterprise. All rights reserved.</div>
   </footer>
-  <script src="app.js"></script>
-  <script>
-    // Language switcher logic
-    function setLang(lang) {
-      localStorage.setItem('lang', lang);
-      document.documentElement.lang = lang;
-      if (window.applyTranslations) window.applyTranslations(lang);
-    }
-    document.getElementById('lang-switcher').value = localStorage.getItem('lang') || 'en';
-    document.getElementById('lang-switcher').addEventListener('change', function() {
-      setLang(this.value);
-    });
-    setLang(document.getElementById('lang-switcher').value);
-  </script>
+
+  <div class="drawer" id="cart-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h3>Your cart</h3>
+      <button class="icon-btn" id="close-cart" type="button">Close</button>
+    </div>
+    <div id="cart-items" class="drawer-body"></div>
+    <div class="drawer-footer">
+      <div class="totals">
+        <span>Subtotal</span>
+        <strong id="cart-subtotal">0</strong>
+      </div>
+      <a class="btn btn-accent" href="checkout.html">Checkout</a>
+    </div>
+  </div>
+
+  <div class="drawer" id="wishlist-drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <h3>Wishlist</h3>
+      <button class="icon-btn" id="close-wishlist" type="button">Close</button>
+    </div>
+    <div id="wishlist-items" class="drawer-body"></div>
+  </div>
+
+  <div class="compare-bar" id="compare-bar" aria-hidden="true">
+    <div class="compare-items" id="compare-items"></div>
+    <button class="btn btn-light" id="compare-btn" type="button">Compare</button>
+  </div>
+
+  <div class="modal" id="compare-modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Compare products</h3>
+        <button class="icon-btn" id="close-compare" type="button">Close</button>
+      </div>
+      <div id="compare-table" class="modal-body"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
