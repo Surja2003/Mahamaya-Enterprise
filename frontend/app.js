@@ -1,3 +1,4 @@
+/* Mahamaya Enterprise v2.1 — API: https://mahamaya-enterprise.onrender.com */
 const API_BASE = (window.API_BASE || localStorage.getItem('apiBase') || 'https://mahamaya-enterprise.onrender.com').trim().replace(/\/+$/, '');
 const api = p => API_BASE ? `${API_BASE}${p}` : p;
 const PLACEHOLDER = '/assets/placeholder.svg';
