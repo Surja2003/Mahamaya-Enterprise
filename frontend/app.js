@@ -1,4 +1,4 @@
-﻿const API_BASE = (window.API_BASE || localStorage.getItem('apiBase') || '').trim().replace(/\/+$/, '');
+const API_BASE = (window.API_BASE || localStorage.getItem('apiBase') || '').trim().replace(/\/+$/, '');
 const api = p => API_BASE ? `${API_BASE}${p}` : p;
 const PLACEHOLDER = '/assets/placeholder.svg';
 const Rs = v => `Rs. ${Number(v||0).toLocaleString('en-IN')}`;
@@ -378,19 +378,30 @@ function clearAllFilters(){
 async function loadProducts(){
   renderSkeletons();
   try{
-    const res=await fetch(api('/api/products?limit=500'));
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),5000);
+    const res=await fetch(api('/api/products?limit=500'),{signal:controller.signal});
+    clearTimeout(timeout);
+    if(!res.ok) throw new Error('API error');
     const data=await res.json();
     S.products=data.products||[];
-    S.filtered=[...S.products];
-    updateCategoryCounts();
-    renderFilterSidebar();
-    applyFilters();
-    renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
-    loadReviews();
+    if(!S.products.length) throw new Error('empty');
   }catch{
-    const g=document.getElementById('product-grid');
-    if(g) g.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Failed to load products. Please check your connection.</p></div>';
+    // ── FALLBACK: use bundled demo products ──
+    S.products = typeof DEMO_PRODUCTS!=='undefined' ? DEMO_PRODUCTS : [];
+    if(S.products.length) toast('Showing demo catalogue (backend offline)','info',4000);
+    else{
+      const g=document.getElementById('product-grid');
+      if(g) g.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Could not load products. Backend may be starting up — please refresh in a moment.</p></div>';
+      return;
+    }
   }
+  S.filtered=[...S.products];
+  updateCategoryCounts();
+  renderFilterSidebar();
+  applyFilters();
+  renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
+  loadReviews();
 }
 
 // ── SHOP PAGE ──────────────────────────────────────────

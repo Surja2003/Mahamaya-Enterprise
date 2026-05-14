@@ -1,7 +1,36 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/frontend/index.html" },
-    { "source": "/admin", "destination": "/frontend/admin.html" },
-    { "source": "/(.*)", "destination": "/frontend/$1" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "backend/server.js" },
+    { "src": "/uploads/(.*)", "dest": "backend/server.js" },
+    { "src": "/admin.html", "dest": "/frontend/admin.html" },
+    { "src": "/admin", "dest": "/frontend/admin.html" },
+    { "src": "/track.html", "dest": "/frontend/track.html" },
+    { "src": "/track", "dest": "/frontend/track.html" },
+    { "src": "/checkout.html", "dest": "/frontend/checkout.html" },
+    { "src": "/checkout", "dest": "/frontend/checkout.html" },
+    { "src": "/account.html", "dest": "/frontend/account.html" },
+    { "src": "/account", "dest": "/frontend/account.html" },
+    { "src": "/product.html", "dest": "/frontend/product.html" },
+    { "src": "/product", "dest": "/frontend/product.html" },
+    { "src": "/assets/(.*)", "dest": "/frontend/assets/$1" },
+    { "src": "/style.css", "dest": "/frontend/style.css" },
+    { "src": "/app.js", "dest": "/frontend/app.js" },
+    { "src": "/admin.js", "dest": "/frontend/admin.js" },
+    { "src": "/manifest.json", "dest": "/frontend/manifest.json" },
+    { "src": "/service-worker.js", "dest": "/frontend/service-worker.js" },
+    { "src": "/demo-products.js", "dest": "/frontend/demo-products.js" },
+    { "src": "/favicon.ico", "dest": "/frontend/favicon.ico" },
+    { "src": "/(.*)", "dest": "/frontend/index.html" }
   ]
 }
