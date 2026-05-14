@@ -1,36 +1,24 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "backend/server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "frontend/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "backend/server.js" },
-    { "src": "/uploads/(.*)", "dest": "backend/server.js" },
-    { "src": "/admin.html", "dest": "/frontend/admin.html" },
-    { "src": "/admin", "dest": "/frontend/admin.html" },
-    { "src": "/track.html", "dest": "/frontend/track.html" },
-    { "src": "/track", "dest": "/frontend/track.html" },
-    { "src": "/checkout.html", "dest": "/frontend/checkout.html" },
-    { "src": "/checkout", "dest": "/frontend/checkout.html" },
-    { "src": "/account.html", "dest": "/frontend/account.html" },
-    { "src": "/account", "dest": "/frontend/account.html" },
-    { "src": "/product.html", "dest": "/frontend/product.html" },
-    { "src": "/product", "dest": "/frontend/product.html" },
-    { "src": "/assets/(.*)", "dest": "/frontend/assets/$1" },
-    { "src": "/style.css", "dest": "/frontend/style.css" },
-    { "src": "/app.js", "dest": "/frontend/app.js" },
-    { "src": "/admin.js", "dest": "/frontend/admin.js" },
-    { "src": "/manifest.json", "dest": "/frontend/manifest.json" },
-    { "src": "/service-worker.js", "dest": "/frontend/service-worker.js" },
-    { "src": "/demo-products.js", "dest": "/frontend/demo-products.js" },
-    { "src": "/favicon.ico", "dest": "/frontend/favicon.ico" },
-    { "src": "/(.*)", "dest": "/frontend/index.html" }
+  "rewrites": [
+    { "source": "/admin.html", "destination": "/frontend/admin.html" },
+    { "source": "/admin", "destination": "/frontend/admin.html" },
+    { "source": "/track.html", "destination": "/frontend/track.html" },
+    { "source": "/track", "destination": "/frontend/track.html" },
+    { "source": "/checkout.html", "destination": "/frontend/checkout.html" },
+    { "source": "/checkout", "destination": "/frontend/checkout.html" },
+    { "source": "/account.html", "destination": "/frontend/account.html" },
+    { "source": "/account", "destination": "/frontend/account.html" },
+    { "source": "/product.html", "destination": "/frontend/product.html" },
+    { "source": "/product", "destination": "/frontend/product.html" },
+    { "source": "/style.css", "destination": "/frontend/style.css" },
+    { "source": "/app.js", "destination": "/frontend/app.js" },
+    { "source": "/admin.js", "destination": "/frontend/admin.js" },
+    { "source": "/demo-products.js", "destination": "/frontend/demo-products.js" },
+    { "source": "/manifest.json", "destination": "/frontend/manifest.json" },
+    { "source": "/service-worker.js", "destination": "/frontend/service-worker.js" },
+    { "source": "/assets/:path*", "destination": "/frontend/assets/:path*" },
+    { "source": "/favicon.ico", "destination": "/frontend/favicon.ico" },
+    { "source": "/(.*)", "destination": "/frontend/index.html" }
   ]
 }
