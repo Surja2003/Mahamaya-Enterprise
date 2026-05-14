@@ -1,65 +1,38 @@
-const CACHE_NAME = 'mahamaya-v1';
-const CORE_ASSETS = [
-  '/',
-  '/index.html',
-  '/product.html',
-  '/checkout.html',
-  '/account.html',
-  '/track.html',
-  '/admin.html',
-  '/style.css',
-  '/app.js',
-  '/admin.js',
-  '/manifest.json',
-  '/assets/placeholder.svg',
-  '/assets/icon.svg'
+const CACHE = 'mahamaya-v2';
+const STATIC = [
+  '/', '/index.html', '/style.css', '/app.js',
+  '/product.html', '/checkout.html', '/track.html', '/account.html',
+  '/manifest.json', '/assets/placeholder.svg'
 ];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS))
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE).then(c => c.addAll(STATIC)).catch(() => {})
   );
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  const url = new URL(event.request.url);
-
-  if (url.pathname.startsWith('/api/')) {
-    return;
-  }
-
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-          return response;
-        })
-        .catch(() => caches.match('/index.html'))
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(event.request).then((cached) =>
-      cached ||
-      fetch(event.request).then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
-      })
+self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  if (e.request.url.includes('/api/')) return;
+  e.respondWith(
+    caches.match(e.request).then(r =>
+      r || fetch(e.request).then(res => {
+        if (res && res.status === 200 && res.type === 'basic') {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return res;
+      }).catch(() => caches.match('/index.html'))
     )
   );
 });

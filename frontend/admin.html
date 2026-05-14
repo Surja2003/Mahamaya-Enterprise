@@ -1,223 +1,318 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Admin | Mahamaya Enterprise</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Panel | Mahamaya Enterprise</title>
+  <meta name="robots" content="noindex,nofollow"/>
+  <link rel="icon" href="favicon.ico"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .admin-layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+    #admin-login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a1a2e,#1a3c5e);padding:1rem}
+    .login-box{background:#fff;border-radius:16px;padding:2.5rem;width:min(400px,100%);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .login-box h1{font-size:1.4rem;font-weight:800;margin-bottom:.3rem}
+    .login-box p{color:#666;font-size:.88rem;margin-bottom:1.5rem}
+    .chart-bar-wrap{display:flex;gap:.3rem;align-items:flex-end;height:80px;padding:.5rem 0}
+    .chart-bar{background:linear-gradient(to top,var(--primary),var(--primary-light));border-radius:3px 3px 0 0;flex:1;min-width:8px;transition:height .5s ease;cursor:pointer;position:relative}
+    .chart-bar:hover::after{content:attr(data-label);position:absolute;bottom:105%;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:.2rem .5rem;border-radius:4px;font-size:.7rem;white-space:nowrap}
+  </style>
 </head>
-<body class="page-admin" data-page="admin">
-  <header class="admin-header">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">ME</div>
-      <div>
-        <div class="brand-title">Mahamaya Enterprise</div>
-        <div class="brand-tagline">Admin control center</div>
-      </div>
-    </a>
-    <div class="header-actions">
-      <button id="admin-logout" class="btn btn-ghost" type="button">Log out</button>
-    </div>
-  </header>
+<body style="margin:0;font-family:Inter,sans-serif">
 
-  <main class="admin-layout">
-    <section id="admin-login" class="admin-card">
-      <h1>Admin sign in</h1>
-      <p class="muted">Use the admin credentials from your .env file.</p>
+  <!-- LOGIN SCREEN -->
+  <div id="admin-login">
+    <div class="login-box">
+      <div style="width:48px;height:48px;background:linear-gradient(135deg,#e05c1a,#f0843a);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:1.1rem;margin-bottom:1rem">ME</div>
+      <h1>Admin Panel</h1>
+      <p>Mahamaya Enterprise — Staff Access Only</p>
       <form id="admin-login-form">
-        <label>
-          Email
-          <input type="email" name="email" required />
-        </label>
-        <label>
-          Password
-          <input type="password" name="password" required />
-        </label>
-        <button class="btn btn-accent" type="submit">Sign in</button>
-        <div id="admin-login-message" class="form-message"></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required autocomplete="email" placeholder="admin@mahamaya.local"/></div>
+        <div class="field"><label>Password</label><input type="password" name="password" required autocomplete="current-password"/></div>
+        <button class="btn btn-primary btn-full" type="submit" style="margin-top:.4rem">Sign In to Admin</button>
+        <div id="login-err" style="margin-top:.7rem;font-size:.83rem;color:#c62828;display:none"></div>
       </form>
-    </section>
-
-    <section id="admin-dashboard" class="admin-dashboard hidden">
-      <div class="admin-card">
-        <h2>Store settings</h2>
-        <form id="settings-form">
-          <div class="field-grid">
-            <label>
-              Store name
-              <input type="text" name="storeName" required />
-            </label>
-            <label>
-              Phone
-              <input type="text" name="phone" required />
-            </label>
-            <label>
-              WhatsApp
-              <input type="text" name="whatsapp" required />
-            </label>
-            <label>
-              Support email
-              <input type="email" name="email" />
-            </label>
-          </div>
-          <label>
-            Address
-            <input type="text" name="address" required />
-          </label>
-          <label>
-            Hours
-            <input type="text" name="hours" required />
-          </label>
-          <div class="field-grid">
-            <label>
-              Delivery fee
-              <input type="number" name="deliveryFee" min="0" step="1" />
-            </label>
-            <label>
-              Free delivery above
-              <input type="number" name="freeAbove" min="0" step="1" />
-            </label>
-          </div>
-          <label>
-            Announcement
-            <input type="text" name="announcement" />
-          </label>
-          <div class="form-actions">
-            <button class="btn btn-accent" type="submit">Save settings</button>
-          </div>
-          <div id="settings-message" class="form-message"></div>
-        </form>
-      </div>
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h2>Product manager</h2>
-          <form id="product-form">
-            <input type="hidden" name="id" />
-            <div class="field-grid">
-              <label>
-                Name
-                <input type="text" name="name" required />
-              </label>
-              <label>
-                Category
-                <input type="text" name="category" required />
-              </label>
-              <label>
-                Brand
-                <input type="text" name="brand" />
-              </label>
-              <label>
-                SKU
-                <input type="text" name="sku" />
-              </label>
-            </div>
-            <div class="field-grid">
-              <label>
-                Price
-                <input type="number" name="price" step="0.01" required />
-              </label>
-              <label>
-                MRP
-                <input type="number" name="mrp" step="0.01" />
-              </label>
-              <label>
-                Stock
-                <input type="number" name="stock" />
-              </label>
-              <label>
-                Rating
-                <input type="number" name="rating" step="0.1" max="5" />
-              </label>
-            </div>
-            <label>
-              Tags (comma separated)
-              <input type="text" name="tags" />
-            </label>
-            <label>
-              Short description
-              <input type="text" name="shortDesc" />
-            </label>
-            <label>
-              Long description
-              <textarea name="longDesc" rows="3"></textarea>
-            </label>
-            <label>
-              Image URL (optional)
-              <input type="text" name="imageUrl" />
-            </label>
-            <label>
-              Upload image
-              <input type="file" name="imageFile" accept="image/*" />
-            </label>
-            <div class="field-grid">
-              <label class="check-pill"><input type="checkbox" name="featured" /> Featured</label>
-              <label class="check-pill"><input type="checkbox" name="bestSeller" /> Best seller</label>
-            </div>
-            <div class="form-actions">
-              <button class="btn btn-accent" type="submit">Save product</button>
-              <button class="btn btn-ghost" type="button" id="product-reset">Reset</button>
-            </div>
-            <div id="product-message" class="form-message"></div>
-          </form>
-        </div>
-
-        <div class="admin-card">
-          <h2>Products</h2>
-          <div class="table-wrap">
-            <table class="admin-table" id="products-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Stock</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="products-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="admin-card">
-        <div class="admin-card-header">
-          <h2>Orders</h2>
-          <button class="btn btn-dark" id="export-orders" type="button">Export Excel</button>
-        </div>
-        <div class="table-wrap">
-          <table class="admin-table" id="orders-table">
-            <thead>
-              <tr>
-                <th>Order</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Details</th>
-              </tr>
-            </thead>
-            <tbody id="orders-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div class="modal" id="order-modal" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>Order details</h3>
-        <button class="icon-btn" id="close-order-modal" type="button">Close</button>
-      </div>
-      <div id="order-modal-body" class="modal-body"></div>
     </div>
   </div>
 
+  <!-- ADMIN DASHBOARD -->
+  <div id="admin-dashboard" class="admin-layout" style="display:none">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-brand">
+        <div class="brand-mark">ME</div>
+        <div><div class="admin-sidebar-brand-name">Mahamaya</div><div class="admin-sidebar-brand-sub">Admin Panel</div></div>
+      </div>
+      <nav class="admin-nav">
+        <div class="admin-nav-section">Dashboard</div>
+        <div class="admin-nav-link active" data-page="overview"><span class="nav-ico">📊</span> Overview</div>
+        <div class="admin-nav-section">Catalog</div>
+        <div class="admin-nav-link" data-page="products"><span class="nav-ico">📦</span> Products</div>
+        <div class="admin-nav-link" data-page="add-product"><span class="nav-ico">➕</span> Add Product</div>
+        <div class="admin-nav-link" data-page="coupons"><span class="nav-ico">🏷️</span> Coupons</div>
+        <div class="admin-nav-section">Orders</div>
+        <div class="admin-nav-link" data-page="orders"><span class="nav-ico">🛒</span> All Orders</div>
+        <div class="admin-nav-link" data-page="quotes"><span class="nav-ico">💬</span> Quote Requests</div>
+        <div class="admin-nav-section">Customers</div>
+        <div class="admin-nav-link" data-page="customers"><span class="nav-ico">👥</span> Customers</div>
+        <div class="admin-nav-link" data-page="reviews"><span class="nav-ico">⭐</span> Reviews</div>
+        <div class="admin-nav-section">Settings</div>
+        <div class="admin-nav-link" data-page="settings"><span class="nav-ico">⚙️</span> Shop Settings</div>
+        <div style="padding:.7rem 1.2rem;margin-top:auto"><a href="index.html" class="btn btn-ghost btn-sm btn-full" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.15)">← View Store</a></div>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div class="admin-topbar-title" id="page-title">Dashboard Overview</div>
+        <div class="admin-topbar-right">
+          <button class="dark-toggle" id="dark-toggle" type="button">🌙</button>
+          <span id="admin-user-email" style="font-size:.82rem;color:var(--muted)"></span>
+          <button class="btn btn-ghost btn-sm" id="admin-logout">Sign Out</button>
+        </div>
+      </div>
+
+      <div class="admin-content">
+
+        <!-- OVERVIEW PAGE -->
+        <div class="admin-page active" id="page-overview">
+          <div class="stats-grid" id="stats-grid">
+            <div class="admin-card stat-card"><div class="stat-card-title">Total Revenue <span class="stat-card-icon">💰</span></div><div class="stat-card-val" id="stat-revenue">—</div><div class="stat-card-change up" id="stat-revenue-note"></div></div>
+            <div class="admin-card stat-card"><div class="stat-card-title">Total Orders <span class="stat-card-icon">🛒</span></div><div class="stat-card-val" id="stat-orders">—</div><div class="stat-card-change" id="stat-orders-note"></div></div>
+            <div class="admin-card stat-card"><div class="stat-card-title">Products <span class="stat-card-icon">📦</span></div><div class="stat-card-val" id="stat-prods">—</div></div>
+            <div class="admin-card stat-card"><div class="stat-card-title">Customers <span class="stat-card-icon">👥</span></div><div class="stat-card-val" id="stat-customers">—</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem">
+            <div class="admin-card">
+              <div class="admin-card-header"><div class="admin-card-title">📈 Daily Revenue (last 14 days)</div></div>
+              <div class="admin-card-body"><div class="chart-bar-wrap" id="revenue-chart"></div><div id="chart-labels" style="display:flex;gap:.3rem;font-size:.62rem;color:var(--muted);padding:0 .5rem"></div></div>
+            </div>
+            <div class="admin-card">
+              <div class="admin-card-header"><div class="admin-card-title">🏆 Top Products</div></div>
+              <div class="admin-card-body"><div id="top-products-list"></div></div>
+            </div>
+          </div>
+          <div class="admin-card" style="margin-top:1.4rem">
+            <div class="admin-card-header"><div class="admin-card-title">🕐 Recent Orders</div><a href="#" class="btn btn-ghost btn-sm" data-page-link="orders">View All</a></div>
+            <div class="admin-card-body admin-table-wrap"><table class="admin-table" id="recent-orders-table"><thead><tr><th>Order No</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="recent-orders-body"></tbody></table></div>
+          </div>
+        </div>
+
+        <!-- PRODUCTS PAGE -->
+        <div class="admin-page" id="page-products">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">📦 All Products</div>
+              <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                <input type="search" id="prod-search" placeholder="Search products..." style="padding:.4rem .7rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.85rem;width:200px"/>
+                <select id="prod-cat-filter" style="padding:.4rem .6rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.82rem"><option value="">All Categories</option></select>
+                <button class="btn btn-primary btn-sm" data-page-link="add-product">+ Add Product</button>
+                <a class="btn btn-ghost btn-sm" id="export-products-btn" href="#" download>📥 Export</a>
+              </div>
+            </div>
+            <div class="admin-card-body admin-table-wrap">
+              <table class="admin-table" id="products-table">
+                <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Brand</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="products-body"></tbody>
+              </table>
+            </div>
+            <div style="padding:.7rem 1.2rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--edge)">
+              <span id="prod-count" style="font-size:.82rem;color:var(--muted)"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADD / EDIT PRODUCT PAGE -->
+        <div class="admin-page" id="page-add-product">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title" id="prod-form-title">➕ Add New Product</div>
+              <button class="btn btn-ghost btn-sm" id="reset-prod-form">Reset Form</button>
+            </div>
+            <div class="admin-card-body">
+              <form id="product-form" enctype="multipart/form-data">
+                <input type="hidden" id="edit-product-id" value=""/>
+                <div class="admin-form-grid">
+                  <div class="field" style="grid-column:1/-1"><label>Product Name *</label><input type="text" name="name" required placeholder="Full product name"/></div>
+                  <div class="field"><label>Category *</label>
+                    <select name="category" required>
+                      <option value="">Select category</option>
+                      <option>Hardware</option><option>Electrical</option><option>Plumbing</option>
+                      <option>Paints</option><option>Tools</option><option>Cement & Steel</option>
+                      <option>Safety</option><option>Fasteners</option><option>Adhesives</option><option>Other</option>
+                    </select>
+                  </div>
+                  <div class="field"><label>Brand</label><input type="text" name="brand" placeholder="Brand name"/></div>
+                  <div class="field"><label>SKU / Model No.</label><input type="text" name="sku" placeholder="SKU-001"/></div>
+                  <div class="field"><label>Selling Price (Rs.) *</label><input type="number" name="price" min="0" step="0.01" required placeholder="0"/></div>
+                  <div class="field"><label>MRP / Original Price (Rs.)</label><input type="number" name="mrp" min="0" step="0.01" placeholder="0 (leave blank if no discount)"/></div>
+                  <div class="field"><label>Stock Quantity</label><input type="number" name="stock" min="0" value="0" placeholder="Available units"/></div>
+                  <div class="field"><label>Rating (0-5)</label><input type="number" name="rating" min="0" max="5" step="0.1" placeholder="4.5"/></div>
+                  <div class="field"><label>Rating Count</label><input type="number" name="ratingCount" min="0" placeholder="Number of ratings"/></div>
+                  <div class="field"><label>Tags (comma separated)</label><input type="text" name="tags" placeholder="pipe, fitting, pvc"/></div>
+                  <div class="field" style="grid-column:1/-1"><label>Short Description</label><textarea name="shortDesc" rows="2" placeholder="Brief product description (shown on card)"></textarea></div>
+                  <div class="field" style="grid-column:1/-1"><label>Long Description / Specifications</label><textarea name="longDesc" rows="4" placeholder="Full details, specs, usage instructions..."></textarea></div>
+                </div>
+                <div style="display:flex;gap:1rem;margin-top:.5rem">
+                  <label style="display:flex;align-items:center;gap.5rem;font-weight:500;gap:.5rem;cursor:pointer"><input type="checkbox" name="featured" style="accent-color:var(--primary);width:16px;height:16px"/> Featured Product</label>
+                  <label style="display:flex;align-items:center;gap.5rem;font-weight:500;gap:.5rem;cursor:pointer"><input type="checkbox" name="bestSeller" style="accent-color:var(--primary);width:16px;height:16px"/> Best Seller</label>
+                </div>
+
+                <!-- IMAGE UPLOAD -->
+                <div style="margin-top:1.2rem">
+                  <label style="display:block;margin-bottom:.5rem;font-weight:600">Product Images</label>
+                  <div class="img-upload-box" id="img-upload-box" onclick="document.getElementById('img-file-input').click()">
+                    <input type="file" id="img-file-input" accept="image/*" multiple style="display:none"/>
+                    <div style="font-size:2rem;margin-bottom:.4rem">🖼️</div>
+                    <div style="font-weight:600;font-size:.9rem">Click to upload images</div>
+                    <div style="font-size:.78rem;color:var(--muted);margin-top:.2rem">PNG, JPG, WebP — max 2MB each</div>
+                  </div>
+                  <div id="img-preview-grid" class="img-preview-grid" style="margin-top:.7rem"></div>
+                  <div class="field" style="margin-top:.7rem"><label>Or paste Image URL</label><input type="url" name="imageUrl" placeholder="https://example.com/image.jpg"/></div>
+                </div>
+
+                <div style="display:flex;gap:.7rem;margin-top:1.2rem;flex-wrap:wrap">
+                  <button class="btn btn-primary" type="submit" id="save-product-btn">💾 Save Product</button>
+                  <button class="btn btn-ghost" type="button" id="cancel-edit-btn" style="display:none">Cancel Edit</button>
+                </div>
+                <div id="product-form-msg" style="margin-top:.6rem;font-size:.85rem;display:none"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORDERS PAGE -->
+        <div class="admin-page" id="page-orders">
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="admin-card-title">🛒 All Orders</div>
+              <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                <input type="search" id="order-search" placeholder="Search orders..." style="padding:.4rem .7rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.85rem;width:180px"/>
+                <select id="order-status-filter" style="padding:.4rem .6rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.82rem">
+                  <option value="">All Status</option><option>new</option><option>confirmed</option><option>packed</option><option>dispatched</option><option>delivered</option><option>cancelled</option>
+                </select>
+                <a class="btn btn-ghost btn-sm" id="export-orders-btn" href="/api/orders/export" target="_blank">📊 Export Excel</a>
+              </div>
+            </div>
+            <div class="admin-card-body admin-table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>Order No</th><th>Date</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="orders-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- COUPONS PAGE -->
+        <div class="admin-page" id="page-coupons">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem">
+            <div class="admin-card">
+              <div class="admin-card-header"><div class="admin-card-title">🏷️ Active Coupons</div></div>
+              <div class="admin-card-body">
+                <div id="coupons-list" class="admin-table-wrap">
+                  <table class="admin-table"><thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Min Order</th><th>Uses</th><th>Action</th></tr></thead><tbody id="coupons-body"></tbody></table>
+                </div>
+              </div>
+            </div>
+            <div class="admin-card">
+              <div class="admin-card-header"><div class="admin-card-title">➕ Create Coupon</div></div>
+              <div class="admin-card-body">
+                <form id="coupon-form">
+                  <div class="field"><label>Coupon Code *</label><input type="text" name="code" required placeholder="SAVE10" style="text-transform:uppercase"/></div>
+                  <div class="field"><label>Discount Type</label>
+                    <select name="type"><option value="percent">Percentage (%)</option><option value="flat">Flat Amount (Rs.)</option></select>
+                  </div>
+                  <div class="field"><label>Discount Value *</label><input type="number" name="value" min="1" required placeholder="10"/></div>
+                  <div class="field"><label>Min Order Amount (Rs.)</label><input type="number" name="minOrder" min="0" placeholder="0 = no minimum"/></div>
+                  <div class="field"><label>Max Uses (0 = unlimited)</label><input type="number" name="maxUses" min="0" value="0"/></div>
+                  <button class="btn btn-primary" type="submit">Create Coupon</button>
+                  <div id="coupon-form-msg" style="margin-top:.5rem;font-size:.82rem;display:none"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUSTOMERS PAGE -->
+        <div class="admin-page" id="page-customers">
+          <div class="admin-card">
+            <div class="admin-card-header"><div class="admin-card-title">👥 Registered Customers</div></div>
+            <div class="admin-card-body admin-table-wrap">
+              <table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead><tbody id="customers-body"></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEWS PAGE -->
+        <div class="admin-page" id="page-reviews">
+          <div class="admin-card">
+            <div class="admin-card-header"><div class="admin-card-title">⭐ Customer Reviews</div></div>
+            <div class="admin-card-body admin-table-wrap">
+              <table class="admin-table"><thead><tr><th>Name</th><th>Rating</th><th>Comment</th><th>Date</th><th>Action</th></tr></thead><tbody id="reviews-body"></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTES PAGE -->
+        <div class="admin-page" id="page-quotes">
+          <div class="admin-card">
+            <div class="admin-card-header"><div class="admin-card-title">💬 Quote Requests</div></div>
+            <div class="admin-card-body admin-table-wrap">
+              <table class="admin-table"><thead><tr><th>Topic</th><th>Name</th><th>Phone</th><th>Requirement</th><th>Date</th></tr></thead><tbody id="quotes-body"></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS PAGE -->
+        <div class="admin-page" id="page-settings">
+          <div class="admin-card">
+            <div class="admin-card-header"><div class="admin-card-title">⚙️ Shop Settings</div></div>
+            <div class="admin-card-body">
+              <form id="settings-form">
+                <h3 style="font-size:.95rem;font-weight:700;margin-bottom.8rem;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--edge)">Shop Information</h3>
+                <div class="admin-form-grid">
+                  <div class="field"><label>Shop Name</label><input type="text" name="shopName" placeholder="Mahamaya Enterprise"/></div>
+                  <div class="field"><label>Phone Number</label><input type="text" name="phone" placeholder="+91 9434661990"/></div>
+                  <div class="field"><label>WhatsApp Number</label><input type="text" name="whatsapp" placeholder="919475653294"/></div>
+                  <div class="field"><label>Email</label><input type="email" name="email" placeholder="info@mahamaya.com"/></div>
+                  <div class="field" style="grid-column:1/-1"><label>Address</label><textarea name="address" rows="2"></textarea></div>
+                  <div class="field" style="grid-column:1/-1"><label>Business Hours</label><input type="text" name="hours" placeholder="Morning: 7AM–1PM, Evening: 4PM–8:30PM"/></div>
+                </div>
+                <h3 style="font-size:.95rem;font-weight:700;margin:.8rem 0 .5rem;padding-bottom:.5rem;border-bottom:1px solid var(--edge)">Delivery Settings</h3>
+                <div class="admin-form-grid three">
+                  <div class="field"><label>Delivery Fee (Rs.)</label><input type="number" name="deliveryFee" min="0" placeholder="150"/></div>
+                  <div class="field"><label>Free Delivery Above (Rs.)</label><input type="number" name="freeAbove" min="0" placeholder="5000"/></div>
+                </div>
+                <h3 style="font-size:.95rem;font-weight:700;margin:.8rem 0 .5rem;padding-bottom:.5rem;border-bottom:1px solid var(--edge)">Announcement Banner</h3>
+                <div class="field"><label>Announcement text (shown in topbar)</label><input type="text" name="announcement" placeholder="Daily rates available on WhatsApp!"/></div>
+                <h3 style="font-size:.95rem;font-weight:700;margin:.8rem 0 .5rem;padding-bottom:.5rem;border-bottom:1px solid var(--edge)">FAQs</h3>
+                <div id="faqs-list"></div>
+                <button type="button" class="btn btn-ghost btn-sm" id="add-faq-btn" style="margin-bottom:.8rem">+ Add FAQ</button>
+                <div style="display:flex;gap:.7rem;margin-top:.4rem">
+                  <button class="btn btn-primary" type="submit">💾 Save Settings</button>
+                </div>
+                <div id="settings-msg" style="margin-top:.5rem;font-size:.85rem;display:none"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end admin-content -->
+    </div><!-- end admin-main -->
+  </div><!-- end admin-dashboard -->
+
+  <!-- ORDER DETAIL MODAL -->
+  <div class="modal" id="order-modal">
+    <div class="modal-card" style="max-width:700px">
+      <div class="modal-header"><h3>Order Details</h3><button class="btn btn-ghost btn-sm btn-icon" onclick="document.getElementById('order-modal').classList.remove('show');document.getElementById('modal-overlay').classList.remove('show')">✕</button></div>
+      <div class="modal-body" id="order-modal-body"></div>
+    </div>
+  </div>
+  <div class="overlay" id="modal-overlay" onclick="document.getElementById('order-modal').classList.remove('show');this.classList.remove('show')"></div>
+
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
   <script src="admin.js" defer></script>
 </body>
 </html>

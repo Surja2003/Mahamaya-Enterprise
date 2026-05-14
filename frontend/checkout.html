@@ -1,151 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout | Mahamaya Enterprise</title>
-  <meta name="theme-color" content="#1f3c3a" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="assets/icon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#e05c1a" />
+  <link rel="icon" href="favicon.ico" /><link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="page-checkout" data-page="checkout">
   <div class="topbar">
-    <div class="topbar-left">
-      <span class="topbar-pill">Verified stock</span>
-      <span id="topbar-location">Eraur, Bhatar</span>
-      <span id="topbar-announcement" class="topbar-announcement hidden"></span>
-    </div>
-    <div class="topbar-right">
-      <a id="topbar-phone" href="tel:943466190">Call: 943466190</a>
-      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
+    <div class="topbar-left"><span class="topbar-pill">✓ Secure Checkout</span><span id="topbar-announcement" class="topbar-announcement"></span></div>
+    <div class="topbar-right"><a id="topbar-phone" href="tel:+919434661990">📞 +91 9434661990</a></div>
   </div>
-
   <header class="site-header">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">ME</div>
-      <div>
-        <div class="brand-title">Mahamaya Enterprise</div>
-        <div class="brand-tagline">Hardware, fixtures, and site supplies</div>
+    <div class="header-inner">
+      <a class="brand" href="index.html"><div class="brand-mark">ME</div><div><div class="brand-title">Mahamaya Enterprise</div><div class="brand-tagline">Secure Checkout</div></div></a>
+      <div class="header-actions" style="margin-left:auto">
+        <button class="dark-toggle" id="dark-toggle" type="button">🌙</button>
+        <button class="hdr-btn" id="cart-btn" type="button"><span class="ico">🛒</span><span class="hdr-badge" id="cart-count">0</span></button>
       </div>
-    </a>
-    <div class="header-actions">
-      <a class="header-link" href="track.html">Track order</a>
-      <a class="header-link" href="account.html">Account</a>
-      <button class="header-icon" id="wishlist-btn" type="button">Wishlist <span id="wishlist-count">0</span></button>
-      <button class="header-icon" id="cart-btn" type="button">Cart <span id="cart-count">0</span></button>
     </div>
   </header>
+  <nav class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span><a href="index.html#shop">Shop</a><span>›</span><span>Checkout</span>
+  </nav>
 
-  <main class="checkout-layout">
-    <section class="checkout-form">
-      <h1>Checkout</h1>
-      <p class="muted">Confirm delivery details and place your order. You will receive a call for final confirmation.</p>
-      <form id="order-form">
-        <div class="field-grid">
-          <label>
-            Full name
-            <input type="text" name="name" required />
-          </label>
-          <label>
-            Phone number
-            <input type="tel" name="phone" required />
-          </label>
-          <label>
-            Email (optional)
-            <input type="email" name="email" />
-          </label>
-          <label>
-            City
-            <input type="text" name="city" required />
-          </label>
+  <main id="checkout-main">
+    <div class="checkout-layout">
+      <div style="display:flex;flex-direction:column;gap:1.2rem">
+        <!-- DELIVERY DETAILS -->
+        <div class="form-card">
+          <div class="form-card-title"><span class="step-no">1</span> Delivery Details</div>
+          <form id="order-form" novalidate>
+            <div class="field-row">
+              <div class="field"><label for="f-name">Full Name *</label><input type="text" id="f-name" name="name" required autocomplete="name" placeholder="Enter your full name" /></div>
+              <div class="field"><label for="f-phone">Phone Number *</label><input type="tel" id="f-phone" name="phone" required autocomplete="tel" placeholder="10-digit mobile number" /></div>
+            </div>
+            <div class="field"><label for="f-email">Email (optional)</label><input type="email" id="f-email" name="email" autocomplete="email" placeholder="For order confirmation" /></div>
+            <div class="field"><label for="f-address">Delivery Address *</label><textarea id="f-address" name="address" rows="2" required placeholder="House/Flat no, Street, Area"></textarea></div>
+            <div class="field-row">
+              <div class="field"><label for="f-city">City/Village *</label><input type="text" id="f-city" name="city" required autocomplete="address-level2" placeholder="City or village name" /></div>
+              <div class="field"><label for="f-state">State</label><input type="text" id="f-state" name="state" autocomplete="address-level1" placeholder="West Bengal" /></div>
+              <div class="field"><label for="f-pincode">Pincode *</label><input type="text" id="f-pincode" name="pincode" required autocomplete="postal-code" placeholder="6-digit pincode" /></div>
+            </div>
+            <div class="field"><label for="f-notes">Order Notes (optional)</label><textarea id="f-notes" name="notes" rows="2" placeholder="Delivery instructions, special requirements..."></textarea></div>
+          </form>
         </div>
-        <label>
-          Delivery address
-          <textarea name="address" rows="3" required></textarea>
-        </label>
-        <div class="field-grid">
-          <label>
-            State
-            <input type="text" name="state" />
-          </label>
-          <label>
-            Pincode
-            <input type="text" name="pincode" required />
-          </label>
-        </div>
-        <label>
-          Notes for dispatch (optional)
-          <textarea name="notes" rows="2"></textarea>
-        </label>
-        <button class="btn btn-accent" type="submit">Place order</button>
-        <div id="order-message" class="form-message"></div>
-      </form>
-    </section>
 
-    <section class="checkout-summary">
-      <h2>Order summary</h2>
-      <div id="checkout-items"></div>
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <strong id="checkout-subtotal">0</strong>
+        <!-- PAYMENT -->
+        <div class="form-card">
+          <div class="form-card-title"><span class="step-no">2</span> Payment Method</div>
+          <div class="payment-options">
+            <label class="payment-opt"><input type="radio" name="payment" value="cod" checked /><span class="payment-opt-ico">💵</span><div><div class="payment-opt-name">Cash on Delivery</div><div class="payment-opt-desc">Pay when you receive the order</div></div></label>
+            <label class="payment-opt"><input type="radio" name="payment" value="upi" /><span class="payment-opt-ico">📱</span><div><div class="payment-opt-name">UPI / PhonePe / GPay</div><div class="payment-opt-desc">Pay via UPI after order confirmation</div></div></label>
+            <label class="payment-opt"><input type="radio" name="payment" value="bank" /><span class="payment-opt-ico">🏦</span><div><div class="payment-opt-name">Bank Transfer / NEFT</div><div class="payment-opt-desc">Account details shared on WhatsApp</div></div></label>
+          </div>
+        </div>
+
+        <!-- COUPON -->
+        <div class="form-card">
+          <div class="form-card-title"><span class="step-no">3</span> Coupon / Promo Code</div>
+          <div class="coupon-wrap">
+            <input type="text" id="coupon-input" placeholder="Enter promo code" style="text-transform:uppercase" />
+            <button class="btn btn-outline" id="apply-coupon" type="button">Apply</button>
+          </div>
+          <div id="coupon-msg" style="margin-top:.5rem;font-size:.82rem;display:none"></div>
+        </div>
+
+        <button class="btn btn-primary btn-lg btn-full" id="place-order-btn" type="submit" form="order-form">🛒 Place Order</button>
+        <div id="order-message" class="form-message" style="display:none"></div>
       </div>
-      <div class="summary-row">
-        <span>Delivery</span>
-        <strong id="checkout-delivery">0</strong>
+
+      <!-- ORDER SUMMARY -->
+      <div class="order-summary">
+        <div class="summary-title">🧾 Order Summary</div>
+        <div id="checkout-items"></div>
+        <div style="margin-top:.8rem">
+          <div class="summary-line"><span>Subtotal</span><span id="checkout-subtotal">Rs. 0</span></div>
+          <div class="summary-line"><span>Delivery</span><span id="checkout-delivery">Rs. 0</span></div>
+          <div class="summary-line discount" id="checkout-discount-row" style="display:none"><span>Discount</span><span id="checkout-discount">-Rs. 0</span></div>
+          <div class="summary-line total"><span>Total</span><span id="checkout-total">Rs. 0</span></div>
+        </div>
+        <div id="checkout-delivery-note" class="note" style="font-size:.78rem;color:var(--success)"></div>
+        <div class="note" style="margin-top:1rem;padding:.8rem;background:var(--accent-soft);border-radius:var(--radius-sm);font-size:.82rem">
+          📞 You will receive a call for order confirmation within 1 hour. Cash on delivery and GST invoice available.
+        </div>
       </div>
-      <div id="checkout-delivery-note" class="note"></div>
-      <div class="summary-row total">
-        <span>Total</span>
-        <strong id="checkout-total">0</strong>
-      </div>
-      <div class="note">Cash on delivery and invoice options available.</div>
-    </section>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <div>
-      <h3>Mahamaya Enterprise</h3>
-      <p>Eraur, Bhatar - Purba Bardhaman</p>
+  <!-- Order Success Modal -->
+  <div class="modal" id="order-success-modal">
+    <div class="modal-card" style="max-width:480px;text-align:center">
+      <div class="modal-body" style="padding:2.5rem">
+        <div style="font-size:4rem;margin-bottom:1rem">🎉</div>
+        <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:.5rem">Order Placed Successfully!</h2>
+        <p id="success-order-no" style="font-size:1rem;color:var(--primary);font-weight:700;margin-bottom:.5rem"></p>
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:1.5rem">We will call you shortly to confirm your order. Track anytime with your order number.</p>
+        <div style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap">
+          <a href="track.html" class="btn btn-primary">Track Order</a>
+          <a href="index.html" class="btn btn-ghost">Continue Shopping</a>
+          <a id="success-wa-btn" href="#" target="_blank" rel="noopener" class="btn btn-outline" style="background:#25D366;color:#fff;border-color:#25D366">Send on WhatsApp</a>
+        </div>
+      </div>
     </div>
-    <div>
-      <p>Need a custom quote?</p>
-      <a class="btn btn-dark" href="index.html#shop">Continue shopping</a>
-    </div>
-    <div>
-      <p>Track order</p>
-      <a href="track.html">Check your order status</a>
-    </div>
-  </footer>
+  </div>
 
   <div class="drawer" id="cart-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Your cart</h3>
-      <button class="icon-btn" id="close-cart" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>🛒 Your Cart</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-cart" type="button">✕</button></div>
     <div id="cart-items" class="drawer-body"></div>
     <div class="drawer-footer">
-      <div class="totals">
-        <span>Subtotal</span>
-        <strong id="cart-subtotal">0</strong>
-      </div>
-      <a class="btn btn-accent" href="checkout.html">Checkout</a>
+      <div class="totals-row total"><span>Total</span><strong id="cart-total">Rs. 0</strong></div>
+      <a class="btn btn-primary btn-full" href="checkout.html">Checkout →</a>
     </div>
   </div>
-
   <div class="drawer" id="wishlist-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Wishlist</h3>
-      <button class="icon-btn" id="close-wishlist" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>♥ Wishlist</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-wishlist" type="button">✕</button></div>
     <div id="wishlist-items" class="drawer-body"></div>
   </div>
-
   <div class="overlay" id="overlay"></div>
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
   <script src="app.js" defer></script>
 </body>
 </html>

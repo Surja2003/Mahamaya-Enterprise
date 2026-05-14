@@ -1,16 +1,14 @@
 {
-  "name": "Mahamaya Enterprise Hardware Store",
+  "name": "Mahamaya Enterprise",
   "short_name": "Mahamaya",
-  "start_url": "/index.html",
+  "description": "Hardware, Electrical, Plumbing & Building Supplies — Purba Bardhaman",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f0e7",
-  "theme_color": "#1f3c3a",
+  "background_color": "#ffffff",
+  "theme_color": "#e05c1a",
+  "orientation": "portrait-primary",
   "icons": [
-    {
-      "src": "/assets/icon.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }

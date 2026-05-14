@@ -1,107 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Product | Mahamaya Enterprise</title>
-  <meta name="theme-color" content="#1f3c3a" />
+  <meta name="theme-color" content="#e05c1a" />
+  <link rel="icon" href="favicon.ico" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="assets/icon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="page-product" data-page="product">
   <div class="topbar">
     <div class="topbar-left">
-      <span class="topbar-pill">Verified stock</span>
-      <span id="topbar-location">Eraur, Bhatar</span>
-      <span id="topbar-announcement" class="topbar-announcement hidden"></span>
+      <span class="topbar-pill">✓ Verified Stock</span>
+      <span id="topbar-location">📍 Eraur, Bhatar</span>
+      <span id="topbar-announcement" class="topbar-announcement"></span>
     </div>
     <div class="topbar-right">
-      <a id="topbar-phone" href="tel:943466190">Call: 943466190</a>
-      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp</a>
+      <a id="topbar-phone" href="tel:+919434661990">📞 +91 9434661990</a>
+      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">💬 WhatsApp</a>
     </div>
   </div>
 
   <header class="site-header">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">ME</div>
-      <div>
-        <div class="brand-title">Mahamaya Enterprise</div>
-        <div class="brand-tagline">Hardware, fixtures, and site supplies</div>
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">ME</div>
+        <div><div class="brand-title">Mahamaya Enterprise</div><div class="brand-tagline">Hardware · Electrical · Plumbing · Paints</div></div>
+      </a>
+      <div class="search-wrap" style="flex:1;max-width:560px">
+        <input id="search-input" type="search" placeholder="Search products..." autocomplete="off" />
+        <button class="btn-search" id="search-btn" type="button">🔍 Search</button>
       </div>
-    </a>
-    <div class="search-wrap">
-      <input id="search-input" type="search" placeholder="Search tools, pipes, switches, paints..." />
-      <button id="search-btn" class="btn btn-accent" type="button">Search</button>
-    </div>
-    <div class="header-actions">
-      <a class="header-link" href="track.html">Track order</a>
-      <a class="header-link" href="account.html">Account</a>
-      <button class="header-icon" id="wishlist-btn" type="button">Wishlist <span id="wishlist-count">0</span></button>
-      <button class="header-icon" id="cart-btn" type="button">Cart <span id="cart-count">0</span></button>
+      <div class="header-actions">
+        <button class="dark-toggle" id="dark-toggle" type="button">🌙</button>
+        <a href="account.html" class="hdr-btn"><span class="ico">👤</span><span class="hdr-btn-label">Account</span></a>
+        <button class="hdr-btn" id="wishlist-btn" type="button"><span class="ico">♥</span><span class="hdr-btn-label">Wishlist</span><span class="hdr-badge" id="wishlist-count">0</span></button>
+        <button class="hdr-btn" id="cart-btn" type="button"><span class="ico">🛒</span><span class="hdr-btn-label">Cart</span><span class="hdr-badge" id="cart-count">0</span></button>
+      </div>
     </div>
   </header>
 
+  <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <a href="index.html#shop" id="bc-category">Products</a>
+    <span>›</span>
+    <span id="bc-name">Product</span>
+  </nav>
+
   <main>
-    <section class="product-detail" id="product-detail"></section>
-    <section class="trust-strip">
-      <div>
-        <h4>Bulk order support</h4>
-        <p>Talk to us for contractor-level pricing.</p>
+    <div class="product-detail-layout" id="product-detail-layout">
+      <div style="text-align:center;padding:4rem;color:var(--muted)">Loading product...</div>
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    <div class="section" id="related-section" style="display:none">
+      <div class="section-hd"><h2 class="section-title">Related <span>Products</span></h2></div>
+      <div id="related-grid" class="product-grid"></div>
+    </div>
+
+    <div class="trust-strip" style="margin-top:2rem">
+      <div class="trust-strip-inner">
+        <div class="trust-item"><span class="trust-ico">🚚</span><div><strong>Fast Dispatch</strong><span> · Same day coordination</span></div></div>
+        <div class="trust-item"><span class="trust-ico">📄</span><div><strong>GST Invoice</strong><span> · For firms & contractors</span></div></div>
+        <div class="trust-item"><span class="trust-ico">✅</span><div><strong>Genuine Product</strong><span> · Verified stock</span></div></div>
+        <div class="trust-item"><span class="trust-ico">💬</span><div><strong>Expert Advice</strong><span> · Call or WhatsApp</span></div></div>
       </div>
-      <div>
-        <h4>Fast delivery</h4>
-        <p>Dispatch timelines shared on order.</p>
-      </div>
-      <div>
-        <h4>Genuine brands</h4>
-        <p>Stock sourced from verified distributors.</p>
-      </div>
-    </section>
+    </div>
   </main>
 
   <footer class="site-footer">
-    <div>
-      <h3>Mahamaya Enterprise</h3>
-      <p>Eraur, Bhatar - Purba Bardhaman</p>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-mark">ME</div>
+        <div class="footer-brand-name">Mahamaya Enterprise</div>
+        <div class="footer-contact">
+          <a href="tel:+919434661990">📞 +91 9434661990</a>
+          <a href="https://wa.me/919475653294" target="_blank" rel="noopener">💬 WhatsApp</a>
+          <a href="#">📍 Eraur, Bhatar, Purba Bardhaman – 713121</a>
+        </div>
+      </div>
+      <div><div class="footer-col-title">Quick Links</div><div class="footer-links"><a href="index.html">Home</a><a href="index.html#shop">All Products</a><a href="checkout.html">Checkout</a><a href="track.html">Track Order</a></div></div>
     </div>
-    <div>
-      <p>Need a custom quote?</p>
-      <a class="btn btn-dark" href="checkout.html">Request bulk pricing</a>
-    </div>
-    <div>
-      <p>Track order</p>
-      <a href="track.html">Check your order status</a>
-    </div>
+    <div class="footer-bottom"><span>© 2025 Mahamaya Enterprise</span></div>
   </footer>
 
   <div class="drawer" id="cart-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Your cart</h3>
-      <button class="icon-btn" id="close-cart" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>🛒 Your Cart</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-cart" type="button">✕</button></div>
     <div id="cart-items" class="drawer-body"></div>
     <div class="drawer-footer">
-      <div class="totals">
-        <span>Subtotal</span>
-        <strong id="cart-subtotal">0</strong>
-      </div>
-      <a class="btn btn-accent" href="checkout.html">Checkout</a>
+      <div class="totals-row"><span>Subtotal</span><strong id="cart-subtotal">Rs. 0</strong></div>
+      <div class="totals-row total"><span>Total</span><strong id="cart-total">Rs. 0</strong></div>
+      <a class="btn btn-primary btn-full" href="checkout.html">Checkout →</a>
     </div>
   </div>
-
   <div class="drawer" id="wishlist-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Wishlist</h3>
-      <button class="icon-btn" id="close-wishlist" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>♥ Wishlist</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-wishlist" type="button">✕</button></div>
     <div id="wishlist-items" class="drawer-body"></div>
   </div>
-
   <div class="overlay" id="overlay"></div>
+  <div class="float-actions">
+    <a class="float-btn float-wa" href="https://wa.me/919475653294" target="_blank" rel="noopener">💬</a>
+    <button class="float-btn float-top" id="back-to-top" type="button">↑</button>
+  </div>
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
   <script src="app.js" defer></script>
 </body>
 </html>

@@ -1,107 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Track Order | Mahamaya Enterprise</title>
-  <meta name="theme-color" content="#1f3c3a" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="assets/icon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#e05c1a"/>
+  <link rel="icon" href="favicon.ico"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body class="page-track" data-page="track">
   <div class="topbar">
-    <div class="topbar-left">
-      <span class="topbar-pill">Verified stock</span>
-      <span id="topbar-location">Eraur, Bhatar</span>
-      <span id="topbar-announcement" class="topbar-announcement hidden"></span>
-    </div>
-    <div class="topbar-right">
-      <a id="topbar-phone" href="tel:943466190">Call: 943466190</a>
-      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
+    <div class="topbar-left"><span class="topbar-pill">✓ Order Tracking</span><span id="topbar-announcement" class="topbar-announcement"></span></div>
+    <div class="topbar-right"><a id="topbar-phone" href="tel:+919434661990">📞 +91 9434661990</a><a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">💬 WhatsApp</a></div>
   </div>
-
   <header class="site-header">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">ME</div>
-      <div>
-        <div class="brand-title">Mahamaya Enterprise</div>
-        <div class="brand-tagline">Hardware, fixtures, and site supplies</div>
+    <div class="header-inner">
+      <a class="brand" href="index.html"><div class="brand-mark">ME</div><div><div class="brand-title">Mahamaya Enterprise</div><div class="brand-tagline">Order Tracking</div></div></a>
+      <div class="header-actions" style="margin-left:auto">
+        <button class="dark-toggle" id="dark-toggle" type="button">🌙</button>
+        <a href="account.html" class="hdr-btn"><span class="ico">👤</span><span class="hdr-btn-label">Account</span></a>
+        <button class="hdr-btn" id="cart-btn" type="button"><span class="ico">🛒</span><span class="hdr-badge" id="cart-count">0</span></button>
       </div>
-    </a>
-    <div class="header-actions">
-      <a class="header-link" href="account.html">Account</a>
-      <button class="header-icon" id="wishlist-btn" type="button">Wishlist <span id="wishlist-count">0</span></button>
-      <button class="header-icon" id="cart-btn" type="button">Cart <span id="cart-count">0</span></button>
     </div>
   </header>
+  <nav class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>Track Order</span></nav>
 
-  <main class="track-layout">
-    <section class="track-card">
-      <h1>Track your order</h1>
-      <p class="muted">Enter your order number and phone to check current status.</p>
-      <form id="track-form" class="field-grid">
-        <label>
-          Order number
-          <input type="text" name="orderNo" placeholder="ME-2026-0001" required />
-        </label>
-        <label>
-          Phone number
-          <input type="tel" name="phone" required />
-        </label>
-        <button class="btn btn-accent" type="submit">Check status</button>
-      </form>
-      <div id="track-result" class="note"></div>
-    </section>
-    <section class="track-help">
-      <h2>Need help?</h2>
-      <p class="muted">If you cannot find your order, call or WhatsApp our support team.</p>
-      <div class="form-actions">
-        <a class="btn btn-dark" href="tel:943466190">Call support</a>
-        <a class="btn btn-ghost" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp support</a>
-      </div>
-    </section>
+  <main>
+    <div class="track-layout" style="padding:2rem;max-width:1000px;margin:0 auto">
+      <section>
+        <div class="form-card">
+          <h1 style="font-size:1.3rem;font-weight:800;margin-bottom:.4rem">🚚 Track Your Order</h1>
+          <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.2rem">Enter your order number and registered phone number to check the status.</p>
+          <form id="track-form" style="display:flex;flex-direction:column;gap:.8rem">
+            <div class="field"><label for="t-orderNo">Order Number</label><input type="text" id="t-orderNo" name="orderNo" placeholder="e.g. ME-2025-0001" required style="text-transform:uppercase"/></div>
+            <div class="field"><label for="t-phone">Phone Number</label><input type="tel" id="t-phone" name="phone" placeholder="10-digit mobile number" required/></div>
+            <button class="btn btn-primary" type="submit">🔍 Check Status</button>
+          </form>
+        </div>
+        <div id="track-result" style="margin-top:1.2rem"></div>
+      </section>
+
+      <section>
+        <div class="form-card">
+          <h2 style="font-size:1rem;font-weight:700;margin-bottom:1rem">Need Help?</h2>
+          <p style="font-size:.88rem;color:var(--muted);margin-bottom:1rem">Can't find your order? Our team is ready to assist you.</p>
+          <div style="display:flex;flex-direction:column;gap:.6rem">
+            <a href="tel:+919434661990" class="btn btn-primary"><span>📞</span> Call +91 9434661990</a>
+            <a href="https://wa.me/919475653294" target="_blank" rel="noopener" class="btn btn-lg" style="background:#25D366;color:#fff;border-color:#25D366"><span>💬</span> WhatsApp Support</a>
+          </div>
+          <div style="margin-top:1.5rem;padding:1rem;background:var(--surface);border-radius:var(--radius)">
+            <div style="font-size:.82rem;font-weight:700;margin-bottom:.5rem">📋 Order Status Guide</div>
+            <div style="font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:.3rem">
+              <div><span class="status-pill new">new</span> — Order received, awaiting confirmation</div>
+              <div><span class="status-pill confirmed">confirmed</span> — Confirmed, being prepared</div>
+              <div><span class="status-pill packed">packed</span> — Packed and ready for dispatch</div>
+              <div><span class="status-pill dispatched">dispatched</span> — Out for delivery</div>
+              <div><span class="status-pill delivered">delivered</span> — Successfully delivered</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <div>
-      <h3>Mahamaya Enterprise</h3>
-      <p>Eraur, Bhatar - Purba Bardhaman</p>
-    </div>
-    <div>
-      <p>Need a custom quote?</p>
-      <a class="btn btn-dark" href="checkout.html">Request bulk pricing</a>
-    </div>
+  <footer class="site-footer" style="margin-top:0">
+    <div class="footer-bottom" style="max-width:100%"><span>© 2025 Mahamaya Enterprise</span><a href="index.html" class="btn btn-ghost btn-sm">← Back to Shop</a></div>
   </footer>
 
   <div class="drawer" id="cart-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Your cart</h3>
-      <button class="icon-btn" id="close-cart" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>🛒 Cart</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-cart" type="button">✕</button></div>
     <div id="cart-items" class="drawer-body"></div>
-    <div class="drawer-footer">
-      <div class="totals">
-        <span>Subtotal</span>
-        <strong id="cart-subtotal">0</strong>
-      </div>
-      <a class="btn btn-accent" href="checkout.html">Checkout</a>
-    </div>
+    <div class="drawer-footer"><div class="totals-row total"><span>Total</span><strong id="cart-total">Rs. 0</strong></div><a class="btn btn-primary btn-full" href="checkout.html">Checkout →</a></div>
   </div>
-
   <div class="drawer" id="wishlist-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Wishlist</h3>
-      <button class="icon-btn" id="close-wishlist" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>♥ Wishlist</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-wishlist" type="button">✕</button></div>
     <div id="wishlist-items" class="drawer-body"></div>
   </div>
-
   <div class="overlay" id="overlay"></div>
+  <div class="float-actions">
+    <a class="float-btn float-wa" href="https://wa.me/919475653294" target="_blank" rel="noopener">💬</a>
+    <button class="float-btn float-top" id="back-to-top" type="button">↑</button>
+  </div>
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
   <script src="app.js" defer></script>
 </body>
 </html>

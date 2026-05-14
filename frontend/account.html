@@ -1,126 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Account | Mahamaya Enterprise</title>
-  <meta name="theme-color" content="#1f3c3a" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="assets/icon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Account | Mahamaya Enterprise</title>
+  <meta name="theme-color" content="#e05c1a"/>
+  <link rel="icon" href="favicon.ico"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body class="page-account" data-page="account">
   <div class="topbar">
-    <div class="topbar-left">
-      <span class="topbar-pill">Verified stock</span>
-      <span id="topbar-location">Eraur, Bhatar</span>
-      <span id="topbar-announcement" class="topbar-announcement hidden"></span>
-    </div>
-    <div class="topbar-right">
-      <a id="topbar-phone" href="tel:943466190">Call: 943466190</a>
-      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
+    <div class="topbar-left"><span class="topbar-pill">✓ Verified Stock</span><span id="topbar-announcement" class="topbar-announcement"></span></div>
+    <div class="topbar-right"><a id="topbar-phone" href="tel:+919434661990">📞 +91 9434661990</a><a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">💬 WhatsApp</a></div>
   </div>
-
   <header class="site-header">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">ME</div>
-      <div>
-        <div class="brand-title">Mahamaya Enterprise</div>
-        <div class="brand-tagline">Hardware, fixtures, and site supplies</div>
+    <div class="header-inner">
+      <a class="brand" href="index.html"><div class="brand-mark">ME</div><div><div class="brand-title">Mahamaya Enterprise</div><div class="brand-tagline">Hardware · Electrical · Plumbing · Paints</div></div></a>
+      <div class="header-actions" style="margin-left:auto">
+        <button class="dark-toggle" id="dark-toggle" type="button">🌙</button>
+        <a href="index.html#shop" class="btn btn-ghost btn-sm">← Shop</a>
+        <button class="hdr-btn" id="wishlist-btn" type="button"><span class="ico">♥</span><span class="hdr-badge" id="wishlist-count">0</span></button>
+        <button class="hdr-btn" id="cart-btn" type="button"><span class="ico">🛒</span><span class="hdr-badge" id="cart-count">0</span></button>
       </div>
-    </a>
-    <div class="header-actions">
-      <a class="header-link" href="track.html">Track order</a>
-      <a class="header-link" href="index.html">Shop</a>
-      <button class="header-icon" id="wishlist-btn" type="button">Wishlist <span id="wishlist-count">0</span></button>
-      <button class="header-icon" id="cart-btn" type="button">Cart <span id="cart-count">0</span></button>
     </div>
   </header>
+  <nav class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>My Account</span></nav>
 
-  <main class="account-layout">
-    <section class="auth-card">
-      <h1>Sign in</h1>
-      <form id="login-form">
-        <label>
-          Email
-          <input type="email" name="email" required />
-        </label>
-        <label>
-          Password
-          <input type="password" name="password" required />
-        </label>
-        <button class="btn btn-accent" type="submit">Sign in</button>
-        <div id="login-message" class="form-message"></div>
-      </form>
-    </section>
-    <section class="auth-card">
-      <h1>Create account</h1>
-      <form id="signup-form">
-        <label>
-          Full name
-          <input type="text" name="name" required />
-        </label>
-        <label>
-          Email
-          <input type="email" name="email" required />
-        </label>
-        <label>
-          Phone (optional)
-          <input type="tel" name="phone" />
-        </label>
-        <label>
-          Password
-          <input type="password" name="password" required />
-        </label>
-        <button class="btn btn-dark" type="submit">Create account</button>
-        <div id="signup-message" class="form-message"></div>
-      </form>
-    </section>
+  <main>
+    <div class="account-layout">
+      <!-- SIDEBAR NAV -->
+      <nav class="account-nav" aria-label="Account navigation">
+        <div class="account-nav-link active" data-tab="profile"><span class="nav-ico">👤</span> Profile</div>
+        <div class="account-nav-link" data-tab="orders"><span class="nav-ico">📦</span> My Orders</div>
+        <div class="account-nav-link" data-tab="wishlist-tab"><span class="nav-ico">♥</span> Wishlist</div>
+        <div class="account-nav-link" data-tab="security"><span class="nav-ico">🔒</span> Security</div>
+        <div style="border-top:1px solid var(--edge);margin:.5rem 0"></div>
+        <div class="account-nav-link" id="logout-btn" style="color:var(--danger)"><span class="nav-ico">↩</span> Sign Out</div>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <div class="account-panel">
+
+        <!-- LOGGED OUT -->
+        <div id="logged-out-view">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+            <!-- LOGIN -->
+            <div>
+              <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem">Sign In</h2>
+              <form id="login-form">
+                <div class="field"><label>Email Address</label><input type="email" name="email" required autocomplete="email" placeholder="you@example.com"/></div>
+                <div class="field"><label>Password</label><input type="password" name="password" required autocomplete="current-password" placeholder="Your password"/></div>
+                <button class="btn btn-primary btn-full" type="submit" style="margin-top:.4rem">Sign In</button>
+              </form>
+            </div>
+            <!-- SIGNUP -->
+            <div>
+              <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem">Create Account</h2>
+              <form id="signup-form">
+                <div class="field"><label>Full Name</label><input type="text" name="name" required autocomplete="name" placeholder="Your full name"/></div>
+                <div class="field"><label>Email Address</label><input type="email" name="email" required autocomplete="email" placeholder="you@example.com"/></div>
+                <div class="field"><label>Phone Number</label><input type="tel" name="phone" autocomplete="tel" placeholder="10-digit mobile number"/></div>
+                <div class="field"><label>Password</label><input type="password" name="password" required autocomplete="new-password" placeholder="Min. 6 characters"/></div>
+                <div class="field"><label>Confirm Password</label><input type="password" name="confirmPassword" required autocomplete="new-password" placeholder="Repeat password"/></div>
+                <button class="btn btn-accent btn-full" type="submit" style="margin-top:.4rem">Create Account</button>
+              </form>
+            </div>
+          </div>
+          <div style="margin-top:1.5rem;padding:1rem;background:var(--accent-soft);border-radius:var(--radius);font-size:.85rem">
+            💡 <strong>Tip:</strong> Create an account to track orders and get faster checkout. Or <a href="track.html" style="color:var(--primary)">track your order</a> without an account.
+          </div>
+        </div>
+
+        <!-- LOGGED IN -->
+        <div id="logged-in-view" style="display:none">
+          <!-- PROFILE TAB -->
+          <div class="account-tab active" id="tab-profile">
+            <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1.2rem">My Profile</h2>
+            <div style="display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;margin-bottom:1.5rem">
+              <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.8rem;font-weight:800" id="acc-avatar">👤</div>
+              <div>
+                <div style="font-size:1.3rem;font-weight:800" id="acc-name">—</div>
+                <div style="color:var(--muted);font-size:.88rem" id="acc-email">—</div>
+                <div style="color:var(--muted);font-size:.88rem" id="acc-phone">—</div>
+              </div>
+            </div>
+            <div style="padding:1rem;background:var(--accent-soft);border-radius:var(--radius);font-size:.85rem">
+              📞 Need help? Call <a href="tel:+919434661990" style="color:var(--primary)">+91 9434661990</a> or <a href="https://wa.me/919475653294" target="_blank" rel="noopener" style="color:#25D366">WhatsApp us</a>.
+            </div>
+          </div>
+
+          <!-- ORDERS TAB -->
+          <div class="account-tab" id="tab-orders">
+            <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1.2rem">My Orders</h2>
+            <div id="my-orders-list"><div class="empty-state"><div class="empty-ico">📦</div><p>No orders found. <a href="index.html#shop" style="color:var(--primary)">Start shopping</a></p></div></div>
+          </div>
+
+          <!-- WISHLIST TAB -->
+          <div class="account-tab" id="tab-wishlist-tab">
+            <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1.2rem">My Wishlist</h2>
+            <div id="acc-wishlist-grid" class="product-grid"></div>
+          </div>
+
+          <!-- SECURITY TAB -->
+          <div class="account-tab" id="tab-security">
+            <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1.2rem">Security</h2>
+            <div style="padding:1rem;background:var(--surface);border-radius:var(--radius);font-size:.88rem;color:var(--muted)">
+              Password changes and 2FA settings — contact support via WhatsApp to update account credentials.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <footer class="site-footer">
-    <div>
-      <h3>Mahamaya Enterprise</h3>
-      <p>Eraur, Bhatar - Purba Bardhaman</p>
-    </div>
-    <div>
-      <p>Need a custom quote?</p>
-      <a class="btn btn-dark" href="checkout.html">Request bulk pricing</a>
-    </div>
-    <div>
-      <p>Track order</p>
-      <a href="track.html">Check your order status</a>
-    </div>
-  </footer>
-
   <div class="drawer" id="cart-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Your cart</h3>
-      <button class="icon-btn" id="close-cart" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>🛒 Cart</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-cart" type="button">✕</button></div>
     <div id="cart-items" class="drawer-body"></div>
-    <div class="drawer-footer">
-      <div class="totals">
-        <span>Subtotal</span>
-        <strong id="cart-subtotal">0</strong>
-      </div>
-      <a class="btn btn-accent" href="checkout.html">Checkout</a>
-    </div>
+    <div class="drawer-footer"><div class="totals-row total"><span>Total</span><strong id="cart-total">Rs. 0</strong></div><a class="btn btn-primary btn-full" href="checkout.html">Checkout →</a></div>
   </div>
-
   <div class="drawer" id="wishlist-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <h3>Wishlist</h3>
-      <button class="icon-btn" id="close-wishlist" type="button">Close</button>
-    </div>
+    <div class="drawer-header"><h3>♥ Wishlist</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-wishlist" type="button">✕</button></div>
     <div id="wishlist-items" class="drawer-body"></div>
   </div>
-
   <div class="overlay" id="overlay"></div>
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
   <script src="app.js" defer></script>
 </body>
 </html>

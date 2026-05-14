@@ -1,204 +1,390 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Mahamaya Enterprise | Hardware Marketplace</title>
-  <meta name="description" content="Shop hardware, electrical, plumbing, paint, tools, and building supplies with verified stock and fast delivery." />
-  <meta name="keywords" content="hardware, fixtures, tools, plumbing, electrical, paint, construction, mahayama" />
-  <meta name="theme-color" content="#1f3c3a" />
+  <title>Mahamaya Enterprise | Hardware, Electrical, Plumbing & Building Supplies</title>
+  <meta name="description" content="Mahamaya Enterprise — Your one-stop shop for hardware, electrical, plumbing, paints, tools and construction supplies. Daily rates, bulk pricing & fast dispatch from Eraur, Bhatar." />
+  <meta name="keywords" content="hardware shop, electrical items, plumbing, paint, tools, cement, steel, building materials, Purba Bardhaman" />
+  <meta name="theme-color" content="#e05c1a" />
   <link rel="icon" href="favicon.ico" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="assets/icon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="page-shop" data-page="shop">
+  <a href="#main" class="sr-only" style="position:absolute;left:-9999px;top:auto">Skip to content</a>
+
+  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
-      <span class="topbar-pill">Verified stock</span>
-      <span id="topbar-location">Eraur, Bhatar</span>
-      <span id="topbar-announcement" class="topbar-announcement hidden"></span>
+      <span class="topbar-pill">✓ Verified Stock</span>
+      <span id="topbar-location">📍 Eraur, Bhatar, Purba Bardhaman</span>
+      <span id="topbar-announcement" class="topbar-announcement"></span>
     </div>
     <div class="topbar-right">
-      <a id="topbar-phone" href="tel:943466190">Call: 943466190</a>
-      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">WhatsApp</a>
+      <a id="topbar-phone" href="tel:+919434661990">📞 +91 9434661990</a>
+      <a id="topbar-whatsapp" href="https://wa.me/919475653294" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <span id="topbar-hours" style="font-size:.78rem;color:#aaa">🕐 7AM–1PM · 4PM–8:30PM</span>
     </div>
   </div>
 
+  <!-- HEADER -->
   <header class="site-header">
-    <a class="brand" href="index.html">
-      <div class="brand-mark">ME</div>
-      <div>
-        <div class="brand-title">Mahamaya Enterprise</div>
-        <div class="brand-tagline">Hardware, fixtures, and site supplies</div>
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">ME</div>
+        <div>
+          <div class="brand-title">Mahamaya Enterprise</div>
+          <div class="brand-tagline">Hardware · Electrical · Plumbing · Paints</div>
+        </div>
+      </a>
+
+      <div class="search-wrap" style="flex:1;max-width:560px">
+        <select class="search-cat" id="search-cat-filter">
+          <option value="">All</option>
+          <option value="Hardware">Hardware</option>
+          <option value="Electrical">Electrical</option>
+          <option value="Plumbing">Plumbing</option>
+          <option value="Paints">Paints</option>
+          <option value="Tools">Tools</option>
+          <option value="Cement & Steel">Cement & Steel</option>
+        </select>
+        <input id="search-input" type="search" placeholder="Search products, brands, categories..." autocomplete="off" />
+        <button class="btn-search" id="search-btn" type="button">🔍 Search</button>
       </div>
-    </a>
-    <div class="search-wrap">
-      <input id="search-input" type="search" placeholder="Search tools, pipes, switches, paints..." />
-      <button id="search-btn" class="btn btn-accent" type="button">Search</button>
-    </div>
-    <div class="header-actions">
-      <a class="header-link" href="track.html">Track order</a>
-      <a class="header-link" href="account.html">Account</a>
-      <button class="header-icon" id="wishlist-btn" type="button">Wishlist <span id="wishlist-count">0</span></button>
-      <button class="header-icon" id="cart-btn" type="button">Cart <span id="cart-count">0</span></button>
+
+      <div class="header-actions">
+        <button class="dark-toggle" id="dark-toggle" type="button" title="Toggle dark mode">🌙</button>
+        <a href="account.html" class="hdr-btn"><span class="ico">👤</span><span class="hdr-btn-label">Account</span></a>
+        <button class="hdr-btn" id="wishlist-btn" type="button"><span class="ico">♥</span><span class="hdr-btn-label">Wishlist</span><span class="hdr-badge" id="wishlist-count">0</span></button>
+        <button class="hdr-btn" id="cart-btn" type="button"><span class="ico">🛒</span><span class="hdr-btn-label">Cart</span><span class="hdr-badge" id="cart-count">0</span></button>
+      </div>
     </div>
   </header>
 
-  <nav class="category-nav">
-    <button class="filter-toggle" id="filter-toggle" type="button">Filters</button>
-    <div class="category-list" id="category-list"></div>
+  <!-- CATEGORY NAV -->
+  <nav class="category-nav" aria-label="Categories">
+    <ul class="cat-nav-list" id="cat-nav-list">
+      <li class="cat-nav-item"><a class="cat-nav-link active" data-cat="" href="#">🏠 All Products</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Hardware" href="#">🔩 Hardware</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Electrical" href="#">⚡ Electrical</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Plumbing" href="#">🚿 Plumbing</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Paints" href="#">🎨 Paints</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Tools" href="#">🔧 Tools</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Cement & Steel" href="#">🏗️ Cement & Steel</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Safety" href="#">🦺 Safety</a></li>
+    </ul>
   </nav>
 
-  <main>
+  <main id="main">
+    <!-- HERO -->
     <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Builder ready catalog</p>
-        <h1>Every site supply in one place.</h1>
-        <p>Daily rate updates, bulk pricing, and verified stock across hardware, electrical, plumbing, paints, and tools.</p>
-        <div class="hero-actions">
-          <a class="btn btn-dark" href="checkout.html">Quick order</a>
-          <a class="btn btn-ghost" href="#shop">Browse all items</a>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-eyebrow">Builder Ready Catalog · Purba Bardhaman</p>
+          <h1>India's <span>Site Supplies</span><br/>in One Place.</h1>
+          <p class="hero-desc">Daily rate updates, bulk pricing & verified stock across hardware, electrical, plumbing, paints and construction materials. GST invoices available.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="#shop">Browse Catalog</a>
+            <a class="btn btn-outline btn-lg" href="checkout.html" style="border-color:rgba(255,255,255,.5);color:#fff">Quick Order</a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="hero-stat-val" id="stat-products">500+</div><div class="hero-stat-lbl">Products</div></div>
+            <div class="hero-stat"><div class="hero-stat-val">10+</div><div class="hero-stat-lbl">Brands</div></div>
+            <div class="hero-stat"><div class="hero-stat-val">Same Day</div><div class="hero-stat-lbl">Dispatch</div></div>
+            <div class="hero-stat"><div class="hero-stat-val">GST</div><div class="hero-stat-lbl">Billing</div></div>
+          </div>
         </div>
-      </div>
-      <div class="hero-card">
-        <div class="hero-card-title">Today’s highlight</div>
-        <div class="hero-card-body">
-          <h3>Steel + Cement combo</h3>
-          <p>Priority dispatch for bulk orders above 100 bags or 5 tons.</p>
-          <button class="btn btn-accent" id="hero-cta" type="button">Get instant quote</button>
+        <div class="hero-card">
+          <div class="hero-card-tag">⚡ Today's Special</div>
+          <h3>Steel + Cement Combo</h3>
+          <p>Priority dispatch for bulk orders above 100 bags or 5 tons. Contractor pricing available.</p>
+          <button class="btn btn-primary btn-full" id="hero-cta" type="button">Get Instant Quote</button>
+          <div style="margin-top:.8rem;font-size:.78rem;color:rgba(255,255,255,.5);text-align:center">or call +91 9434661990</div>
         </div>
       </div>
     </section>
 
-    <section id="shop" class="shop-layout">
-      <aside class="filters" id="filters">
-        <div class="filter-group">
-          <h3>Category</h3>
-          <div id="filter-categories" class="filter-list"></div>
-        </div>
-        <div class="filter-group">
-          <h3>Brand</h3>
-          <div id="filter-brands" class="filter-list"></div>
-        </div>
-        <div class="filter-group">
-          <h3>Price range</h3>
-          <div class="price-range">
-            <input id="min-price" type="number" placeholder="Min" />
-            <input id="max-price" type="number" placeholder="Max" />
-          </div>
-          <button class="btn btn-ghost" id="apply-price" type="button">Apply</button>
-        </div>
-        <div class="filter-group">
-          <h3>Quick filters</h3>
-          <label class="check-pill"><input id="filter-featured" type="checkbox" /> Featured</label>
-          <label class="check-pill"><input id="filter-bestseller" type="checkbox" /> Best sellers</label>
-          <label class="check-pill"><input id="filter-instock" type="checkbox" /> In stock</label>
-        </div>
-        <button class="btn btn-light" id="clear-filters" type="button">Clear filters</button>
-      </aside>
+    <!-- TRUST STRIP -->
+    <div class="trust-strip">
+      <div class="trust-strip-inner">
+        <div class="trust-item"><span class="trust-ico">🚚</span><div><strong>Same Day Dispatch</strong><span> · Fast local delivery</span></div></div>
+        <div class="trust-item"><span class="trust-ico">📄</span><div><strong>GST Billing Ready</strong><span> · Invoices for firms</span></div></div>
+        <div class="trust-item"><span class="trust-ico">📦</span><div><strong>Bulk Order Support</strong><span> · Project scale pricing</span></div></div>
+        <div class="trust-item"><span class="trust-ico">✅</span><div><strong>Genuine Brands</strong><span> · Verified distributors</span></div></div>
+        <div class="trust-item"><span class="trust-ico">💬</span><div><strong>WhatsApp Support</strong><span> · Daily rate updates</span></div></div>
+      </div>
+    </div>
 
+    <!-- CATEGORIES GRID -->
+    <div class="section" id="categories-section">
+      <div class="section-hd">
+        <h2 class="section-title">Shop by <span>Category</span></h2>
+        <a class="see-all" href="#shop">View All →</a>
+      </div>
+      <div class="cat-grid" id="cat-grid">
+        <div class="cat-card" data-cat="Hardware"><div class="cat-card-ico">🔩</div><div class="cat-card-name">Hardware</div><div class="cat-card-count" id="cnt-Hardware">Loading...</div></div>
+        <div class="cat-card" data-cat="Electrical"><div class="cat-card-ico">⚡</div><div class="cat-card-name">Electrical</div><div class="cat-card-count" id="cnt-Electrical">Loading...</div></div>
+        <div class="cat-card" data-cat="Plumbing"><div class="cat-card-ico">🚿</div><div class="cat-card-name">Plumbing</div><div class="cat-card-count" id="cnt-Plumbing">Loading...</div></div>
+        <div class="cat-card" data-cat="Paints"><div class="cat-card-ico">🎨</div><div class="cat-card-name">Paints</div><div class="cat-card-count" id="cnt-Paints">Loading...</div></div>
+        <div class="cat-card" data-cat="Tools"><div class="cat-card-ico">🔧</div><div class="cat-card-name">Tools</div><div class="cat-card-count" id="cnt-Tools">Loading...</div></div>
+        <div class="cat-card" data-cat="Cement & Steel"><div class="cat-card-ico">🏗️</div><div class="cat-card-name">Cement & Steel</div><div class="cat-card-count" id="cnt-Cement">Loading...</div></div>
+        <div class="cat-card" data-cat="Safety"><div class="cat-card-ico">🦺</div><div class="cat-card-name">Safety</div><div class="cat-card-count" id="cnt-Safety">Loading...</div></div>
+        <div class="cat-card" data-cat="Fasteners"><div class="cat-card-ico">🪛</div><div class="cat-card-name">Fasteners</div><div class="cat-card-count" id="cnt-Fasteners">Loading...</div></div>
+      </div>
+    </div>
+
+    <!-- SHOP SECTION -->
+    <div class="section-divider"></div>
+    <section id="shop" class="shop-layout">
+      <!-- FILTERS -->
+      <aside class="filters-panel" id="filters-panel" aria-label="Product filters">
+        <div class="filter-section-title">
+          Filters
+          <span class="filter-clear-all" id="clear-filters">Clear All</span>
+        </div>
+        <div class="filter-group" id="fg-category">
+          <div class="filter-group-title" data-group="category">Category</div>
+          <div class="filter-list" id="filter-categories"></div>
+        </div>
+        <div class="filter-group" id="fg-brand">
+          <div class="filter-group-title" data-group="brand">Brand</div>
+          <div class="filter-list" id="filter-brands"></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-group-title" data-group="price">Price Range</div>
+          <div class="price-range-wrap">
+            <input id="min-price" type="number" placeholder="Min" min="0" />
+            <span class="price-range-sep">–</span>
+            <input id="max-price" type="number" placeholder="Max" min="0" />
+          </div>
+          <button class="btn btn-outline btn-sm btn-full" id="apply-price" type="button" style="margin-top:.6rem">Apply</button>
+        </div>
+        <div class="filter-group">
+          <div class="filter-group-title">Quick Filters</div>
+          <div class="filter-list">
+            <label class="filter-option"><input id="filter-featured" type="checkbox" /><span>Featured</span></label>
+            <label class="filter-option"><input id="filter-bestseller" type="checkbox" /><span>Best Sellers</span></label>
+            <label class="filter-option"><input id="filter-instock" type="checkbox" /><span>In Stock Only</span></label>
+            <label class="filter-option"><input id="filter-onsale" type="checkbox" /><span>On Sale</span></label>
+          </div>
+        </div>
+      </aside>
+      <div class="filter-overlay" id="filter-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:240"></div>
+
+      <!-- SHOP MAIN -->
       <div class="shop-main">
         <div class="shop-toolbar">
-          <div class="results" id="results-count">0 items</div>
-          <div class="sort-wrap">
-            <label for="sort-select">Sort by</label>
-            <select id="sort-select">
-              <option value="popular">Popularity</option>
-              <option value="rating">Rating</option>
+          <div class="toolbar-left">
+            <button class="btn btn-ghost btn-sm" id="filter-toggle" type="button" style="display:none">⚙ Filters</button>
+            <span class="results-count" id="results-count">Loading...</span>
+            <div class="active-filter-chips" id="active-filter-chips"></div>
+          </div>
+          <div class="toolbar-right">
+            <div class="view-toggle">
+              <button class="view-btn active" id="view-grid" type="button" title="Grid view">⊞</button>
+              <button class="view-btn" id="view-list" type="button" title="List view">☰</button>
+            </div>
+            <select class="sort-select" id="sort-select">
+              <option value="popular">Sort: Popular</option>
+              <option value="rating">Sort: Rating</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
-              <option value="newest">Newest</option>
+              <option value="newest">Newest First</option>
+              <option value="discount">Biggest Discount</option>
             </select>
           </div>
         </div>
 
-        <div id="active-filters" class="active-filters"></div>
         <div id="product-grid" class="product-grid"></div>
-        <button id="load-more" class="btn btn-ghost" type="button">Load more</button>
+        <div id="load-more-wrap" style="text-align:center;padding:1.5rem 0;display:none">
+          <button class="btn btn-outline" id="load-more" type="button">Load More Products</button>
+        </div>
       </div>
     </section>
 
-    <section class="recently-viewed hidden" id="recently-viewed-section">
-      <h2 class="section-title">Recently viewed</h2>
+    <!-- RECENTLY VIEWED -->
+    <section class="recently-viewed hidden" id="recently-viewed-section" style="padding:2rem">
+      <div class="section-hd"><h2 class="section-title">Recently <span>Viewed</span></h2></div>
       <div id="recently-viewed-grid" class="product-grid"></div>
     </section>
 
-    <section class="trust-strip">
-      <div>
-        <h4>Same day dispatch</h4>
-        <p>Fast coordination for local delivery and pickup.</p>
+    <!-- REVIEWS SECTION -->
+    <section class="section" id="reviews-section">
+      <div class="section-hd">
+        <h2 class="section-title">Customer <span>Reviews</span></h2>
+        <button class="btn btn-outline btn-sm" id="write-review-btn" type="button">Write Review</button>
       </div>
-      <div>
-        <h4>GST billing ready</h4>
-        <p>Invoices available for contractors and firms.</p>
+      <div id="reviews-grid" class="reviews-grid"></div>
+      <div id="review-form-wrap" style="display:none;margin-top:1.2rem;background:var(--panel);border:1px solid var(--edge);border-radius:var(--radius);padding:1.4rem">
+        <h3 style="margin-bottom:1rem;font-size:.95rem;font-weight:700">Your Review</h3>
+        <form id="review-form">
+          <div class="field-row">
+            <div class="field"><label>Your Name</label><input type="text" name="name" required /></div>
+            <div class="field"><label>Rating</label>
+              <select name="rating" required>
+                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                <option value="4">⭐⭐⭐⭐ Very Good</option>
+                <option value="3">⭐⭐⭐ Good</option>
+                <option value="2">⭐⭐ Fair</option>
+                <option value="1">⭐ Poor</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Comment</label><textarea name="comment" rows="3" required></textarea></div>
+          <button class="btn btn-primary" type="submit">Submit Review</button>
+          <div id="review-msg" class="form-message" style="display:none"></div>
+        </form>
       </div>
-      <div>
-        <h4>Bulk order specialists</h4>
-        <p>Dedicated support for project scale orders.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq-section">
+      <div style="text-align:center;margin-bottom:.5rem">
+        <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+      </div>
+      <div class="faq-list" id="faq-list">
+        <div class="faq-item open">
+          <div class="faq-question">Do you deliver outside Bhatar?</div>
+          <div class="faq-answer"><p>Yes, we coordinate deliveries across Purba Bardhaman and nearby districts. Contact us on WhatsApp for delivery arrangements and charges.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Do you provide GST invoices?</div>
+          <div class="faq-answer"><p>Yes. GST-compliant invoices are available for all orders. Provide your GSTIN at checkout or contact us.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Can I get bulk/contractor pricing?</div>
+          <div class="faq-answer"><p>Absolutely. We specialize in project-scale orders. Call or WhatsApp us with your requirements for a custom quote.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What are your shop hours?</div>
+          <div class="faq-answer"><p>Morning: 7:00 AM – 1:00 PM · Evening: 4:00 PM – 8:30 PM (Monday to Saturday). Sunday by appointment.</p></div>
+        </div>
       </div>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
-    <div>
-      <h3>Mahamaya Enterprise</h3>
-      <p>Eraur, Bhatar - Purba Bardhaman</p>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-mark">ME</div>
+        <div class="footer-brand-name">Mahamaya Enterprise</div>
+        <p class="footer-tagline">Your trusted partner for hardware, electrical, plumbing, paints and all construction supplies in Purba Bardhaman.</p>
+        <div class="footer-contact">
+          <a href="tel:+919434661990">📞 +91 9434661990</a>
+          <a href="https://wa.me/919475653294" target="_blank" rel="noopener">💬 WhatsApp: +91 9475653294</a>
+          <a href="#">📍 Vill + PO – Eraur, PS – Bhatar, Purba Bardhaman – 713121</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#shop">All Products</a>
+          <a href="checkout.html">Quick Order</a>
+          <a href="track.html">Track Order</a>
+          <a href="account.html">My Account</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Categories</div>
+        <div class="footer-links">
+          <a href="#" data-nav-cat="Hardware">Hardware</a>
+          <a href="#" data-nav-cat="Electrical">Electrical</a>
+          <a href="#" data-nav-cat="Plumbing">Plumbing</a>
+          <a href="#" data-nav-cat="Paints">Paints</a>
+          <a href="#" data-nav-cat="Tools">Tools</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-links">
+          <a href="#faq-section">FAQs</a>
+          <a href="track.html">Order Tracking</a>
+          <a href="admin.html">Admin Panel</a>
+        </div>
+        <div style="margin-top:1rem">
+          <div class="footer-col-title">Business Hours</div>
+          <div style="font-size:.82rem;line-height:1.8">
+            🕐 Morning: 7AM – 1PM<br/>🕔 Evening: 4PM – 8:30PM<br/>📅 Mon – Sat
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <p>Need a custom quote?</p>
-      <a class="btn btn-dark" href="checkout.html">Request bulk pricing</a>
-    </div>
-    <div>
-      <p>Admin</p>
-      <a href="admin.html">Go to admin panel</a>
-      <br />
-      <a href="track.html">Track order</a>
+    <div class="footer-bottom">
+      <span>© 2025 Mahamaya Enterprise. All rights reserved.</span>
+      <div class="footer-social">
+        <a class="social-btn" href="https://wa.me/919475653294" target="_blank" rel="noopener">💬</a>
+        <a class="social-btn" href="tel:+919434661990">📞</a>
+      </div>
     </div>
   </footer>
 
-  <div class="drawer" id="cart-drawer" aria-hidden="true">
+  <!-- CART DRAWER -->
+  <div class="drawer" id="cart-drawer" aria-label="Shopping cart" aria-hidden="true">
     <div class="drawer-header">
-      <h3>Your cart</h3>
-      <button class="icon-btn" id="close-cart" type="button">Close</button>
+      <h3>🛒 Your Cart (<span id="cart-count-drawer">0</span>)</h3>
+      <button class="btn btn-ghost btn-sm btn-icon" id="close-cart" type="button" aria-label="Close cart">✕</button>
     </div>
     <div id="cart-items" class="drawer-body"></div>
     <div class="drawer-footer">
-      <div class="totals">
-        <span>Subtotal</span>
-        <strong id="cart-subtotal">0</strong>
-      </div>
-      <a class="btn btn-accent" href="checkout.html">Checkout</a>
+      <div class="totals-row"><span>Subtotal</span><strong id="cart-subtotal">Rs. 0</strong></div>
+      <div class="totals-row"><span>Delivery</span><strong id="cart-delivery">Rs. 0</strong></div>
+      <div class="totals-row total"><span>Total</span><strong id="cart-total">Rs. 0</strong></div>
+      <a class="btn btn-primary btn-full btn-lg" href="checkout.html">Proceed to Checkout →</a>
+      <button class="btn btn-ghost btn-full btn-sm" id="clear-cart-btn" type="button">Clear Cart</button>
     </div>
   </div>
 
-  <div class="drawer" id="wishlist-drawer" aria-hidden="true">
+  <!-- WISHLIST DRAWER -->
+  <div class="drawer" id="wishlist-drawer" aria-label="Wishlist" aria-hidden="true">
     <div class="drawer-header">
-      <h3>Wishlist</h3>
-      <button class="icon-btn" id="close-wishlist" type="button">Close</button>
+      <h3>♥ Wishlist (<span id="wishlist-count-drawer">0</span>)</h3>
+      <button class="btn btn-ghost btn-sm btn-icon" id="close-wishlist" type="button" aria-label="Close wishlist">✕</button>
     </div>
     <div id="wishlist-items" class="drawer-body"></div>
   </div>
 
-  <div class="compare-bar" id="compare-bar" aria-hidden="true">
+  <!-- COMPARE BAR -->
+  <div class="compare-bar" id="compare-bar">
     <div class="compare-items" id="compare-items"></div>
-    <button class="btn btn-light" id="compare-btn" type="button">Compare</button>
+    <button class="btn btn-primary" id="compare-btn" type="button">Compare Now</button>
+    <button class="btn btn-ghost btn-sm" id="clear-compare-btn" type="button">Clear</button>
   </div>
 
+  <!-- COMPARE MODAL -->
   <div class="modal" id="compare-modal" aria-hidden="true">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width:960px">
       <div class="modal-header">
-        <h3>Compare products</h3>
-        <button class="icon-btn" id="close-compare" type="button">Close</button>
+        <h3>Compare Products</h3>
+        <button class="btn btn-ghost btn-sm btn-icon" id="close-compare" type="button">✕</button>
       </div>
-      <div id="compare-table" class="modal-body"></div>
+      <div class="modal-body"><div id="compare-table"></div></div>
     </div>
   </div>
 
+  <!-- OVERLAY -->
   <div class="overlay" id="overlay"></div>
+
+  <!-- FLOAT ACTIONS -->
+  <div class="float-actions">
+    <a class="float-btn float-wa" href="https://wa.me/919475653294" target="_blank" rel="noopener" title="WhatsApp us">💬</a>
+    <button class="float-btn float-top" id="back-to-top" type="button" title="Back to top">↑</button>
+  </div>
+
+  <!-- COOKIE BANNER -->
+  <div class="cookie-banner" id="cookie-banner">
+    <span class="cookie-text">We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Privacy Policy</a>.</span>
+    <button class="btn btn-primary btn-sm" id="cookie-accept" type="button">Accept</button>
+    <button class="btn btn-ghost btn-sm" id="cookie-decline" type="button">Decline</button>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
 
   <script src="app.js" defer></script>
 </body>
