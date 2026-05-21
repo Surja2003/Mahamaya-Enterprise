@@ -728,32 +728,69 @@ function clearAllFilters(){
 
 // ── LOAD PRODUCTS ──────────────────────────────────────
 async function loadProducts(){
-  renderSkeletons();
-  try{
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),5000);
-    const res=await fetch(api('/api/products?limit=500'),{signal:controller.signal});
+  // 1. Instantly populate state with cached products or fallback demo catalog to render immediately
+  const cachedProducts = store.get('cached_products', null);
+  if (cachedProducts && cachedProducts.length) {
+    S.products = cachedProducts;
+  } else if (typeof DEMO_PRODUCTS !== 'undefined' && DEMO_PRODUCTS.length) {
+    S.products = DEMO_PRODUCTS;
+  }
+  
+  if (S.products.length) {
+    S.filtered = [...S.products];
+    updateCategoryCounts();
+    renderFilterSidebar();
+    applyFilters();
+    renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
+  } else {
+    renderSkeletons();
+  }
+
+  // 2. Background fetch to get fresh product data (prices, stock, etc.) from API
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000); // 8-second timeout for background fetch
+    const res = await fetch(api('/api/products?limit=500'), { signal: controller.signal });
     clearTimeout(timeout);
-    if(!res.ok) throw new Error('API error');
-    const data=await res.json();
-    S.products=data.products||[];
-    if(!S.products.length) throw new Error('empty');
-  }catch{
-    // ── FALLBACK: use bundled demo products ──
-    S.products = typeof DEMO_PRODUCTS!=='undefined' ? DEMO_PRODUCTS : [];
-    if(S.products.length) toast('Showing demo catalogue (backend offline)','info',4000);
-    else{
-      const g=document.getElementById('product-grid');
-      if(g) g.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Could not load products. Backend may be starting up — please refresh in a moment.</p></div>';
-      return;
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    const freshProducts = data.products || [];
+    
+    if (freshProducts.length) {
+      // Save to local storage cache for next instant loads
+      store.set('cached_products', freshProducts);
+      
+      // Compare if key values changed to avoid unnecessary re-rendering flickering
+      const currentKeys = JSON.stringify(S.products.map(p => ({ id: p.id, price: p.price, stock: p.stock, images: p.images })));
+      const freshKeys = JSON.stringify(freshProducts.map(p => ({ id: p.id, price: p.price, stock: p.stock, images: p.images })));
+      
+      if (currentKeys !== freshKeys || !S.products.length) {
+        S.products = freshProducts;
+        S.filtered = [...S.products];
+        updateCategoryCounts();
+        renderFilterSidebar();
+        applyFilters();
+        renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
+      }
+      loadReviews();
+    }
+  } catch (err) {
+    console.warn("Background products update failed or timed out:", err);
+    // Fallback if we somehow have no products loaded yet
+    if (!S.products.length) {
+      S.products = typeof DEMO_PRODUCTS !== 'undefined' ? DEMO_PRODUCTS : [];
+      if (S.products.length) {
+        S.filtered = [...S.products];
+        updateCategoryCounts();
+        renderFilterSidebar();
+        applyFilters();
+        renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
+      } else {
+        const g = document.getElementById('product-grid');
+        if (g) g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Could not load products. Backend may be starting up — please refresh in a moment.</p></div>';
+      }
     }
   }
-  S.filtered=[...S.products];
-  updateCategoryCounts();
-  renderFilterSidebar();
-  applyFilters();
-  renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
-  loadReviews();
 }
 
 // ── SHOP PAGE ──────────────────────────────────────────

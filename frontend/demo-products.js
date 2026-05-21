@@ -20,7 +20,7 @@ const DEMO_PRODUCTS = [
       "tata"
     ],
     "images": [
-      "/assets/tata_tiscon.png"
+      "/assets/tata_tiscon.webp"
     ],
     "featured": true,
     "bestSeller": true,
@@ -82,7 +82,7 @@ const DEMO_PRODUCTS = [
       "jindal"
     ],
     "images": [
-      "/assets/jindal_panther.png"
+      "/assets/jindal_panther.webp"
     ],
     "featured": false,
     "bestSeller": true,
@@ -144,7 +144,7 @@ const DEMO_PRODUCTS = [
       "jsw"
     ],
     "images": [
-      "/assets/jsw_neosteel.png"
+      "/assets/jsw_neosteel.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -206,7 +206,7 @@ const DEMO_PRODUCTS = [
       "shyam"
     ],
     "images": [
-      "/assets/shyam_steel.png"
+      "/assets/shyam_steel.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -268,7 +268,7 @@ const DEMO_PRODUCTS = [
       "srmb"
     ],
     "images": [
-      "/assets/srmb_steel.png"
+      "/assets/srmb_steel.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -329,7 +329,7 @@ const DEMO_PRODUCTS = [
       "waterproof"
     ],
     "images": [
-      "/assets/ambuja_cement.png"
+      "/assets/ambuja_cement.webp"
     ],
     "featured": true,
     "bestSeller": true,
@@ -358,7 +358,7 @@ const DEMO_PRODUCTS = [
       "ppc"
     ],
     "images": [
-      "/assets/ultratech_cement.png"
+      "/assets/ultratech_cement.webp"
     ],
     "featured": true,
     "bestSeller": false,
@@ -387,7 +387,7 @@ const DEMO_PRODUCTS = [
       "composite"
     ],
     "images": [
-      "/assets/jsw_cement.png"
+      "/assets/jsw_cement.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -416,7 +416,7 @@ const DEMO_PRODUCTS = [
       "samrat"
     ],
     "images": [
-      "/assets/birla_samrat.png"
+      "/assets/birla_samrat.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -476,7 +476,7 @@ const DEMO_PRODUCTS = [
       "eco"
     ],
     "images": [
-      "/assets/fly_ash_bricks.png"
+      "/assets/fly_ash_bricks.webp"
     ],
     "featured": false,
     "bestSeller": true,
@@ -583,7 +583,7 @@ const DEMO_PRODUCTS = [
       "electrical"
     ],
     "images": [
-      "/assets/goldmedal_fan.png"
+      "/assets/goldmedal_fan.webp"
     ],
     "featured": true,
     "bestSeller": false,
@@ -628,7 +628,7 @@ const DEMO_PRODUCTS = [
       "premium"
     ],
     "images": [
-      "/assets/goldmedal_fan.png"
+      "/assets/goldmedal_fan.webp"
     ],
     "featured": false,
     "bestSeller": true,
@@ -673,7 +673,7 @@ const DEMO_PRODUCTS = [
       "goldmedal"
     ],
     "images": [
-      "/assets/wire_coil.png"
+      "/assets/wire_coil.webp"
     ],
     "featured": false,
     "bestSeller": true,
@@ -728,7 +728,7 @@ const DEMO_PRODUCTS = [
       "utkarsh"
     ],
     "images": [
-      "/assets/pvc_pipe.png"
+      "/assets/pvc_pipe.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -789,7 +789,7 @@ const DEMO_PRODUCTS = [
       "electrical"
     ],
     "images": [
-      "/assets/roma_switch.png"
+      "/assets/roma_switch.webp"
     ],
     "featured": true,
     "bestSeller": true,
@@ -834,7 +834,7 @@ const DEMO_PRODUCTS = [
       "lighting"
     ],
     "images": [
-      "/assets/pritam_led_panel.png"
+      "/assets/pritam_led_panel.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -879,7 +879,7 @@ const DEMO_PRODUCTS = [
       "pritam"
     ],
     "images": [
-      "/assets/pritam_dboard.png"
+      "/assets/pritam_dboard.webp"
     ],
     "featured": false,
     "bestSeller": false,
@@ -917,7 +917,7 @@ const DEMO_PRODUCTS = [
       "drill"
     ],
     "images": [
-      "/assets/cordless_drill.png"
+      "/assets/cordless_drill.webp"
     ],
     "featured": true,
     "bestSeller": false,
@@ -943,7 +943,7 @@ const DEMO_PRODUCTS = [
       "helmet"
     ],
     "images": [
-      "/assets/safety_helmet.png"
+      "/assets/safety_helmet.webp"
     ],
     "featured": false,
     "bestSeller": false,
