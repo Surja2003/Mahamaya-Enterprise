@@ -1,8 +1,8 @@
-const CACHE = 'mahamaya-v2';
+const CACHE = 'mahamaya-v3';
 const STATIC = [
-  '/', '/index.html', '/style.css', '/app.js',
+  '/', '/index.html', '/style.css', '/app.js', '/demo-products.js',
   '/product.html', '/checkout.html', '/track.html', '/account.html',
-  '/manifest.json', '/assets/placeholder.svg'
+  '/admin.html', '/admin.js', '/manifest.json', '/assets/placeholder.svg'
 ];
 
 self.addEventListener('install', e => {
@@ -23,16 +23,44 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  if (e.request.url.includes('/api/')) return;
-  e.respondWith(
-    caches.match(e.request).then(r =>
-      r || fetch(e.request).then(res => {
-        if (res && res.status === 200 && res.type === 'basic') {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
-        }
-        return res;
-      }).catch(() => caches.match('/index.html'))
-    )
-  );
+  
+  const url = new URL(e.request.url);
+  
+  // Skip API requests
+  if (url.pathname.includes('/api/')) return;
+  
+  // Network-First for HTML, JS, CSS, JSON, and directory root
+  const isWebAsset = /\.(html|js|css|json)$/.test(url.pathname) || url.pathname === '/' || url.pathname === '';
+  
+  if (isWebAsset) {
+    e.respondWith(
+      fetch(e.request)
+        .then(res => {
+          if (res && res.status === 200) {
+            const clone = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch(() => {
+          return caches.match(e.request).then(cachedRes => {
+            return cachedRes || caches.match('/index.html');
+          });
+        })
+    );
+  } else {
+    // Cache-First for static assets like images, fonts, icons
+    e.respondWith(
+      caches.match(e.request).then(cachedRes => {
+        if (cachedRes) return cachedRes;
+        return fetch(e.request).then(res => {
+          if (res && res.status === 200) {
+            const clone = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, clone));
+          }
+          return res;
+        });
+      })
+    );
+  }
 });
