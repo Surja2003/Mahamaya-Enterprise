@@ -51,9 +51,12 @@
           <option value="Paints">Paints</option>
           <option value="Tools">Tools</option>
           <option value="Cement & Steel">Cement & Steel</option>
+          <option value="Bricks & Aggregates">Bricks & Aggregates</option>
+          <option value="Safety">Safety</option>
         </select>
         <input id="search-input" type="search" placeholder="Search products, brands, categories..." autocomplete="off" />
         <button class="btn-search" id="search-btn" type="button">🔍 Search</button>
+        <div class="search-autocomplete" id="search-autocomplete"></div>
       </div>
 
       <div class="header-actions">
@@ -75,6 +78,7 @@
       <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Paints" href="#">🎨 Paints</a></li>
       <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Tools" href="#">🔧 Tools</a></li>
       <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Cement & Steel" href="#">🏗️ Cement & Steel</a></li>
+      <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Bricks & Aggregates" href="#">🧱 Bricks & Aggregates</a></li>
       <li class="cat-nav-item"><a class="cat-nav-link" data-cat="Safety" href="#">🦺 Safety</a></li>
     </ul>
   </nav>
@@ -96,6 +100,16 @@
             <div class="hero-stat"><div class="hero-stat-val">10+</div><div class="hero-stat-lbl">Brands</div></div>
             <div class="hero-stat"><div class="hero-stat-val">Same Day</div><div class="hero-stat-lbl">Dispatch</div></div>
             <div class="hero-stat"><div class="hero-stat-val">GST</div><div class="hero-stat-lbl">Billing</div></div>
+          </div>
+
+          <!-- Local Pincode Checker Widget -->
+          <div class="pincode-widget" style="max-width:440px">
+            <div class="pincode-widget-title">🚚 Check Delivery in Purba Bardhaman</div>
+            <div class="pincode-field-wrap">
+              <input type="text" class="pincode-input" id="pincode-check-val" placeholder="Enter 6-digit Pincode (e.g. 713121)" maxlength="6" />
+              <button class="pincode-btn" id="pincode-check-btn" type="button">Check</button>
+            </div>
+            <div class="pincode-result" id="pincode-check-result" style="display:none"></div>
           </div>
         </div>
         <div class="hero-card">
@@ -132,6 +146,7 @@
         <div class="cat-card" data-cat="Paints"><div class="cat-card-ico">🎨</div><div class="cat-card-name">Paints</div><div class="cat-card-count" id="cnt-Paints">Loading...</div></div>
         <div class="cat-card" data-cat="Tools"><div class="cat-card-ico">🔧</div><div class="cat-card-name">Tools</div><div class="cat-card-count" id="cnt-Tools">Loading...</div></div>
         <div class="cat-card" data-cat="Cement & Steel"><div class="cat-card-ico">🏗️</div><div class="cat-card-name">Cement & Steel</div><div class="cat-card-count" id="cnt-Cement">Loading...</div></div>
+        <div class="cat-card" data-cat="Bricks & Aggregates"><div class="cat-card-ico">🧱</div><div class="cat-card-name">Bricks & Aggregates</div><div class="cat-card-count" id="cnt-Bricks">Loading...</div></div>
         <div class="cat-card" data-cat="Safety"><div class="cat-card-ico">🦺</div><div class="cat-card-name">Safety</div><div class="cat-card-count" id="cnt-Safety">Loading...</div></div>
         <div class="cat-card" data-cat="Fasteners"><div class="cat-card-ico">🪛</div><div class="cat-card-name">Fasteners</div><div class="cat-card-count" id="cnt-Fasteners">Loading...</div></div>
       </div>
@@ -298,6 +313,8 @@
           <a href="#" data-nav-cat="Plumbing">Plumbing</a>
           <a href="#" data-nav-cat="Paints">Paints</a>
           <a href="#" data-nav-cat="Tools">Tools</a>
+          <a href="#" data-nav-cat="Cement & Steel">Cement & Steel</a>
+          <a href="#" data-nav-cat="Bricks & Aggregates">Bricks & Aggregates</a>
         </div>
       </div>
       <div>
@@ -381,6 +398,43 @@
     <span class="cookie-text">We use cookies to enhance your experience. By continuing, you agree to our <a href="#">Privacy Policy</a>.</span>
     <button class="btn btn-primary btn-sm" id="cookie-accept" type="button">Accept</button>
     <button class="btn btn-ghost btn-sm" id="cookie-decline" type="button">Decline</button>
+  </div>
+
+  <!-- QUICK VIEW MODAL -->
+  <div class="modal" id="quickview-modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="qv-title">Quick View</h3>
+        <button class="btn btn-ghost btn-sm btn-icon" id="close-quickview" type="button">✕</button>
+      </div>
+      <div class="modal-body" id="qv-body"></div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <div class="mobile-bottom-nav">
+    <a href="index.html" class="mobile-bottom-nav-item active" id="mob-nav-home">
+      <span class="ico">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="#shop" class="mobile-bottom-nav-item" id="mob-nav-shop">
+      <span class="ico">⚙</span>
+      <span>Filter</span>
+    </a>
+    <button class="mobile-bottom-nav-item" id="mob-nav-wishlist" type="button">
+      <span class="ico">♥</span>
+      <span>Wishlist</span>
+      <span class="mobile-bottom-badge" id="wishlist-badge-mob" style="display:none">0</span>
+    </button>
+    <button class="mobile-bottom-nav-item" id="mob-nav-cart" type="button">
+      <span class="ico">🛒</span>
+      <span>Cart</span>
+      <span class="mobile-bottom-badge" id="cart-badge-mob" style="display:none">0</span>
+    </button>
+    <a href="account.html" class="mobile-bottom-nav-item" id="mob-nav-account">
+      <span class="ico">👤</span>
+      <span>Account</span>
+    </a>
   </div>
 
   <!-- TOAST CONTAINER -->

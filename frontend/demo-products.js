@@ -1,19 +1,954 @@
-// DEMO PRODUCTS — shown when API is unavailable (Vercel static deployment)
+// DEMO PRODUCTS - shown when API is unavailable (Vercel static deployment)
 const DEMO_PRODUCTS = [
-  { id:'p1', name:'Anchor Roma 6A Switch', brand:'Anchor', category:'Electrical', price:45, mrp:55, stock:120, rating:4.5, ratingCount:38, featured:true, images:['/assets/placeholder.svg'], shortDesc:'ISI marked 6A modular switch with smooth operation.', tags:['switch','electrical','modular'] },
-  { id:'p2', name:'Havells 4mm Wire (90m)', brand:'Havells', category:'Electrical', price:1850, mrp:2100, stock:40, rating:4.7, ratingCount:52, bestSeller:true, images:['/assets/placeholder.svg'], shortDesc:'FR PVC insulated copper conductor wire.', tags:['wire','copper','electrical'] },
-  { id:'p3', name:'Astral CPVC Pipe 1 inch (3m)', brand:'Astral', category:'Plumbing', price:320, mrp:380, stock:85, rating:4.6, ratingCount:44, images:['/assets/placeholder.svg'], shortDesc:'FlowGuard Plus CPVC hot & cold water pipe.', tags:['cpvc','pipe','plumbing'] },
-  { id:'p4', name:'Asian Paints Apex 10L (White)', brand:'Asian Paints', category:'Paints', price:2650, mrp:2900, stock:30, rating:4.8, ratingCount:67, featured:true, bestSeller:true, images:['/assets/placeholder.svg'], shortDesc:'100% acrylic exterior emulsion. Weather resistant.', tags:['paint','exterior','white'] },
-  { id:'p5', name:'Bosch GSB 450W Drill Machine', brand:'Bosch', category:'Tools', price:1450, mrp:1800, stock:15, rating:4.6, ratingCount:29, images:['/assets/placeholder.svg'], shortDesc:'450W impact drill with variable speed & reverse.', tags:['drill','power tool','bosch'] },
-  { id:'p6', name:'ACC Cement 50kg Bag', brand:'ACC', category:'Cement & Steel', price:420, mrp:450, stock:200, rating:4.7, ratingCount:91, bestSeller:true, images:['/assets/placeholder.svg'], shortDesc:'OPC 53 Grade Portland cement. ISI certified.', tags:['cement','acc','concrete'] },
-  { id:'p7', name:'Stanley Claw Hammer 16oz', brand:'Stanley', category:'Tools', price:380, mrp:420, stock:60, rating:4.5, ratingCount:33, images:['/assets/placeholder.svg'], shortDesc:'Drop-forged steel head with fibreglass handle.', tags:['hammer','stanley','tools'] },
-  { id:'p8', name:'Supreme PVC Ball Valve 1/2"', brand:'Supreme', category:'Plumbing', price:85, mrp:100, stock:150, rating:4.4, ratingCount:21, images:['/assets/placeholder.svg'], shortDesc:'Full bore ISI marked PVC ball valve.', tags:['valve','pvc','plumbing'] },
-  { id:'p9', name:'Fischer Wall Plug S8 (50pcs)', brand:'Fischer', category:'Hardware', price:120, mrp:140, stock:300, rating:4.6, ratingCount:55, images:['/assets/placeholder.svg'], shortDesc:'Nylon expansion plugs for concrete & brick walls.', tags:['rawl plug','fischer','fastener'] },
-  { id:'p10', name:'Berger WeatherCoat 4L', brand:'Berger', category:'Paints', price:1480, mrp:1650, stock:25, rating:4.5, ratingCount:18, images:['/assets/placeholder.svg'], shortDesc:'Flexible exterior paint. UV & crack resistant.', tags:['paint','exterior','berger'] },
-  { id:'p11', name:'Polycab 1.5mm Wire (90m)', brand:'Polycab', category:'Electrical', price:980, mrp:1100, stock:70, rating:4.7, ratingCount:48, bestSeller:true, images:['/assets/placeholder.svg'], shortDesc:'FRLS PVC insulated copper wire. BIS certified.', tags:['wire','polycab','electrical'] },
-  { id:'p12', name:'TMT Steel Bar 10mm (per kg)', brand:'SAIL', category:'Cement & Steel', price:68, mrp:72, stock:5000, rating:4.8, ratingCount:112, featured:true, images:['/assets/placeholder.svg'], shortDesc:'Fe-500D grade TMT rebars. High ductility.', tags:['steel','tmt','rebar','sail'] },
-  { id:'p13', name:'Pidilite Fevikwik 3g (10pcs)', brand:'Pidilite', category:'Hardware', price:90, mrp:100, stock:500, rating:4.6, ratingCount:88, images:['/assets/placeholder.svg'], shortDesc:'Instant adhesive. Bonds in seconds.', tags:['adhesive','fevikwik','pidilite'] },
-  { id:'p14', name:'Safety Helmet ISI (Yellow)', brand:'Karam', category:'Safety', price:280, mrp:320, stock:40, rating:4.5, ratingCount:26, images:['/assets/placeholder.svg'], shortDesc:'HDPE construction helmet. ISI marked IS:2925.', tags:['helmet','safety','ppe'] },
-  { id:'p15', name:'Grinding Disc 4" (10pcs)', brand:'Norton', category:'Tools', price:340, mrp:380, stock:80, rating:4.4, ratingCount:19, images:['/assets/placeholder.svg'], shortDesc:'Depressed centre grinding wheels for metal.', tags:['grinding','disc','abrasive'] },
-  { id:'p16', name:'Anchor 3-Pin Top 6A', brand:'Anchor', category:'Electrical', price:22, mrp:28, stock:200, rating:4.3, ratingCount:41, images:['/assets/placeholder.svg'], shortDesc:'ISI marked 3-pin plug top.', tags:['plug','anchor','electrical'] },
+  {
+    "id": "prod_tmt_tata",
+    "name": "Tata Tiscon TMT Bar Fe 550D",
+    "category": "Cement & Steel",
+    "brand": "Tata Tiscon",
+    "sku": "TMT-TATA-550D",
+    "price": 62,
+    "mrp": 68,
+    "stock": 1000,
+    "rating": 4.8,
+    "ratingCount": 142,
+    "shortDesc": "High strength Fe 550D grade steel rods. Min 5 pcs in multiples of 5.",
+    "longDesc": "Tata Tiscon 550D is a high-strength ribbed TMT reinforcement bar, ideal for all RCC structures. Enforced purchase of minimum 5 pcs and multiples of 5.",
+    "tags": [
+      "steel",
+      "tmt",
+      "rebar",
+      "tata"
+    ],
+    "images": [
+      "/assets/tata_tiscon.png"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "soldCount": 680,
+    "minQty": 5,
+    "qtyStep": 5,
+    "variants": [
+      {
+        "value": "8mm",
+        "price": 62,
+        "mrp": 68
+      },
+      {
+        "value": "10mm",
+        "price": 60,
+        "mrp": 66
+      },
+      {
+        "value": "12mm",
+        "price": 59,
+        "mrp": 65
+      },
+      {
+        "value": "16mm",
+        "price": 59,
+        "mrp": 65
+      },
+      {
+        "value": "20mm",
+        "price": 60,
+        "mrp": 66
+      },
+      {
+        "value": "25mm",
+        "price": 61,
+        "mrp": 67
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_tmt_jindal",
+    "name": "Jindal Panther TMT Rebar",
+    "category": "Cement & Steel",
+    "brand": "Jindal Panther",
+    "sku": "TMT-JNDL-PT",
+    "price": 61,
+    "mrp": 67,
+    "stock": 950,
+    "rating": 4.7,
+    "ratingCount": 98,
+    "shortDesc": "High ductility TMT rods with ribbed texture. Min 5 pcs in multiples of 5.",
+    "longDesc": "Jindal Panther Fe 550D TMT Rebars are manufactured with advanced tempcore technology to ensure high strength and bendability.",
+    "tags": [
+      "steel",
+      "tmt",
+      "rebar",
+      "jindal"
+    ],
+    "images": [
+      "/assets/jindal_panther.png"
+    ],
+    "featured": false,
+    "bestSeller": true,
+    "soldCount": 450,
+    "minQty": 5,
+    "qtyStep": 5,
+    "variants": [
+      {
+        "value": "8mm",
+        "price": 61,
+        "mrp": 67
+      },
+      {
+        "value": "10mm",
+        "price": 59,
+        "mrp": 65
+      },
+      {
+        "value": "12mm",
+        "price": 58,
+        "mrp": 64
+      },
+      {
+        "value": "16mm",
+        "price": 58,
+        "mrp": 64
+      },
+      {
+        "value": "20mm",
+        "price": 59,
+        "mrp": 65
+      },
+      {
+        "value": "25mm",
+        "price": 60,
+        "mrp": 66
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_tmt_jsw",
+    "name": "JSW Neosteel TMT Bar",
+    "category": "Cement & Steel",
+    "brand": "JSW Neosteel",
+    "sku": "TMT-JSW-NEO",
+    "price": 60,
+    "mrp": 66,
+    "stock": 800,
+    "rating": 4.6,
+    "ratingCount": 74,
+    "shortDesc": "High corrosion resistant steel bars. Min 5 pcs in multiples of 5.",
+    "longDesc": "JSW Neosteel Fe 550D TMT bars are thermo-mechanically treated, offering exceptional strength, weldability, and resistance to fatigue.",
+    "tags": [
+      "steel",
+      "tmt",
+      "rebar",
+      "jsw"
+    ],
+    "images": [
+      "/assets/jsw_neosteel.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 210,
+    "minQty": 5,
+    "qtyStep": 5,
+    "variants": [
+      {
+        "value": "8mm",
+        "price": 60,
+        "mrp": 66
+      },
+      {
+        "value": "10mm",
+        "price": 58,
+        "mrp": 64
+      },
+      {
+        "value": "12mm",
+        "price": 57,
+        "mrp": 63
+      },
+      {
+        "value": "16mm",
+        "price": 57,
+        "mrp": 63
+      },
+      {
+        "value": "20mm",
+        "price": 58,
+        "mrp": 64
+      },
+      {
+        "value": "25mm",
+        "price": 59,
+        "mrp": 65
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_tmt_shyam",
+    "name": "Shyam Steel TMT Rebar",
+    "category": "Cement & Steel",
+    "brand": "Shyam Steel",
+    "sku": "TMT-SHYAM",
+    "price": 59,
+    "mrp": 65,
+    "stock": 700,
+    "rating": 4.5,
+    "ratingCount": 61,
+    "shortDesc": "High bond strength rebars with deep rib pattern. Min 5 pcs in multiples of 5.",
+    "longDesc": "Shyam Steel Fe 500D Flexi-Strong TMT Rebars are highly flexible and earthquake resistant, perfect for durable home construction.",
+    "tags": [
+      "steel",
+      "tmt",
+      "rebar",
+      "shyam"
+    ],
+    "images": [
+      "/assets/shyam_steel.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 180,
+    "minQty": 5,
+    "qtyStep": 5,
+    "variants": [
+      {
+        "value": "8mm",
+        "price": 59,
+        "mrp": 65
+      },
+      {
+        "value": "10mm",
+        "price": 57,
+        "mrp": 63
+      },
+      {
+        "value": "12mm",
+        "price": 56,
+        "mrp": 62
+      },
+      {
+        "value": "16mm",
+        "price": 56,
+        "mrp": 62
+      },
+      {
+        "value": "20mm",
+        "price": 57,
+        "mrp": 63
+      },
+      {
+        "value": "25mm",
+        "price": 58,
+        "mrp": 64
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_tmt_srmb",
+    "name": "SRMB 500+ SR TMT Bar",
+    "category": "Cement & Steel",
+    "brand": "SRMB Steel",
+    "sku": "TMT-SRMB-500",
+    "price": 58,
+    "mrp": 64,
+    "stock": 600,
+    "rating": 4.5,
+    "ratingCount": 49,
+    "shortDesc": "Tempcore treated premium steel rebar. Min 5 pcs in multiples of 5.",
+    "longDesc": "SRMB 500+ SR is a top-tier TMT bar featuring excellent bonding strength, weldability, and resistance to corrosion and earthquakes.",
+    "tags": [
+      "steel",
+      "tmt",
+      "rebar",
+      "srmb"
+    ],
+    "images": [
+      "/assets/srmb_steel.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 120,
+    "minQty": 5,
+    "qtyStep": 5,
+    "variants": [
+      {
+        "value": "8mm",
+        "price": 58,
+        "mrp": 64
+      },
+      {
+        "value": "10mm",
+        "price": 56,
+        "mrp": 62
+      },
+      {
+        "value": "12mm",
+        "price": 55,
+        "mrp": 61
+      },
+      {
+        "value": "16mm",
+        "price": 55,
+        "mrp": 61
+      },
+      {
+        "value": "20mm",
+        "price": 56,
+        "mrp": 62
+      },
+      {
+        "value": "25mm",
+        "price": 57,
+        "mrp": 63
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_cement_ambuja",
+    "name": "Ambuja Kawach Cement 50kg",
+    "category": "Cement & Steel",
+    "brand": "Ambuja",
+    "sku": "CEM-AMB-50",
+    "price": 410,
+    "mrp": 440,
+    "stock": 500,
+    "rating": 4.9,
+    "ratingCount": 168,
+    "shortDesc": "Water-repellent premium cement. Minimum purchase of 5 bags.",
+    "longDesc": "Ambuja Kawach is a premium water-repellent cement specifically designed to prevent water ingress and dampness in RCC structures.",
+    "tags": [
+      "cement",
+      "ambuja",
+      "waterproof"
+    ],
+    "images": [
+      "/assets/ambuja_cement.png"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "soldCount": 1150,
+    "minQty": 5,
+    "qtyStep": 1,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_cement_ultratech",
+    "name": "UltraTech PPC Cement 50kg",
+    "category": "Cement & Steel",
+    "brand": "UltraTech",
+    "sku": "CEM-PPC-50",
+    "price": 415,
+    "mrp": 445,
+    "stock": 420,
+    "rating": 4.8,
+    "ratingCount": 124,
+    "shortDesc": "Smooth setting Portland Pozzolana Cement. Minimum purchase of 5 bags.",
+    "longDesc": "UltraTech PPC Cement is a high-grade blended cement suitable for masonry, plastering, and casting, offering superior structural longevity.",
+    "tags": [
+      "cement",
+      "ultratech",
+      "ppc"
+    ],
+    "images": [
+      "/assets/ultratech_cement.png"
+    ],
+    "featured": true,
+    "bestSeller": false,
+    "soldCount": 860,
+    "minQty": 5,
+    "qtyStep": 1,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_cement_jsw",
+    "name": "JSW Compcem Cement 50kg",
+    "category": "Cement & Steel",
+    "brand": "JSW",
+    "sku": "CEM-JSW-50",
+    "price": 395,
+    "mrp": 425,
+    "stock": 350,
+    "rating": 4.6,
+    "ratingCount": 54,
+    "shortDesc": "Eco-friendly premium composite cement. Minimum purchase of 5 bags.",
+    "longDesc": "JSW Compcem is an advanced composite cement engineered for high strength, low chemical heat generation, and superb durability.",
+    "tags": [
+      "cement",
+      "jsw",
+      "composite"
+    ],
+    "images": [
+      "/assets/jsw_cement.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 320,
+    "minQty": 5,
+    "qtyStep": 1,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_cement_birla",
+    "name": "Birla Samrat PPC Cement 50kg",
+    "category": "Cement & Steel",
+    "brand": "Birla Corporation",
+    "sku": "CEM-BIRLA-50",
+    "price": 400,
+    "mrp": 430,
+    "stock": 300,
+    "rating": 4.7,
+    "ratingCount": 68,
+    "shortDesc": "Fly ash based Samrat PPC cement. Minimum purchase of 5 bags.",
+    "longDesc": "Birla Corporation Samrat is a premium fly ash blended Portland Pozzolana Cement providing high compressive strength and corrosion resistance.",
+    "tags": [
+      "cement",
+      "birla",
+      "samrat"
+    ],
+    "images": [
+      "/assets/birla_samrat.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 420,
+    "minQty": 5,
+    "qtyStep": 1,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_bricks_first",
+    "name": "First Class Red Clay Bricks",
+    "category": "Bricks & Aggregates",
+    "brand": "Local Kiln",
+    "sku": "BRK-FC-RED",
+    "price": 9.5,
+    "mrp": 11.0,
+    "stock": 15000,
+    "rating": 4.5,
+    "ratingCount": 82,
+    "shortDesc": "High-density red clay bricks. Sold in multiples of 100.",
+    "longDesc": "First-class kiln-baked red clay bricks. Standard sizing with low water absorption and high compressive strength. Min order 100 pcs, step 100.",
+    "tags": [
+      "bricks",
+      "red bricks",
+      "clay",
+      "masonry"
+    ],
+    "images": [
+      "/assets/red-bricks.webp"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "soldCount": 24000,
+    "minQty": 100,
+    "qtyStep": 100,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_bricks_flyash",
+    "name": "Eco Fly Ash Bricks",
+    "category": "Bricks & Aggregates",
+    "brand": "Local Kiln",
+    "sku": "BRK-FA-GREY",
+    "price": 8.5,
+    "mrp": 10.0,
+    "stock": 20000,
+    "rating": 4.6,
+    "ratingCount": 43,
+    "shortDesc": "Uniform sizing, durable fly ash bricks. Sold in multiples of 100.",
+    "longDesc": "Eco-friendly, cement-bonded fly ash bricks. Extremely uniform size reducing mortar cost, higher strength, and thermal insulation. Min order 100 pcs, step 100.",
+    "tags": [
+      "bricks",
+      "fly ash",
+      "flyash",
+      "eco"
+    ],
+    "images": [
+      "/assets/fly_ash_bricks.png"
+    ],
+    "featured": false,
+    "bestSeller": true,
+    "soldCount": 18000,
+    "minQty": 100,
+    "qtyStep": 100,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_river_sand",
+    "name": "Washed River Sand",
+    "category": "Bricks & Aggregates",
+    "brand": "Local Quarry",
+    "sku": "SAND-RIVER",
+    "price": 2100,
+    "mrp": 2300,
+    "stock": 150,
+    "rating": 4.4,
+    "ratingCount": 32,
+    "shortDesc": "Fine grain washed river sand for masonry and plastering. Sold in CFT.",
+    "longDesc": "Triple-washed river sand, free from silt and organic impurities, perfect for plastering and concrete mixing.",
+    "tags": [
+      "sand",
+      "aggregates",
+      "river sand"
+    ],
+    "images": [
+      "/assets/sand-stone.jpg"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 410,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_berger_silk",
+    "name": "Berger Silk Luxury Emulsion",
+    "category": "Paints",
+    "brand": "Berger",
+    "sku": "PNT-BG-SILK",
+    "price": 2600,
+    "mrp": 2900,
+    "stock": 120,
+    "rating": 4.8,
+    "ratingCount": 92,
+    "shortDesc": "Luxury interior paint with rich sheen finish. Multiple sizes.",
+    "longDesc": "Berger Silk Luxury Emulsion is premium interior wall paint offering high washability, excellent stain resistance, and a silky smooth finish.",
+    "tags": [
+      "paint",
+      "berger",
+      "interior",
+      "silk"
+    ],
+    "images": [
+      "/assets/paint-berger.jpg"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "soldCount": 280,
+    "variants": [
+      {
+        "value": "1 Litre",
+        "price": 320,
+        "mrp": 360
+      },
+      {
+        "value": "4 Litres",
+        "price": 1150,
+        "mrp": 1300
+      },
+      {
+        "value": "10 Litres",
+        "price": 2600,
+        "mrp": 2900
+      },
+      {
+        "value": "20 Litres",
+        "price": 4850,
+        "mrp": 5400
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_goldmedal_winzo",
+    "name": "Goldmedal Winzo BLDC Fan",
+    "category": "Electrical",
+    "brand": "Goldmedal",
+    "sku": "FAN-GM-WINZO",
+    "price": 3450,
+    "mrp": 3950,
+    "stock": 80,
+    "rating": 4.7,
+    "ratingCount": 54,
+    "shortDesc": "Energy-saving BLDC ceiling fan with remote. 1200mm sweep.",
+    "longDesc": "Goldmedal Winzo BLDC Fan is a super decorative 5-star fan saving up to 60% energy. Quiet motor, metallic colors, includes RF remote.",
+    "tags": [
+      "fan",
+      "bldc",
+      "goldmedal",
+      "electrical"
+    ],
+    "images": [
+      "/assets/goldmedal_fan.png"
+    ],
+    "featured": true,
+    "bestSeller": false,
+    "soldCount": 110,
+    "variants": [
+      {
+        "value": "Metallic Grey",
+        "price": 3450,
+        "mrp": 3950
+      },
+      {
+        "value": "Metallic Wine",
+        "price": 3550,
+        "mrp": 4050
+      },
+      {
+        "value": "Natural White",
+        "price": 3450,
+        "mrp": 3950
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_goldmedal_spacio",
+    "name": "Goldmedal Spacio BLDC Fan",
+    "category": "Electrical",
+    "brand": "Goldmedal",
+    "sku": "FAN-GM-SPACIO",
+    "price": 3600,
+    "mrp": 4100,
+    "stock": 65,
+    "rating": 4.8,
+    "ratingCount": 38,
+    "shortDesc": "Premium matte finish BLDC fan with smart remote control.",
+    "longDesc": "Goldmedal Spacio BLDC decorative ceiling fan combines whisper-quiet performance with refined matte aesthetics and integrated LED indicator.",
+    "tags": [
+      "fan",
+      "bldc",
+      "goldmedal",
+      "premium"
+    ],
+    "images": [
+      "/assets/goldmedal_fan.png"
+    ],
+    "featured": false,
+    "bestSeller": true,
+    "soldCount": 95,
+    "variants": [
+      {
+        "value": "Snow White",
+        "price": 3600,
+        "mrp": 4100
+      },
+      {
+        "value": "Space Blue",
+        "price": 3700,
+        "mrp": 4200
+      },
+      {
+        "value": "Ash Grey",
+        "price": 3600,
+        "mrp": 4100
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_goldmedal_wire",
+    "name": "Goldmedal Copper Wire (90m)",
+    "category": "Electrical",
+    "brand": "Goldmedal",
+    "sku": "WIRE-GM-FR",
+    "price": 980,
+    "mrp": 1100,
+    "stock": 250,
+    "rating": 4.7,
+    "ratingCount": 115,
+    "shortDesc": "Flame Retardant (FR) copper wire coil. Available in various cross sections.",
+    "longDesc": "Goldmedal FR PVC insulated copper conductor wire, ISI marked and manufactured to international standards for safety and conductivity.",
+    "tags": [
+      "wire",
+      "copper",
+      "electrical",
+      "goldmedal"
+    ],
+    "images": [
+      "/assets/wire_coil.png"
+    ],
+    "featured": false,
+    "bestSeller": true,
+    "soldCount": 420,
+    "variants": [
+      {
+        "value": "1.0 sqmm",
+        "price": 980,
+        "mrp": 1100
+      },
+      {
+        "value": "1.5 sqmm",
+        "price": 1450,
+        "mrp": 1650
+      },
+      {
+        "value": "2.5 sqmm",
+        "price": 2250,
+        "mrp": 2550
+      },
+      {
+        "value": "4.0 sqmm",
+        "price": 3400,
+        "mrp": 3800
+      },
+      {
+        "value": "6.0 sqmm",
+        "price": 5100,
+        "mrp": 5700
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_utkarsh_pipe",
+    "name": "Utkarsh CPVC Pipe SDR-11 (3m)",
+    "category": "Plumbing",
+    "brand": "Utkarsh",
+    "sku": "PIPE-UTK-CPVC",
+    "price": 186,
+    "mrp": 220,
+    "stock": 400,
+    "rating": 4.6,
+    "ratingCount": 59,
+    "shortDesc": "Lead-free hot & cold CPVC plumbing pipe SDR-11. 3 meter length.",
+    "longDesc": "Utkarsh India premium lead-free CPVC plumbing pipe. Withstands temperature up to 93\u00b0C, 50 years manufacture guarantee, suitable for food transportation.",
+    "tags": [
+      "pipe",
+      "cpvc",
+      "plumbing",
+      "utkarsh"
+    ],
+    "images": [
+      "/assets/pvc_pipe.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 350,
+    "variants": [
+      {
+        "value": "1/2 inch",
+        "price": 186,
+        "mrp": 220
+      },
+      {
+        "value": "3/4 inch",
+        "price": 276,
+        "mrp": 320
+      },
+      {
+        "value": "1 inch",
+        "price": 427,
+        "mrp": 490
+      },
+      {
+        "value": "1-1/4 inch",
+        "price": 624,
+        "mrp": 710
+      },
+      {
+        "value": "1-1/2 inch",
+        "price": 879,
+        "mrp": 990
+      },
+      {
+        "value": "2 inch",
+        "price": 1474,
+        "mrp": 1650
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_pritam_norah",
+    "name": "Pritam Norah Modular Switch",
+    "category": "Electrical",
+    "brand": "Pritam",
+    "sku": "SW-PRITAM-NORAH",
+    "price": 65,
+    "mrp": 75,
+    "stock": 800,
+    "rating": 4.8,
+    "ratingCount": 110,
+    "shortDesc": "Premium designer modular switches from Pritam Norah series.",
+    "longDesc": "Pritam Norah Modular Switches are luxury designer switches featuring sleek profiles, chrome details, and high-durability silver contacts.",
+    "tags": [
+      "switch",
+      "modular",
+      "pritam",
+      "norah",
+      "electrical"
+    ],
+    "images": [
+      "/assets/roma_switch.png"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "soldCount": 940,
+    "variants": [
+      {
+        "value": "6A One-Way Switch",
+        "price": 65,
+        "mrp": 75
+      },
+      {
+        "value": "16A One-Way Switch",
+        "price": 110,
+        "mrp": 130
+      },
+      {
+        "value": "6A Two-Way Switch",
+        "price": 85,
+        "mrp": 100
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_pritam_led",
+    "name": "Pritam LED Slim Panel Light",
+    "category": "Electrical",
+    "brand": "Pritam",
+    "sku": "LED-PRITAM-PANEL",
+    "price": 280,
+    "mrp": 350,
+    "stock": 300,
+    "rating": 4.6,
+    "ratingCount": 42,
+    "shortDesc": "Modern slim recessed LED panel light. Cool white and Warm options.",
+    "longDesc": "Pritam slim LED recessed ceiling panel light. Energy saving, low heat generation, flicker-free driver, and uniform lighting distribution.",
+    "tags": [
+      "led",
+      "panel light",
+      "pritam",
+      "lighting"
+    ],
+    "images": [
+      "/assets/pritam_led_panel.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 250,
+    "variants": [
+      {
+        "value": "12W Cool White",
+        "price": 280,
+        "mrp": 350
+      },
+      {
+        "value": "12W Warm White",
+        "price": 280,
+        "mrp": 350
+      },
+      {
+        "value": "18W Cool White",
+        "price": 380,
+        "mrp": 480
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_pritam_dboard",
+    "name": "Pritam D-Board Switchgear Box",
+    "category": "Electrical",
+    "brand": "Pritam",
+    "sku": "SG-PRITAM-DB",
+    "price": 850,
+    "mrp": 1100,
+    "stock": 50,
+    "rating": 4.7,
+    "ratingCount": 27,
+    "shortDesc": "Double door metal distribution board for safe circuit routing.",
+    "longDesc": "Pritam distribution board switchgear cabinet features dynamic structural design, double door metal protection, dustproof seals, and standard DIN-rail.",
+    "tags": [
+      "distribution box",
+      "mcb",
+      "switchgear",
+      "pritam"
+    ],
+    "images": [
+      "/assets/pritam_dboard.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 40,
+    "variants": [
+      {
+        "value": "8-Way Double Door",
+        "price": 850,
+        "mrp": 1100
+      },
+      {
+        "value": "12-Way Double Door",
+        "price": 1250,
+        "mrp": 1600
+      }
+    ],
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-21T10:00:00.000Z"
+  },
+  {
+    "id": "prod_power_tool",
+    "name": "Cordless Drill 12V",
+    "category": "Tools",
+    "brand": "Bosch",
+    "sku": "DRILL-12V",
+    "price": 3490,
+    "mrp": 3990,
+    "stock": 40,
+    "rating": 4.7,
+    "ratingCount": 18,
+    "shortDesc": "Compact with dual speed.",
+    "longDesc": "Lightweight drill for on-site drilling and fastening.",
+    "tags": [
+      "tools",
+      "drill"
+    ],
+    "images": [
+      "/assets/cordless_drill.png"
+    ],
+    "featured": true,
+    "bestSeller": false,
+    "soldCount": 78,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-14T10:00:00.000Z"
+  },
+  {
+    "id": "prod_safety_helmet",
+    "name": "Safety Helmet ISI Marked",
+    "category": "Safety",
+    "brand": "Karam",
+    "sku": "SAFE-HELMET",
+    "price": 280,
+    "mrp": 320,
+    "stock": 260,
+    "rating": 4.1,
+    "ratingCount": 21,
+    "shortDesc": "Comfort fit suspension.",
+    "longDesc": "Durable helmet with adjustable suspension for long wear.",
+    "tags": [
+      "safety",
+      "helmet"
+    ],
+    "images": [
+      "/assets/safety_helmet.png"
+    ],
+    "featured": false,
+    "bestSeller": false,
+    "soldCount": 140,
+    "createdAt": "2026-05-14T10:00:00.000Z",
+    "updatedAt": "2026-05-14T10:00:00.000Z"
+  }
 ];

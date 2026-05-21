@@ -57,61 +57,299 @@ function waUrl(num, text=''){
 }
 
 // ── CART ───────────────────────────────────────────────
-const getCart = ()=>store.get('cart',[]);
-function setCart(cart){
-  store.set('cart',cart);
+const getCart = () => store.get('cart', []);
+function setCart(cart) {
+  store.set('cart', cart);
   updateCartBadge();
   renderCartDrawer();
+  if (document.body.dataset.page === 'checkout') {
+    initCheckout();
+  }
 }
-function addToCart(id, qty=1){
-  const p = S.products.find(x=>x.id===id);
-  if(!p || Number(p.stock||0)<=0){ toast('Out of stock','error'); return; }
+function updateCartBadge() {
   const cart = getCart();
-  const ex = cart.find(i=>i.productId===id);
-  if(ex) ex.qty=Math.min(ex.qty+qty, Number(p.stock||99));
-  else cart.push({productId:id,qty});
+  const count = cart.length;
+  document.querySelectorAll('#cart-count, #cart-count-drawer').forEach(el => {
+    if (el) el.textContent = count;
+  });
+}
+function addToCart(productId, qty = null, triggerEl = null, variant = null) {
+  const p = S.products.find(x => x.id === productId);
+  if (!p) return;
+
+  if (p.variants && p.variants.length > 0 && !variant) {
+    openQuickView(productId);
+    return;
+  }
+
+  const minQty = typeof p.minQty === 'number' ? p.minQty : 1;
+  const qtyStep = typeof p.qtyStep === 'number' ? p.qtyStep : 1;
+  const targetQty = qty !== null ? Number(qty) : minQty;
+
+  if (targetQty < minQty) {
+    toast(`Minimum quantity for ${p.name} is ${minQty}`, 'warning');
+    return;
+  }
+  if (targetQty % qtyStep !== 0) {
+    toast(`Quantity for ${p.name} must be in multiples of ${qtyStep}`, 'warning');
+    return;
+  }
+
+  const cart = getCart();
+  const existing = cart.find(item => item.productId === productId && (item.variant || '') === (variant || ''));
+  const currentQty = existing ? existing.qty : 0;
+  const nextQty = currentQty + targetQty;
+
+  const stock = typeof p.stock === 'number' ? p.stock : 999999;
+  if (nextQty > stock) {
+    toast(`Cannot add more. Only ${stock} units available.`, 'warning');
+    return;
+  }
+
+  if (existing) {
+    existing.qty = nextQty;
+  } else {
+    cart.push({ productId, variant: variant || null, qty: nextQty });
+  }
+
   setCart(cart);
-  toast(`${p.name} added to cart!`,'success');
-  openDrawer('cart-drawer');
+  toast(`${p.name}${variant ? ` (${variant})` : ''} added to cart!`, 'success');
+
+  if (triggerEl) {
+    animateCartFly(triggerEl);
+  }
 }
-function updateCartBadge(){
-  const cart=getCart();
-  const total=cart.reduce((s,i)=>s+i.qty,0);
-  document.querySelectorAll('#cart-count,#cart-count-drawer').forEach(el=>{ if(el) el.textContent=total; });
+function animateCartFly(el) {
+  const cartBtn = document.getElementById('cart-btn');
+  if (!el || !cartBtn) return;
+  const rect = el.getBoundingClientRect();
+  const cartRect = cartBtn.getBoundingClientRect();
+  
+  const fly = document.createElement('div');
+  fly.className = 'cart-fly-item';
+  fly.style.left = `${rect.left}px`;
+  fly.style.top = `${rect.top}px`;
+  document.body.appendChild(fly);
+  
+  // Trigger reflow
+  fly.offsetWidth;
+  
+  const dX = cartRect.left - rect.left;
+  const dY = cartRect.top - rect.top;
+  
+  fly.style.transform = `translate(${dX}px, ${dY}px) scale(0.2)`;
+  fly.style.opacity = '0';
+  
+  setTimeout(() => fly.remove(), 800);
 }
-function renderCartDrawer(){
-  const el=document.getElementById('cart-items');
-  const sub=document.getElementById('cart-subtotal');
-  const tot=document.getElementById('cart-total');
-  const del=document.getElementById('cart-delivery');
-  const cnt=document.getElementById('cart-count-drawer');
-  if(!el) return;
-  const cart=getCart();
-  if(cnt) cnt.textContent=cart.reduce((s,i)=>s+i.qty,0);
-  if(!cart.length){ el.innerHTML='<div class="empty-state"><div class="empty-ico">🛒</div><p>Your cart is empty.</p><a href="index.html#shop" class="btn btn-primary btn-sm" style="margin-top:.8rem">Browse Products</a></div>'; if(sub)sub.textContent=Rs(0); if(tot)tot.textContent=Rs(0); return; }
-  const items=cart.map(i=>{ const p=S.products.find(x=>x.id===i.productId)||{}; return {...i,name:p.name||'Item',price:p.price||0,img:(p.images&&p.images[0])||PLACEHOLDER}; });
-  const subtotal=items.reduce((s,i)=>s+i.price*i.qty,0);
-  const ship=S.settings.shipping||{};
-  const fee=ship.freeAbove>0&&subtotal>=ship.freeAbove?0:(ship.fee||0);
-  if(sub) sub.textContent=Rs(subtotal);
-  if(del) del.textContent=fee>0?Rs(fee):'FREE';
-  if(tot) tot.textContent=Rs(subtotal+fee);
-  el.innerHTML=items.map(i=>`
-    <div class="drawer-item">
-      <img class="drawer-item-img" src="${i.img}" alt="${i.name}" loading="lazy"/>
+function renderCartDrawer() {
+  const el = document.getElementById('cart-items');
+  if (!el) return;
+  const cart = getCart();
+  
+  if (!cart.length) {
+    el.innerHTML = `<div class="empty-state">
+      <div class="empty-ico">🛒</div>
+      <p>Your cart is empty.</p>
+      <a href="index.html" class="btn btn-primary btn-sm" style="margin-top:.8rem">Browse Products</a>
+    </div>`;
+    document.getElementById('cart-subtotal').textContent = Rs(0);
+    document.getElementById('cart-delivery').textContent = Rs(0);
+    document.getElementById('cart-total').textContent = Rs(0);
+    return;
+  }
+  
+  let subtotal = 0;
+  el.innerHTML = cart.map(item => {
+    const p = S.products.find(x => x.id === item.productId) || {};
+    let price = p.price || 0;
+    let mrp = p.mrp || p.price || 0;
+    
+    if (item.variant && p.variants) {
+      const v = p.variants.find(x => x.value === item.variant);
+      if (v) {
+        price = v.price;
+        mrp = v.mrp || v.price;
+      }
+    }
+    
+    const lineTotal = price * item.qty;
+    subtotal += lineTotal;
+    
+    const img = (p.images && p.images[0]) || PLACEHOLDER;
+    const minQty = typeof p.minQty === 'number' ? p.minQty : 1;
+    const qtyStep = typeof p.qtyStep === 'number' ? p.qtyStep : 1;
+    const stock = typeof p.stock === 'number' ? p.stock : 999999;
+    
+    const isMin = item.qty <= minQty;
+    const isMax = item.qty >= stock;
+    
+    return `
+      <div class="drawer-item">
+        <img class="drawer-item-img" src="${img}" alt="${p.name || ''}"/>
+        <div style="flex:1">
+          <a href="product.html?id=${item.productId}" class="drawer-item-name">
+            ${p.name || 'Item'}${item.variant ? ` (${item.variant})` : ''}
+          </a>
+          <div class="drawer-item-price">${Rs(price)} <span style="font-size:0.8rem;color:var(--muted)">x ${item.qty}</span></div>
+          <div class="qty-control" data-id="${item.productId}" data-variant="${item.variant || ''}" style="display:flex;align-items:center;gap:.6rem;margin-top:.4rem">
+            <div class="qty-stepper" style="padding:0.1rem 0.3rem">
+              <button class="qty-step-btn" data-action="dec" ${isMin ? 'disabled' : ''}>−</button>
+              <span class="qty-step-val">${item.qty}</span>
+              <button class="qty-step-btn" data-action="inc" ${isMax ? 'disabled' : ''}>+</button>
+            </div>
+            <button class="btn btn-ghost btn-sm" data-action="remove" style="color:var(--danger);padding:0.2rem 0.5rem">Remove</button>
+          </div>
+        </div>
+        <div style="font-weight:600;font-size:0.9rem">${Rs(lineTotal)}</div>
+      </div>
+    `;
+  }).join('');
+  
+  const ship = S.settings.shipping || { fee: 150, freeAbove: 5000 };
+  const fee = ship.freeAbove > 0 && subtotal >= ship.freeAbove ? 0 : (ship.fee || 0);
+  
+  document.getElementById('cart-subtotal').textContent = Rs(subtotal);
+  document.getElementById('cart-delivery').textContent = fee > 0 ? Rs(fee) : 'FREE';
+  document.getElementById('cart-total').textContent = Rs(subtotal + fee);
+}
+async function openQuickView(productId) {
+  const p = S.products.find(x => x.id === productId);
+  if (!p) return;
+  
+  const modal = document.getElementById('quickview-modal');
+  const body = document.getElementById('qv-body');
+  const title = document.getElementById('qv-title');
+  if (!modal || !body) return;
+  
+  title.textContent = p.name;
+  
+  const img = (p.images && p.images[0]) || PLACEHOLDER;
+  const inStock = Number(p.stock || 0) > 0;
+  const minQty = typeof p.minQty === 'number' ? p.minQty : 1;
+  const qtyStep = typeof p.qtyStep === 'number' ? p.qtyStep : 1;
+  const stock = typeof p.stock === 'number' ? p.stock : 999999;
+  
+  let initialVariant = '';
+  let initialPrice = p.price;
+  let initialMrp = p.mrp || p.price;
+  
+  let variantSelectHtml = '';
+  if (p.variants && p.variants.length > 0) {
+    initialVariant = p.variants[0].value;
+    initialPrice = p.variants[0].price;
+    initialMrp = p.variants[0].mrp || p.variants[0].price;
+    
+    variantSelectHtml = `
+      <div style="margin-bottom:1rem">
+        <label class="qty-label" style="display:block;margin-bottom:0.4rem">Select Option:</label>
+        <select class="variant-select" id="qv-variant-select" style="width:100%;padding:0.6rem;border-radius:var(--radius-md);border:1px solid var(--edge);background:var(--card);color:var(--text);font-weight:500">
+          ${p.variants.map(v => `<option value="${v.value}" data-price="${v.price}" data-mrp="${v.mrp || v.price}">${v.value} — ${Rs(v.price)}</option>`).join('')}
+        </select>
+      </div>
+    `;
+  }
+  
+  const discount = initialMrp > initialPrice ? Math.round((initialMrp - initialPrice) / initialMrp * 100) : 0;
+  
+  body.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:1.5rem;align-items:start">
+      <div style="border-radius:var(--radius-lg);overflow:hidden;background:var(--edge);display:flex;align-items:center;justify-content:center;height:240px">
+        <img id="qv-img" src="${img}" alt="${p.name}" style="max-height:100%;max-width:100%;object-fit:contain"/>
+      </div>
       <div>
-        <a href="product.html?id=${i.productId}" class="drawer-item-name">${i.name}</a>
-        <div class="drawer-item-price">${Rs(i.price)}</div>
-        <div class="qty-control" data-id="${i.productId}">
-          <button class="qty-btn" data-action="dec">−</button>
-          <span class="qty-val">${i.qty}</span>
-          <button class="qty-btn" data-action="inc">+</button>
-          <button class="qty-btn" data-action="remove" style="font-size:.7rem;padding:.25rem .45rem">🗑</button>
+        <div style="font-size:0.85rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.2rem">${p.brand || ''}</div>
+        <h4 style="margin:0 0 0.5rem 0;font-size:1.2rem;font-weight:700">${p.name}</h4>
+        
+        <div style="margin-bottom:1rem">
+          <div style="display:flex;align-items:baseline;gap:0.6rem;flex-wrap:wrap">
+            <span id="qv-price" style="font-size:1.4rem;font-weight:800;color:var(--primary)">${Rs(initialPrice)}</span>
+            <span id="qv-mrp" style="font-size:1rem;color:var(--muted);text-decoration:line-through;display:${discount > 0 ? 'inline' : 'none'}">${Rs(initialMrp)}</span>
+            <span id="qv-off" class="badge badge-sale" style="display:${discount > 0 ? 'inline-block' : 'none'}">${discount}% OFF</span>
+          </div>
+          <div id="qv-stock-status" style="font-size:0.8rem;margin-top:0.4rem;font-weight:600;color:${inStock ? 'var(--success)' : 'var(--danger)'}">
+            ${inStock ? `✓ In Stock (${p.stock} units)` : '✕ Out of Stock'}
+          </div>
+        </div>
+        
+        ${variantSelectHtml}
+        
+        <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem">
+          <span class="qty-label">Qty:</span>
+          <div class="qty-stepper">
+            <button class="qty-step-btn" id="qv-qty-dec">−</button>
+            <span class="qty-step-val" id="qv-qty-val">${minQty}</span>
+            <button class="qty-step-btn" id="qv-qty-inc">+</button>
+          </div>
+          <span style="font-size:0.8rem;color:var(--muted)">Min: ${minQty}, Step: ${qtyStep}</span>
+        </div>
+        
+        <div style="display:flex;gap:0.6rem">
+          <button class="btn btn-primary" id="qv-add-btn" style="flex:1" ${inStock ? '' : 'disabled'}>🛒 Add to Cart</button>
+          <button class="btn btn-outline btn-icon" id="qv-wish-btn" style="font-size:1.1rem">♥</button>
         </div>
       </div>
-      <div style="font-size:.88rem;font-weight:700">${Rs(i.price*i.qty)}</div>
     </div>
-  `).join('');
+  `;
+  
+  let currentQty = minQty;
+  let selectedVariant = initialVariant;
+  
+  const qvPrice = document.getElementById('qv-price');
+  const qvMrp = document.getElementById('qv-mrp');
+  const qvOff = document.getElementById('qv-off');
+  const qvQtyVal = document.getElementById('qv-qty-val');
+  const variantSelect = document.getElementById('qv-variant-select');
+  
+  if (variantSelect) {
+    variantSelect.addEventListener('change', e => {
+      selectedVariant = e.target.value;
+      const opt = e.target.options[e.target.selectedIndex];
+      const pr = Number(opt.dataset.price);
+      const mr = Number(opt.dataset.mrp);
+      
+      qvPrice.textContent = Rs(pr);
+      if (mr > pr) {
+        qvMrp.textContent = Rs(mr);
+        qvMrp.style.display = 'inline';
+        const discPct = Math.round((mr - pr) / mr * 100);
+        qvOff.textContent = `${discPct}% OFF`;
+        qvOff.style.display = 'inline-block';
+      } else {
+        qvMrp.style.display = 'none';
+        qvOff.style.display = 'none';
+      }
+    });
+  }
+  
+  document.getElementById('qv-qty-dec')?.addEventListener('click', () => {
+    currentQty = Math.max(minQty, currentQty - qtyStep);
+    qvQtyVal.textContent = currentQty;
+  });
+  
+  document.getElementById('qv-qty-inc')?.addEventListener('click', () => {
+    currentQty = Math.min(stock, currentQty + qtyStep);
+    qvQtyVal.textContent = currentQty;
+  });
+  
+  document.getElementById('qv-add-btn')?.addEventListener('click', e => {
+    addToCart(p.id, currentQty, e.target, selectedVariant);
+    closeModal('quickview-modal');
+  });
+  
+  const wishBtn = document.getElementById('qv-wish-btn');
+  if (wishBtn) {
+    const wishes = getWish();
+    wishBtn.textContent = wishes.includes(p.id) ? '♥' : '♡';
+    wishBtn.addEventListener('click', () => {
+      toggleWish(p.id);
+      const nowWishes = getWish();
+      wishBtn.textContent = nowWishes.includes(p.id) ? '♥' : '♡';
+    });
+  }
+  
+  modal.classList.add('show');
+  document.getElementById('overlay')?.classList.add('show');
 }
 
 // ── WISHLIST ───────────────────────────────────────────
@@ -304,6 +542,8 @@ function applyFilters(){
   else f.sort((a,b)=>(b.soldCount||0)-(a.soldCount||0));
   S.filtered=f; S.page=1;
   renderProducts(); renderActiveChips(); renderResultsCount();
+  updateFilterSidebarCounts();
+  syncFiltersUI();
 }
 
 function renderProducts(){
@@ -334,12 +574,59 @@ function renderActiveChips(){
   S.filters.brands.forEach(v=>chips.push([`Brand: ${v}`,()=>{ S.filters.brands=S.filters.brands.filter(x=>x!==v); applyFilters(); }]));
   if(S.filters.minPrice!==null) chips.push([`Min: ${Rs(S.filters.minPrice)}`,()=>{ S.filters.minPrice=null; applyFilters(); }]);
   if(S.filters.maxPrice!==null) chips.push([`Max: ${Rs(S.filters.maxPrice)}`,()=>{ S.filters.maxPrice=null; applyFilters(); }]);
-  if(S.filters.featured) chips.push(['Featured',()=>{ S.filters.featured=false; document.getElementById('filter-featured').checked=false; applyFilters(); }]);
-  if(S.filters.bestSeller) chips.push(['Best Sellers',()=>{ S.filters.bestSeller=false; document.getElementById('filter-bestseller').checked=false; applyFilters(); }]);
-  if(S.filters.inStock) chips.push(['In Stock',()=>{ S.filters.inStock=false; document.getElementById('filter-instock').checked=false; applyFilters(); }]);
-  if(S.filters.onSale) chips.push(['On Sale',()=>{ S.filters.onSale=false; document.getElementById('filter-onsale').checked=false; applyFilters(); }]);
+  if(S.filters.featured) chips.push(['Featured',()=>{ S.filters.featured=false; applyFilters(); }]);
+  if(S.filters.bestSeller) chips.push(['Best Sellers',()=>{ S.filters.bestSeller=false; applyFilters(); }]);
+  if(S.filters.inStock) chips.push(['In Stock',()=>{ S.filters.inStock=false; applyFilters(); }]);
+  if(S.filters.onSale) chips.push(['On Sale',()=>{ S.filters.onSale=false; applyFilters(); }]);
   c.innerHTML=chips.map(([l],i)=>`<span class="active-chip">${l}<button type="button" data-chip="${i}">✕</button></span>`).join('');
   c.querySelectorAll('[data-chip]').forEach(btn=>{ const idx=Number(btn.dataset.chip); btn.addEventListener('click',chips[idx][1]); });
+}
+
+function getCategoryFilterCount(c){
+  const {search,brands,minPrice,maxPrice,featured,bestSeller,inStock,onSale}=S.filters;
+  const q=search.toLowerCase();
+  return S.products.filter(p=>{
+    const hay=`${p.name} ${p.brand} ${p.category} ${(p.tags||[]).join(' ')}`.toLowerCase();
+    const disc=p.mrp&&p.mrp>p.price;
+    return (!q||hay.includes(q))
+      &&(p.category===c)
+      &&(!brands.length||brands.includes(p.brand))
+      &&(minPrice===null||p.price>=minPrice)
+      &&(maxPrice===null||p.price<=maxPrice)
+      &&(!featured||p.featured)
+      &&(!bestSeller||p.bestSeller)
+      &&(!inStock||Number(p.stock||0)>0)
+      &&(!onSale||disc);
+  }).length;
+}
+
+function getBrandFilterCount(b){
+  const {search,categories,minPrice,maxPrice,featured,bestSeller,inStock,onSale}=S.filters;
+  const q=search.toLowerCase();
+  return S.products.filter(p=>{
+    const hay=`${p.name} ${p.brand} ${p.category} ${(p.tags||[]).join(' ')}`.toLowerCase();
+    const disc=p.mrp&&p.mrp>p.price;
+    return (!q||hay.includes(q))
+      &&(!categories.length||categories.includes(p.category))
+      &&(p.brand===b)
+      &&(minPrice===null||p.price>=minPrice)
+      &&(maxPrice===null||p.price<=maxPrice)
+      &&(!featured||p.featured)
+      &&(!bestSeller||p.bestSeller)
+      &&(!inStock||Number(p.stock||0)>0)
+      &&(!onSale||disc);
+  }).length;
+}
+
+function updateFilterSidebarCounts(){
+  document.querySelectorAll('[data-count-cat]').forEach(el=>{
+    const c=el.dataset.countCat;
+    el.textContent=getCategoryFilterCount(c);
+  });
+  document.querySelectorAll('[data-count-brand]').forEach(el=>{
+    const b=el.dataset.countBrand;
+    el.textContent=getBrandFilterCount(b);
+  });
 }
 
 function renderFilterSidebar(){
@@ -347,16 +634,22 @@ function renderFilterSidebar(){
   const brands=[...new Set(S.products.map(p=>p.brand).filter(Boolean))];
   const cEl=document.getElementById('filter-categories');
   const bEl=document.getElementById('filter-brands');
-  if(cEl) cEl.innerHTML=cats.map(c=>{ const cnt=S.products.filter(p=>p.category===c).length; return `<label class="filter-option"><input type="checkbox" value="${c}" ${S.filters.categories.includes(c)?'checked':''}/><span>${c}</span><span class="filter-option-count">${cnt}</span></label>`; }).join('');
-  if(bEl) bEl.innerHTML=brands.map(b=>{ const cnt=S.products.filter(p=>p.brand===b).length; return `<label class="filter-option"><input type="checkbox" value="${b}" ${S.filters.brands.includes(b)?'checked':''}/><span>${b}</span><span class="filter-option-count">${cnt}</span></label>`; }).join('');
+  if(cEl) cEl.innerHTML=cats.map(c=>{ return `<label class="filter-option"><input type="checkbox" value="${c}" ${S.filters.categories.includes(c)?'checked':''}/><span>${c}</span><span class="filter-option-count" data-count-cat="${c}">0</span></label>`; }).join('');
+  if(bEl) bEl.innerHTML=brands.map(b=>{ return `<label class="filter-option"><input type="checkbox" value="${b}" ${S.filters.brands.includes(b)?'checked':''}/><span>${b}</span><span class="filter-option-count" data-count-brand="${b}">0</span></label>`; }).join('');
   cEl?.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{ if(inp.checked) S.filters.categories.push(inp.value); else S.filters.categories=S.filters.categories.filter(x=>x!==inp.value); applyFilters(); }));
   bEl?.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{ if(inp.checked) S.filters.brands.push(inp.value); else S.filters.brands=S.filters.brands.filter(x=>x!==inp.value); applyFilters(); }));
 }
 
 function updateCategoryCounts(){
+  document.querySelectorAll('.cat-card-count').forEach(el => { el.textContent = '0 items'; });
   const counts={};
   S.products.forEach(p=>{ if(p.category) counts[p.category]=(counts[p.category]||0)+1; });
   Object.entries(counts).forEach(([cat,cnt])=>{
+    const cardEl = document.querySelector(`.cat-card[data-cat="${cat}"]`);
+    if (cardEl) {
+      const countEl = cardEl.querySelector('.cat-card-count');
+      if (countEl) { countEl.textContent = `${cnt} items`; return; }
+    }
     const elId='cnt-'+cat.replace(/[^a-z0-9]/gi,'');
     const el=document.getElementById(elId)||document.getElementById('cnt-'+cat.split(' ')[0]);
     if(el) el.textContent=`${cnt} items`;
@@ -365,12 +658,70 @@ function updateCategoryCounts(){
   if(statEl) statEl.textContent=S.products.length>0?`${S.products.length}+`:'500+';
 }
 
+function syncFiltersUI(){
+  const cats=S.filters.categories||[];
+  const brands=S.filters.brands||[];
+
+  // 1. Sync search input
+  const searchInput=document.getElementById('search-input');
+  if(searchInput&&searchInput.value!==S.filters.search){
+    searchInput.value=S.filters.search||'';
+  }
+
+  // 2. Sync search category dropdown
+  const searchCatDropdown=document.getElementById('search-cat-filter');
+  if(searchCatDropdown){
+    if(cats.length===1) searchCatDropdown.value=cats[0];
+    else searchCatDropdown.value='';
+  }
+
+  // 3. Sync header category navigation links
+  document.querySelectorAll('.cat-nav-link').forEach(link=>{
+    const linkCat=link.dataset.cat||'';
+    if(cats.length===1&&cats[0]===linkCat) link.classList.add('active');
+    else if(cats.length===0&&linkCat==='') link.classList.add('active');
+    else link.classList.remove('active');
+  });
+
+  // 4. Sync category checkboxes in sidebar
+  const cEl=document.getElementById('filter-categories');
+  if(cEl){
+    cEl.querySelectorAll('input[type="checkbox"]').forEach(inp=>{
+      inp.checked=cats.includes(inp.value);
+    });
+  }
+
+  // 5. Sync brand checkboxes in sidebar
+  const bEl=document.getElementById('filter-brands');
+  if(bEl){
+    bEl.querySelectorAll('input[type="checkbox"]').forEach(inp=>{
+      inp.checked=brands.includes(inp.value);
+    });
+  }
+
+  // 6. Sync price inputs
+  const minPriceInput=document.getElementById('min-price');
+  if(minPriceInput) minPriceInput.value=S.filters.minPrice!==null?S.filters.minPrice:'';
+  const maxPriceInput=document.getElementById('max-price');
+  if(maxPriceInput) maxPriceInput.value=S.filters.maxPrice!==null?S.filters.maxPrice:'';
+
+  // 7. Sync quick filters checkboxes
+  const fFeatured=document.getElementById('filter-featured');
+  if(fFeatured) fFeatured.checked=!!S.filters.featured;
+  const fBestseller=document.getElementById('filter-bestseller');
+  if(fBestseller) fBestseller.checked=!!S.filters.bestSeller;
+  const fInstock=document.getElementById('filter-instock');
+  if(fInstock) fInstock.checked=!!S.filters.inStock;
+  const fOnsale=document.getElementById('filter-onsale');
+  if(fOnsale) fOnsale.checked=!!S.filters.onSale;
+
+  // 8. Sync sort dropdown
+  const sortSelect=document.getElementById('sort-select');
+  if(sortSelect) sortSelect.value=S.filters.sort||'popular';
+}
+
 function clearAllFilters(){
   S.filters={...S.filters,search:'',categories:[],brands:[],minPrice:null,maxPrice:null,featured:false,bestSeller:false,inStock:false,onSale:false};
-  document.querySelectorAll('.filters-panel input[type=checkbox]').forEach(i=>i.checked=false);
-  const si=document.getElementById('search-input'); if(si) si.value='';
-  const mn=document.getElementById('min-price'); if(mn) mn.value='';
-  const mx=document.getElementById('max-price'); if(mx) mx.value='';
   applyFilters();
 }
 
@@ -552,10 +903,36 @@ async function initProductPage(){
     const imgs=p.images&&p.images.length?p.images:[PLACEHOLDER];
     const inStock=Number(p.stock||0)>0;
     const lowStock=inStock&&Number(p.stock)<=5;
-    const disc=p.mrp&&p.mrp>p.price?Math.round((p.mrp-p.price)/p.mrp*100):0;
+    
+    let initialPrice = p.price;
+    let initialMrp = p.mrp || p.price;
+    let initialVariant = '';
+    
+    let variantSelectHtml = '';
+    if (p.variants && p.variants.length > 0) {
+      initialVariant = p.variants[0].value;
+      initialPrice = p.variants[0].price;
+      initialMrp = p.variants[0].mrp || p.variants[0].price;
+      
+      variantSelectHtml = `
+        <div style="margin: 1.2rem 0 0.8rem 0">
+          <label class="qty-label" style="display:block;margin-bottom:0.4rem">Select Option:</label>
+          <select class="variant-select" id="detail-variant-select" style="max-width:320px;padding:0.6rem;border-radius:var(--radius-md);border:1px solid var(--edge);background:var(--card);color:var(--text);font-weight:500">
+            ${p.variants.map(v => `<option value="${v.value}" data-price="${v.price}" data-mrp="${v.mrp || v.price}">${v.value} — ${Rs(v.price)}</option>`).join('')}
+          </select>
+        </div>
+      `;
+    }
+    
+    const disc = initialMrp > initialPrice ? Math.round((initialMrp - initialPrice) / initialMrp * 100) : 0;
+    
     document.getElementById('bc-category').textContent=p.category||'Products';
     document.getElementById('bc-category').href=`index.html#shop`;
     document.getElementById('bc-name').textContent=p.name;
+
+    const minQty = typeof p.minQty === 'number' ? p.minQty : 1;
+    const qtyStep = typeof p.qtyStep === 'number' ? p.qtyStep : 1;
+    const stock = typeof p.stock === 'number' ? p.stock : 999999;
 
     layout.innerHTML=`
       <div class="gallery-wrap">
@@ -569,26 +946,31 @@ async function initProductPage(){
         <div class="detail-rating"><span style="color:#f59e0b">${'⭐'.repeat(Math.round(p.rating||0))}</span><span style="color:var(--muted);font-size:.85rem">${p.rating||0} (${p.ratingCount||0} reviews)</span></div>
         <div class="detail-price-box">
           <div style="display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap">
-            <span class="detail-price">${Rs(p.price)}</span>
-            ${disc?`<span class="detail-mrp">${Rs(p.mrp)}</span><span class="detail-off">-${disc}% OFF</span>`:''}
+            <span class="detail-price" id="detail-price-span">${Rs(initialPrice)}</span>
+            <span class="detail-mrp" id="detail-mrp-span" style="display:${disc > 0 ? 'inline' : 'none'}">${Rs(initialMrp)}</span>
+            <span class="detail-off" id="detail-off-span" style="display:${disc > 0 ? 'inline' : 'none'}">-${disc}% OFF</span>
           </div>
           <div class="detail-stock ${inStock?(lowStock?'low-stock':'in-stock'):'out-stock'}" style="margin-top:.5rem">
             ${inStock?(lowStock?`⚠ Only ${p.stock} left in stock!`:`✓ In Stock (${p.stock} units)`):'✕ Out of Stock'}
           </div>
         </div>
         ${p.shortDesc?`<p style="font-size:.9rem;color:var(--muted);line-height:1.7">${p.shortDesc}</p>`:''}
-        <div style="display:flex;align-items:center;gap.8rem;gap:.8rem;flex-wrap:wrap">
+        
+        ${variantSelectHtml}
+        
+        <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin: 1.2rem 0">
           <span class="qty-label">Qty:</span>
           <div class="qty-stepper">
             <button class="qty-step-btn" id="qty-dec">−</button>
-            <span class="qty-step-val" id="qty-val">1</span>
+            <span class="qty-step-val" id="qty-val">${minQty}</span>
             <button class="qty-step-btn" id="qty-inc">+</button>
           </div>
+          <span style="font-size:0.8rem;color:var(--muted)">Min: ${minQty}, Step: ${qtyStep}</span>
         </div>
         <div class="detail-actions">
           <button class="btn btn-primary btn-lg" id="detail-add" ${inStock?'':'disabled'}>${inStock?'🛒 Add to Cart':'Out of Stock'}</button>
           <button class="btn btn-outline btn-lg" id="detail-wish">♥ Wishlist</button>
-          <a href="${waUrl(S.settings.shopInfo?.whatsapp||'919475653294',`Hi! I want to enquire about: ${p.name} (${Rs(p.price)}). Please share availability and bulk pricing.`)}" target="_blank" rel="noopener" class="btn btn-lg" style="background:#25D366;color:#fff;border-color:#25D366">💬 WhatsApp Enquiry</a>
+          <a id="detail-wa-btn" href="${waUrl(S.settings.shopInfo?.whatsapp||'919475653294',`Hi! I want to enquire about: ${p.name}${initialVariant ? ` (${initialVariant})` : ''} - Price: ${Rs(initialPrice)}. Please share availability and bulk pricing.`)}" target="_blank" rel="noopener" class="btn btn-lg" style="background:#25D366;color:#fff;border-color:#25D366">💬 WhatsApp Enquiry</a>
         </div>
         <div class="detail-tabs">
           <div class="tab-nav">
@@ -605,11 +987,44 @@ async function initProductPage(){
       th.addEventListener('click',()=>{ document.getElementById('gallery-img').src=th.dataset.img; document.querySelectorAll('.gallery-thumb').forEach(t=>t.classList.remove('active')); th.classList.add('active'); });
     });
 
+    let qty = minQty;
+    let selectedVariant = initialVariant;
+    
+    const detailPriceSpan = document.getElementById('detail-price-span');
+    const detailMrpSpan = document.getElementById('detail-mrp-span');
+    const detailOffSpan = document.getElementById('detail-off-span');
+    const variantSelect = document.getElementById('detail-variant-select');
+    const waBtn = document.getElementById('detail-wa-btn');
+
+    if (variantSelect) {
+      variantSelect.addEventListener('change', e => {
+        selectedVariant = e.target.value;
+        const opt = e.target.options[e.target.selectedIndex];
+        const pr = Number(opt.dataset.price);
+        const mr = Number(opt.dataset.mrp);
+        
+        detailPriceSpan.textContent = Rs(pr);
+        if (mr > pr) {
+          detailMrpSpan.textContent = Rs(mr);
+          detailMrpSpan.style.display = 'inline';
+          const discPct = Math.round((mr - pr) / mr * 100);
+          detailOffSpan.textContent = `-${discPct}% OFF`;
+          detailOffSpan.style.display = 'inline';
+        } else {
+          detailMrpSpan.style.display = 'none';
+          detailOffSpan.style.display = 'none';
+        }
+        
+        if (waBtn) {
+          waBtn.href = waUrl(S.settings.shopInfo?.whatsapp || '919475653294', `Hi! I want to enquire about: ${p.name} (${selectedVariant}) - Price: ${Rs(pr)}. Please share availability and bulk pricing.`);
+        }
+      });
+    }
+
     // Qty stepper
-    let qty=1;
-    document.getElementById('qty-dec')?.addEventListener('click',()=>{ qty=Math.max(1,qty-1); document.getElementById('qty-val').textContent=qty; });
-    document.getElementById('qty-inc')?.addEventListener('click',()=>{ qty=Math.min(Number(p.stock||99),qty+1); document.getElementById('qty-val').textContent=qty; });
-    document.getElementById('detail-add')?.addEventListener('click',()=>addToCart(p.id,qty));
+    document.getElementById('qty-dec')?.addEventListener('click',()=>{ qty=Math.max(minQty,qty-qtyStep); document.getElementById('qty-val').textContent=qty; });
+    document.getElementById('qty-inc')?.addEventListener('click',()=>{ qty=Math.min(stock,qty+qtyStep); document.getElementById('qty-val').textContent=qty; });
+    document.getElementById('detail-add')?.addEventListener('click',()=>addToCart(p.id,qty,null,selectedVariant));
     document.getElementById('detail-wish')?.addEventListener('click',()=>toggleWish(p.id));
 
     // Tabs
@@ -635,7 +1050,19 @@ async function initCheckout(){
   if(!cart.length){ itemsEl.innerHTML='<div class="empty-state"><div class="empty-ico">🛒</div><p>Your cart is empty.</p><a href="index.html" class="btn btn-primary btn-sm" style="margin-top:.8rem">Browse Products</a></div>'; document.getElementById('place-order-btn').disabled=true; return; }
 
   let subtotal=0, discount=0;
-  const itemsHtml=cart.map(i=>{ const p=S.products.find(x=>x.id===i.productId)||{}; const line=(p.price||0)*i.qty; subtotal+=line; const img=(p.images&&p.images[0])||PLACEHOLDER; return `<div class="summary-item"><img class="summary-item-img" src="${img}" alt="${p.name||''}"/><div class="summary-item-info"><div class="summary-item-name">${p.name||'Item'}</div><div class="summary-item-qty">Qty: ${i.qty}</div></div><div class="summary-item-price">${Rs(line)}</div></div>`; }).join('');
+  const itemsHtml=cart.map(i=>{
+    const p=S.products.find(x=>x.id===i.productId)||{};
+    let price = p.price || 0;
+    if (i.variant && p.variants) {
+      const v = p.variants.find(x => x.value === i.variant);
+      if (v) price = v.price;
+    }
+    const line=price*i.qty;
+    subtotal+=line;
+    const img=(p.images&&p.images[0])||PLACEHOLDER;
+    const displayName = p.name ? `${p.name}${i.variant ? ` (${i.variant})` : ''}` : 'Item';
+    return `<div class="summary-item"><img class="summary-item-img" src="${img}" alt="${displayName}"/><div class="summary-item-info"><div class="summary-item-name">${displayName}</div><div class="summary-item-qty">Qty: ${i.qty}</div></div><div class="summary-item-price">${Rs(line)}</div></div>`;
+  }).join('');
   itemsEl.innerHTML=itemsHtml;
 
   const ship=S.settings.shipping||{};
@@ -674,7 +1101,7 @@ async function initCheckout(){
     const btn=document.getElementById('place-order-btn');
     btn.disabled=true; btn.textContent='Placing order...';
     const payment=document.querySelector('input[name=payment]:checked')?.value||'cod';
-    const payload={ items:cart.map(i=>({productId:i.productId,qty:i.qty})), deliveryFee:fee, discount, paymentMethod:payment, couponCode:document.getElementById('coupon-input')?.value?.trim().toUpperCase()||'', customer:{ name:form.name.value, phone:form.phone.value, email:form.email.value, address:form.address.value, city:form.city.value, state:form.state.value, pincode:form.pincode.value, notes:form.notes.value } };
+    const payload={ items:cart.map(i=>({productId:i.productId,variant:i.variant||null,qty:i.qty})), deliveryFee:fee, discount, paymentMethod:payment, couponCode:document.getElementById('coupon-input')?.value?.trim().toUpperCase()||'', customer:{ name:form.name.value, phone:form.phone.value, email:form.email.value, address:form.address.value, city:form.city.value, state:form.state.value, pincode:form.pincode.value, notes:form.notes.value } };
     try{
       const res=await fetch(api('/api/orders'),{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
       if(res.ok){
@@ -804,7 +1231,8 @@ function bindGlobal(){
   document.getElementById('wishlist-btn')?.addEventListener('click',()=>openDrawer('wishlist-drawer'));
   document.getElementById('close-cart')?.addEventListener('click',closeDrawers);
   document.getElementById('close-wishlist')?.addEventListener('click',closeDrawers);
-  document.getElementById('close-compare')?.addEventListener('click',()=>closeModal('compare-modal'));
+  document.getElementById('close-quickview')?.addEventListener('click',closeDrawers);
+  document.getElementById('close-compare')?.addEventListener('click',()=>closeDrawers());
   document.getElementById('compare-btn')?.addEventListener('click',renderCompareModal);
   document.getElementById('clear-compare-btn')?.addEventListener('click',()=>{ store.set('compare',[]); renderCompareBar(); });
   document.getElementById('overlay')?.addEventListener('click',closeDrawers);
@@ -815,10 +1243,17 @@ function bindGlobal(){
     const action=e.target.closest('[data-action]')?.dataset.action;
     const row=e.target.closest('.qty-control');
     if(!action||!row) return;
-    const id=row.dataset.id; const cart=getCart(); const item=cart.find(i=>i.productId===id); if(!item) return;
+    const id=row.dataset.id;
+    const variant=row.dataset.variant||'';
+    const cart=getCart();
+    const item=cart.find(i=>i.productId===id && (i.variant||'')===variant);
+    if(!item) return;
     const p=S.products.find(x=>x.id===id);
-    if(action==='inc') item.qty=Math.min(item.qty+1,Number(p?.stock||99));
-    else if(action==='dec') item.qty=Math.max(1,item.qty-1);
+    const minQty=typeof p?.minQty==='number'?p.minQty:1;
+    const qtyStep=typeof p?.qtyStep==='number'?p.qtyStep:1;
+    const stock=typeof p?.stock==='number'?p.stock:999999;
+    if(action==='inc') item.qty=Math.min(stock,item.qty+qtyStep);
+    else if(action==='dec') item.qty=Math.max(minQty,item.qty-qtyStep);
     else if(action==='remove'){ cart.splice(cart.indexOf(item),1); toast('Item removed from cart','info'); }
     setCart(cart);
   });

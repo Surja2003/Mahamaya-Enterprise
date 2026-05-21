@@ -518,15 +518,43 @@ app.post('/api/orders', async (req, res) => {
 
   for (const item of items) {
     const productId = sanitizeText(item.productId, 30);
-    const qty = clampNumber(item.qty, 1, 999, 1);
+    const variant = item.variant ? sanitizeText(item.variant, 80) : null;
+    const qty = clampNumber(item.qty, 1, 999999, 1);
     const product = products.find(p => p.id === productId);
-    if (!product) return res.status(400).json({ error: 'Invalid product in cart' });
-    const price = clampNumber(product.price, 0, 10000000, 0);
+    if (!product) return res.status(400).json({ error: `Invalid product in cart: ${productId}` });
+
+    let price = clampNumber(product.price, 0, 10000000, 0);
+    if (product.variants && product.variants.length > 0) {
+      if (!variant) {
+        return res.status(400).json({ error: `Please specify a variant for product: ${product.name}` });
+      }
+      const matchedVariant = product.variants.find(v => v.value === variant);
+      if (!matchedVariant) {
+        return res.status(400).json({ error: `Invalid variant '${variant}' for product: ${product.name}` });
+      }
+      price = clampNumber(matchedVariant.price, 0, 10000000, 0);
+    } else {
+      if (variant) {
+        return res.status(400).json({ error: `Product '${product.name}' does not accept variants` });
+      }
+    }
+
+    const minQty = typeof product.minQty === 'number' ? product.minQty : 1;
+    const qtyStep = typeof product.qtyStep === 'number' ? product.qtyStep : 1;
+
+    if (qty < minQty) {
+      return res.status(400).json({ error: `Minimum quantity for ${product.name} is ${minQty}` });
+    }
+    if (qty % qtyStep !== 0) {
+      return res.status(400).json({ error: `Quantity for ${product.name} must be a multiple of ${qtyStep}` });
+    }
+
     const lineTotal = price * qty;
     subtotal += lineTotal;
     orderItems.push({
       productId,
       name: product.name,
+      variant,
       price,
       qty,
       lineTotal
