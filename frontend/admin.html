@@ -189,12 +189,26 @@
           <div class="admin-card">
             <div class="admin-card-header">
               <div class="admin-card-title">🛒 All Orders</div>
-              <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-                <input type="search" id="order-search" placeholder="Search orders..." style="padding:.4rem .7rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.85rem;width:180px"/>
+              <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+                <input type="search" id="order-search" placeholder="Search orders..." style="padding:.4rem .7rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.85rem;width:150px"/>
                 <select id="order-status-filter" style="padding:.4rem .6rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.82rem">
                   <option value="">All Status</option><option>new</option><option>confirmed</option><option>packed</option><option>dispatched</option><option>delivered</option><option>cancelled</option>
                 </select>
-                <a class="btn btn-ghost btn-sm" id="export-orders-btn" href="/api/orders/export" target="_blank">📊 Export Excel</a>
+                <select id="order-date-preset" style="padding:.4rem .6rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.82rem">
+                  <option value="all">All Time</option>
+                  <option value="today">Today</option>
+                  <option value="yesterday">Yesterday</option>
+                  <option value="this-month">This Month</option>
+                  <option value="last-month">Last Month</option>
+                  <option value="custom">Custom Range</option>
+                </select>
+                <div id="custom-date-container" style="display:none;align-items:center;gap:.3rem">
+                  <input type="date" id="order-start-date" style="padding:.35rem .5rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.82rem"/>
+                  <span style="font-size:.8rem;color:var(--text-muted)">to</span>
+                  <input type="date" id="order-end-date" style="padding:.35rem .5rem;border:1px solid var(--edge);border-radius:var(--radius-sm);font-size:.82rem"/>
+                </div>
+                <button class="btn btn-primary btn-sm" id="export-excel-btn" style="display:flex;align-items:center;gap:.2rem">📊 Excel Report</button>
+                <button class="btn btn-ghost btn-sm" id="export-csv-btn" style="display:flex;align-items:center;gap:.2rem">📉 CSV (PowerBI)</button>
               </div>
             </div>
             <div class="admin-card-body admin-table-wrap">

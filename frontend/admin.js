@@ -334,15 +334,146 @@ function viewOrder(id){
   document.getElementById('order-modal')?.classList.add('show');
   document.getElementById('modal-overlay')?.classList.add('show');
 }
-document.getElementById('order-search')?.addEventListener('input',e=>{
-  const q=e.target.value.toLowerCase();
-  const st=document.getElementById('order-status-filter')?.value||'';
-  renderOrdersTable(ORDERS.filter(o=>(!q||`${o.orderNo} ${o.customer?.name} ${o.customer?.phone}`.toLowerCase().includes(q))&&(!st||o.status===st)));
+function filterOrders() {
+  const q = document.getElementById('order-search')?.value?.toLowerCase() || '';
+  const st = document.getElementById('order-status-filter')?.value || '';
+  const datePreset = document.getElementById('order-date-preset')?.value || 'all';
+  const startDateStr = document.getElementById('order-start-date')?.value || '';
+  const endDateStr = document.getElementById('order-end-date')?.value || '';
+
+  let filtered = ORDERS.slice();
+
+  if (q) {
+    filtered = filtered.filter(o => 
+      `${o.orderNo} ${o.customer?.name} ${o.customer?.phone}`.toLowerCase().includes(q)
+    );
+  }
+
+  if (st) {
+    filtered = filtered.filter(o => o.status === st);
+  }
+
+  if (datePreset !== 'all') {
+    const now = new Date();
+    let startLimit = null;
+    let endLimit = null;
+
+    if (datePreset === 'today') {
+      const todayStr = now.toISOString().slice(0, 10);
+      startLimit = new Date(todayStr + 'T00:00:00.000Z');
+      endLimit = new Date(todayStr + 'T23:59:59.999Z');
+    } else if (datePreset === 'yesterday') {
+      const yesterday = new Date(now);
+      yesterday.setDate(now.getDate() - 1);
+      const yestStr = yesterday.toISOString().slice(0, 10);
+      startLimit = new Date(yestStr + 'T00:00:00.000Z');
+      endLimit = new Date(yestStr + 'T23:59:59.999Z');
+    } else if (datePreset === 'this-month') {
+      const y = now.getFullYear();
+      const m = now.getMonth();
+      startLimit = new Date(Date.UTC(y, m, 1, 0, 0, 0));
+      endLimit = new Date(Date.UTC(y, m + 1, 0, 23, 59, 59, 999));
+    } else if (datePreset === 'last-month') {
+      const y = now.getFullYear();
+      const m = now.getMonth();
+      startLimit = new Date(Date.UTC(y, m - 1, 1, 0, 0, 0));
+      endLimit = new Date(Date.UTC(y, m, 0, 23, 59, 59, 999));
+    } else if (datePreset === 'custom') {
+      if (startDateStr) startLimit = new Date(startDateStr + 'T00:00:00.000Z');
+      if (endDateStr) endLimit = new Date(endDateStr + 'T23:59:59.999Z');
+    }
+
+    filtered = filtered.filter(o => {
+      if (!o.createdAt) return false;
+      const oDate = new Date(o.createdAt);
+      if (startLimit && oDate < startLimit) return false;
+      if (endLimit && oDate > endLimit) return false;
+      return true;
+    });
+  }
+
+  renderOrdersTable(filtered);
+}
+
+document.getElementById('order-search')?.addEventListener('input', filterOrders);
+document.getElementById('order-status-filter')?.addEventListener('change', filterOrders);
+document.getElementById('order-date-preset')?.addEventListener('change', e => {
+  const container = document.getElementById('custom-date-container');
+  if (container) {
+    container.style.display = e.target.value === 'custom' ? 'flex' : 'none';
+  }
+  filterOrders();
 });
-document.getElementById('order-status-filter')?.addEventListener('change',e=>{
-  const st=e.target.value;const q=document.getElementById('order-search')?.value?.toLowerCase()||'';
-  renderOrdersTable(ORDERS.filter(o=>(!st||o.status===st)&&(!q||`${o.orderNo} ${o.customer?.name}`.toLowerCase().includes(q))));
+document.getElementById('order-start-date')?.addEventListener('change', filterOrders);
+document.getElementById('order-end-date')?.addEventListener('change', filterOrders);
+
+async function downloadSalesReport(format) {
+  const datePreset = document.getElementById('order-date-preset')?.value || 'all';
+  let startDate = document.getElementById('order-start-date')?.value || '';
+  let endDate = document.getElementById('order-end-date')?.value || '';
+
+  if (datePreset !== 'all' && datePreset !== 'custom') {
+    const now = new Date();
+    if (datePreset === 'today') {
+      startDate = now.toISOString().slice(0, 10);
+      endDate = startDate;
+    } else if (datePreset === 'yesterday') {
+      const yesterday = new Date(now);
+      yesterday.setDate(now.getDate() - 1);
+      startDate = yesterday.toISOString().slice(0, 10);
+      endDate = startDate;
+    } else if (datePreset === 'this-month') {
+      const firstDay = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
+      const lastDay = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 0));
+      startDate = firstDay.toISOString().slice(0, 10);
+      endDate = lastDay.toISOString().slice(0, 10);
+    } else if (datePreset === 'last-month') {
+      const firstDay = new Date(Date.UTC(now.getFullYear(), now.getMonth() - 1, 1));
+      const lastDay = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 0));
+      startDate = firstDay.toISOString().slice(0, 10);
+      endDate = lastDay.toISOString().slice(0, 10);
+    }
+  }
+
+  try {
+    toast('Generating sales report...', 'info');
+    let url = api('/api/orders/export');
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    if (format) params.append('format', format);
+    if (params.toString()) url += '?' + params.toString();
+
+    const res = await fetch(url, { headers: authHeaders() });
+    if (!res.ok) {
+      toast('Failed to generate report', 'error');
+      return;
+    }
+    const blob = await res.blob();
+    const fileUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = fileUrl;
+    const presetName = datePreset === 'all' ? 'all_time' : datePreset;
+    const ext = format === 'csv' ? 'csv' : 'xlsx';
+    a.download = `sales_report_${presetName}_${new Date().toISOString().slice(0, 10)}.${ext}`;
+    a.click();
+    URL.revokeObjectURL(fileUrl);
+    toast('Sales report downloaded!', 'success');
+  } catch {
+    toast('Network error downloading report', 'error');
+  }
+}
+
+document.getElementById('export-excel-btn')?.addEventListener('click', e => {
+  e.preventDefault();
+  downloadSalesReport('excel');
 });
+
+document.getElementById('export-csv-btn')?.addEventListener('click', e => {
+  e.preventDefault();
+  downloadSalesReport('csv');
+});
+
 
 // ── COUPONS ────────────────────────────────────────────
 async function loadCoupons(){
