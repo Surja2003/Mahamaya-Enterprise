@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mahamaya-enterprise.example.com/</loc>
+    <loc>https://mahamaya-enterprise.vercel.app/</loc>
   </url>
   <url>
-    <loc>https://mahamaya-enterprise.example.com/index.html</loc>
+    <loc>https://mahamaya-enterprise.vercel.app/index.html</loc>
   </url>
   <url>
-    <loc>https://mahamaya-enterprise.example.com/product.html</loc>
+    <loc>https://mahamaya-enterprise.vercel.app/product.html</loc>
   </url>
   <url>
-    <loc>https://mahamaya-enterprise.example.com/checkout.html</loc>
+    <loc>https://mahamaya-enterprise.vercel.app/checkout.html</loc>
   </url>
   <url>
-    <loc>https://mahamaya-enterprise.example.com/account.html</loc>
+    <loc>https://mahamaya-enterprise.vercel.app/account.html</loc>
   </url>
   <url>
-    <loc>https://mahamaya-enterprise.example.com/track.html</loc>
+    <loc>https://mahamaya-enterprise.vercel.app/track.html</loc>
   </url>
 </urlset>

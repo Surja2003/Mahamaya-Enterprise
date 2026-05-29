@@ -4259,6 +4259,7 @@ const PRODUCTS = {
 
 if (typeof window !== 'undefined') {
   window.PRODUCTS = PRODUCTS.products;
+  window.DEMO_PRODUCTS = PRODUCTS.products;
 }
 if (typeof module !== 'undefined') {
   module.exports = PRODUCTS;

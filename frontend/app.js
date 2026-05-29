@@ -925,6 +925,10 @@ function initShop(){
     link.addEventListener('click',e=>{
       e.preventDefault();
       const cat=link.dataset.cat||'';
+      if (!document.getElementById('shop')) {
+        window.location.href = `index.html?category=${encodeURIComponent(cat)}`;
+        return;
+      }
       S.filters.categories=cat?[cat]:[];
       document.querySelectorAll('.cat-nav-link').forEach(l=>l.classList.remove('active'));
       link.classList.add('active');
@@ -937,6 +941,10 @@ function initShop(){
   document.querySelectorAll('.cat-card[data-cat]').forEach(card=>{
     card.addEventListener('click',()=>{
       const cat=card.dataset.cat;
+      if (!document.getElementById('shop')) {
+        window.location.href = `index.html?category=${encodeURIComponent(cat)}`;
+        return;
+      }
       S.filters.categories=[cat];
       applyFilters();
       document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
@@ -945,7 +953,17 @@ function initShop(){
 
   // Footer category links
   document.querySelectorAll('[data-nav-cat]').forEach(a=>{
-    a.addEventListener('click',e=>{ e.preventDefault(); S.filters.categories=[a.dataset.navCat]; applyFilters(); document.getElementById('shop')?.scrollIntoView({behavior:'smooth'}); });
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      const cat=a.dataset.navCat;
+      if (!document.getElementById('shop')) {
+        window.location.href = `index.html?category=${encodeURIComponent(cat)}`;
+        return;
+      }
+      S.filters.categories=[cat];
+      applyFilters();
+      document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
+    });
   });
 
   // View toggle
@@ -1077,10 +1095,66 @@ function renderProductPageUI(p) {
   if (!layout) return;
   
   document.title = `${p.name} | Mahamaya Enterprise`;
-  addRecentlyViewed(p.id);
+  
+  // Dynamic Product JSON-LD Schema
+  let schemaScript = document.getElementById('product-schema');
+  if (!schemaScript) {
+    schemaScript = document.createElement('script');
+    schemaScript.id = 'product-schema';
+    schemaScript.type = 'application/ld+json';
+    document.head.appendChild(schemaScript);
+  }
   
   const imgs = p.images && p.images.length ? p.images : [PLACEHOLDER];
   const inStock = Number(p.stock || 0) > 0;
+  
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": p.name,
+    "image": imgs.map(img => img.startsWith('http') ? img : window.location.origin + (img.startsWith('/') ? img : '/' + img)),
+    "description": p.longDesc || p.shortDesc || `${p.name} - High-quality ${p.category} supply from ${p.brand || 'Mahamaya Enterprise'}. Available at Mahamaya Enterprise, Bhatar, Purba Bardhaman.`,
+    "brand": {
+      "@type": "Brand",
+      "name": p.brand || "Generic"
+    },
+    "category": p.category,
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "INR",
+      "price": p.price,
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "seller": {
+        "@type": "Store",
+        "name": "Mahamaya Enterprise"
+      }
+    }
+  };
+  
+  if (p.rating) {
+    productSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": p.rating,
+      "reviewCount": p.ratingCount || 10
+    };
+  }
+  
+  schemaScript.textContent = JSON.stringify(productSchema, null, 2);
+
+  // Set meta description dynamically
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.name = 'description';
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.content = p.shortDesc ? p.shortDesc.slice(0, 160) : `Buy ${p.name} online from Mahamaya Enterprise, Bhatar, Bardhaman. Category: ${p.category}. Brand: ${p.brand || 'Local'}. Best price & local delivery.`;
+
+  addRecentlyViewed(p.id);
+  
   const lowStock = inStock && Number(p.stock) <= 5;
   
   let initialPrice = p.price;
@@ -1518,10 +1592,19 @@ document.addEventListener('DOMContentLoaded',async()=>{
   await loadShopInfo();
   await loadProducts();
 
-  // Handle search param from URL
+  // Handle search and category params from URL
   const urlParams=new URLSearchParams(location.search);
   const urlSearch=urlParams.get('search');
   if(urlSearch){ const si=document.getElementById('search-input'); if(si){ si.value=urlSearch; S.filters.search=urlSearch; applyFilters(); }}
+
+  const urlCategory=urlParams.get('category');
+  if(urlCategory){
+    S.filters.categories=[urlCategory];
+    applyFilters();
+    setTimeout(() => {
+      document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
+    }, 150);
+  }
 
   const page=document.body.dataset.page;
   if(page==='shop') initShop();

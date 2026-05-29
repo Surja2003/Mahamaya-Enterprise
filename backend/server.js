@@ -49,6 +49,33 @@ const dataDir = path.join(__dirname, 'data');
 const uploadDir = path.join(__dirname, 'uploads');
 const productsFile = path.join(dataDir, 'products.json');
 const settingsFile = path.join(dataDir, 'settings.json');
+const ordersFile = path.join(dataDir, 'orders.json');
+const reviewsFile = path.join(dataDir, 'reviews.json');
+const quotesFile = path.join(dataDir, 'quotes.json');
+const usersFile = path.join(dataDir, 'users.json');
+const couponsFile = path.join(dataDir, 'coupons.json');
+
+// Local JSON Database Helpers (Fallback when Supabase is not available)
+const localDb = {
+  async read(filePath, defaultVal = []) {
+    try {
+      const raw = await fs.readFile(filePath, 'utf-8');
+      return JSON.parse(raw);
+    } catch {
+      return defaultVal;
+    }
+  },
+  async write(filePath, data) {
+    try {
+      await fs.mkdir(path.dirname(filePath), { recursive: true });
+      await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+      return true;
+    } catch (err) {
+      console.error(`Error writing to local file ${filePath}:`, err);
+      return false;
+    }
+  }
+};
 
 const defaultSettings = {
   faqs: [],
@@ -71,14 +98,23 @@ const defaultSettings = {
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
+let supabase = null;
 if (!supabaseUrl || !supabaseKey) {
-  console.error('CRITICAL: Supabase environment variables (SUPABASE_URL, SUPABASE_KEY) are missing!');
+  console.error('CRITICAL: Supabase environment variables (SUPABASE_URL, SUPABASE_KEY) are missing! Please configure them in your Render dashboard environment settings.');
+} else {
+  try {
+    supabase = createClient(supabaseUrl, supabaseKey);
+  } catch (err) {
+    console.error('Error creating Supabase client:', err);
+  }
 }
-
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Bootstrap / Seed Database
 async function bootstrapDatabase() {
+  if (!supabase) {
+    console.warn('Skipping database bootstrap: Supabase client is not initialized.');
+    return;
+  }
   try {
     // 1. Seed Products if empty
     const { count, error: countErr } = await supabase
@@ -215,13 +251,19 @@ app.get('/api/health', (_req, res) => {
 // ── SETTINGS ───────────────────────────────────────────
 app.get('/api/settings', async (_req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('settings')
-      .select('value')
-      .eq('key', 'config')
-      .maybeSingle();
-    if (error) throw error;
-    res.json(data ? data.value : defaultSettings);
+    let settings = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'config')
+        .maybeSingle();
+      if (error) throw error;
+      settings = data ? data.value : null;
+    } else {
+      settings = await localDb.read(settingsFile, defaultSettings);
+    }
+    res.json(settings || defaultSettings);
   } catch (err) {
     console.error('Get settings error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -256,10 +298,14 @@ app.post('/api/settings', authRequired('admin'), async (req, res) => {
       shipping: sanitizedShipping,
       announcement: sanitizedAnnouncement
     };
-    const { error } = await supabase
-      .from('settings')
-      .upsert({ key: 'config', value: nextSettings, updatedAt: new Date().toISOString() });
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase
+        .from('settings')
+        .upsert({ key: 'config', value: nextSettings, updatedAt: new Date().toISOString() });
+      if (error) throw error;
+    } else {
+      await localDb.write(settingsFile, nextSettings);
+    }
     res.json(nextSettings);
   } catch (err) {
     console.error('Post settings error:', err);
@@ -270,13 +316,21 @@ app.post('/api/settings', authRequired('admin'), async (req, res) => {
 // ── REVIEWS ────────────────────────────────────────────
 app.get('/api/reviews', async (_req, res) => {
   try {
-    const { data: reviews, error } = await supabase
-      .from('reviews')
-      .select('*')
-      .order('createdAt', { ascending: false })
-      .limit(100);
-    if (error) throw error;
-    res.json({ reviews: reviews || [] });
+    let reviewsList = [];
+    if (supabase) {
+      const { data: reviews, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .order('createdAt', { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      reviewsList = reviews || [];
+    } else {
+      reviewsList = await localDb.read(reviewsFile, []);
+      reviewsList.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+      reviewsList = reviewsList.slice(0, 100);
+    }
+    res.json({ reviews: reviewsList });
   } catch (err) {
     console.error('Get reviews error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -302,8 +356,14 @@ app.post('/api/reviews', async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    const { error } = await supabase.from('reviews').insert(review);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('reviews').insert(review);
+      if (error) throw error;
+    } else {
+      const reviews = await localDb.read(reviewsFile, []);
+      reviews.push(review);
+      await localDb.write(reviewsFile, reviews);
+    }
     res.status(201).json(review);
   } catch (err) {
     console.error('Post review error:', err);
@@ -313,8 +373,14 @@ app.post('/api/reviews', async (req, res) => {
 
 app.delete('/api/reviews/:id', authRequired('admin'), async (req, res) => {
   try {
-    const { error } = await supabase.from('reviews').delete().eq('id', req.params.id);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('reviews').delete().eq('id', req.params.id);
+      if (error) throw error;
+    } else {
+      const reviews = await localDb.read(reviewsFile, []);
+      const filtered = reviews.filter(r => r.id !== req.params.id);
+      await localDb.write(reviewsFile, filtered);
+    }
     res.json({ ok: true });
   } catch (err) {
     console.error('Delete review error:', err);
@@ -325,13 +391,21 @@ app.delete('/api/reviews/:id', authRequired('admin'), async (req, res) => {
 // ── QUOTES ─────────────────────────────────────────────
 app.get('/api/quotes', authRequired('admin'), async (_req, res) => {
   try {
-    const { data: quotes, error } = await supabase
-      .from('quotes')
-      .select('*')
-      .order('createdAt', { ascending: false })
-      .limit(1000);
-    if (error) throw error;
-    res.json({ quotes: quotes || [] });
+    let quotesList = [];
+    if (supabase) {
+      const { data: quotes, error } = await supabase
+        .from('quotes')
+        .select('*')
+        .order('createdAt', { ascending: false })
+        .limit(1000);
+      if (error) throw error;
+      quotesList = quotes || [];
+    } else {
+      quotesList = await localDb.read(quotesFile, []);
+      quotesList.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+      quotesList = quotesList.slice(0, 1000);
+    }
+    res.json({ quotes: quotesList });
   } catch (err) {
     console.error('Get quotes error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -360,8 +434,14 @@ app.post('/api/quotes', async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    const { error } = await supabase.from('quotes').insert(quote);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('quotes').insert(quote);
+      if (error) throw error;
+    } else {
+      const quotes = await localDb.read(quotesFile, []);
+      quotes.push(quote);
+      await localDb.write(quotesFile, quotes);
+    }
     res.json(quote);
   } catch (err) {
     console.error('Post quote error:', err);
@@ -410,20 +490,34 @@ app.post('/api/auth/signup', async (req, res) => {
     if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
 
     // Check if user already exists
-    const { data: existingEmail } = await supabase
-      .from('users')
-      .select('id')
-      .eq('email', emailSafe)
-      .maybeSingle();
+    let existingEmail = null;
+    if (supabase) {
+      const { data } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', emailSafe)
+        .maybeSingle();
+      existingEmail = data;
+    } else {
+      const users = await localDb.read(usersFile, []);
+      existingEmail = users.find(u => u.email === emailSafe);
+    }
 
     if (existingEmail) return res.status(409).json({ error: 'Email already registered' });
 
     if (phoneSafe) {
-      const { data: existingPhone } = await supabase
-        .from('users')
-        .select('id')
-        .eq('phone', phoneSafe)
-        .maybeSingle();
+      let existingPhone = null;
+      if (supabase) {
+        const { data } = await supabase
+          .from('users')
+          .select('id')
+          .eq('phone', phoneSafe)
+          .maybeSingle();
+        existingPhone = data;
+      } else {
+        const users = await localDb.read(usersFile, []);
+        existingPhone = users.find(u => u.phone === phoneSafe);
+      }
       if (existingPhone) return res.status(409).json({ error: 'Phone already registered' });
     }
 
@@ -438,8 +532,14 @@ app.post('/api/auth/signup', async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    const { error } = await supabase.from('users').insert(user);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('users').insert(user);
+      if (error) throw error;
+    } else {
+      const users = await localDb.read(usersFile, []);
+      users.push(user);
+      await localDb.write(usersFile, users);
+    }
 
     const token = signToken({ role: 'customer', id: user.id, userId: user.id, email: user.email, name: user.name });
     res.status(201).json({ token, name: user.name, email: user.email });
@@ -455,13 +555,20 @@ app.post('/api/auth/login', async (req, res) => {
     const emailSafe = sanitizeText(email, 120).toLowerCase();
     if (!emailSafe || !password) return res.status(400).json({ error: 'Email and password required' });
 
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', emailSafe)
-      .maybeSingle();
+    let user = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', emailSafe)
+        .maybeSingle();
+      if (error) throw error;
+      user = data;
+    } else {
+      const users = await localDb.read(usersFile, []);
+      user = users.find(u => u.email === emailSafe);
+    }
       
-    if (error) throw error;
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
     const valid = await bcrypt.compare(String(password), user.passwordHash || '');
@@ -478,13 +585,24 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/auth/me', authRequired('user'), async (req, res) => {
   try {
     const userId = req.auth.id || req.auth.userId;
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('id, name, email, phone')
-      .eq('id', userId)
-      .maybeSingle();
+    let user = null;
+    
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('users')
+        .select('id, name, email, phone')
+        .eq('id', userId)
+        .maybeSingle();
+      if (error) throw error;
+      user = data;
+    } else {
+      const users = await localDb.read(usersFile, []);
+      const found = users.find(u => u.id === userId);
+      if (found) {
+        user = { id: found.id, name: found.name, email: found.email, phone: found.phone };
+      }
+    }
       
-    if (error) throw error;
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json(user);
   } catch (err) {
@@ -496,8 +614,15 @@ app.get('/api/auth/me', authRequired('user'), async (req, res) => {
 // ── PRODUCTS CRUD ──────────────────────────────────────
 app.get('/api/products', async (req, res) => {
   try {
-    const { data: products, error } = await supabase.from('products').select('*');
-    if (error) throw error;
+    let products = [];
+    if (supabase) {
+      const { data, error } = await supabase.from('products').select('*');
+      if (error) throw error;
+      products = data || [];
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      products = p.products || [];
+    }
 
     const search = sanitizeText(req.query.search, 120).toLowerCase();
     const category = sanitizeText(req.query.category, 60).toLowerCase();
@@ -539,12 +664,19 @@ app.get('/api/products', async (req, res) => {
 
 app.get('/api/products/:id', async (req, res) => {
   try {
-    const { data: product, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', req.params.id)
-      .maybeSingle();
-    if (error) throw error;
+    let product = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', req.params.id)
+        .maybeSingle();
+      if (error) throw error;
+      product = data;
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      product = (p.products || []).find(x => x.id === req.params.id);
+    }
     if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
@@ -604,8 +736,15 @@ app.post('/api/products', authRequired('admin'), async (req, res) => {
       updatedAt: new Date().toISOString()
     };
 
-    const { error } = await supabase.from('products').insert(product);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('products').insert(product);
+      if (error) throw error;
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      p.products = p.products || [];
+      p.products.push(product);
+      await localDb.write(productsFile, p);
+    }
     res.status(201).json(product);
   } catch (err) {
     console.error('Create product error:', err);
@@ -615,13 +754,21 @@ app.post('/api/products', authRequired('admin'), async (req, res) => {
 
 app.put('/api/products/:id', authRequired('admin'), async (req, res) => {
   try {
-    const { data: product, error: fetchErr } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', req.params.id)
-      .maybeSingle();
+    let product = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', req.params.id)
+        .maybeSingle();
+      if (error) throw error;
+      product = data;
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      product = (p.products || []).find(x => x.id === req.params.id);
+    }
 
-    if (fetchErr || !product) return res.status(404).json({ error: 'Product not found' });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
 
     const body = req.body || {};
     const imageUrl = sanitizeText(body.imageUrl, 500);
@@ -648,12 +795,21 @@ app.put('/api/products/:id', authRequired('admin'), async (req, res) => {
       updatedAt: new Date().toISOString()
     };
 
-    const { error: updateErr } = await supabase
-      .from('products')
-      .update(updated)
-      .eq('id', req.params.id);
-
-    if (updateErr) throw updateErr;
+    if (supabase) {
+      const { error: updateErr } = await supabase
+        .from('products')
+        .update(updated)
+        .eq('id', req.params.id);
+      if (updateErr) throw updateErr;
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      p.products = p.products || [];
+      const idx = p.products.findIndex(x => x.id === req.params.id);
+      if (idx !== -1) {
+        p.products[idx] = { ...p.products[idx], ...updated };
+        await localDb.write(productsFile, p);
+      }
+    }
     res.json({ id: req.params.id, ...updated });
   } catch (err) {
     console.error('Update product error:', err);
@@ -663,8 +819,16 @@ app.put('/api/products/:id', authRequired('admin'), async (req, res) => {
 
 app.delete('/api/products/:id', authRequired('admin'), async (req, res) => {
   try {
-    const { error } = await supabase.from('products').delete().eq('id', req.params.id);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('products').delete().eq('id', req.params.id);
+      if (error) throw error;
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      p.products = p.products || [];
+      const filtered = p.products.filter(x => x.id !== req.params.id);
+      p.products = filtered;
+      await localDb.write(productsFile, p);
+    }
     res.json({ ok: true });
   } catch (err) {
     console.error('Delete product error:', err);
@@ -675,23 +839,41 @@ app.delete('/api/products/:id', authRequired('admin'), async (req, res) => {
 app.post('/api/products/:id/image', authRequired('admin'), upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No image uploaded' });
-    const { data: product, error: fetchErr } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', req.params.id)
-      .maybeSingle();
+    let product = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', req.params.id)
+        .maybeSingle();
+      if (error) throw error;
+      product = data;
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      product = (p.products || []).find(x => x.id === req.params.id);
+    }
 
-    if (fetchErr || !product) return res.status(404).json({ error: 'Product not found' });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
     const imageUrl = `/uploads/${req.file.filename}`;
     const images = product.images || [];
     images.unshift(imageUrl);
 
-    const { error: updateErr } = await supabase
-      .from('products')
-      .update({ images, updatedAt: new Date().toISOString() })
-      .eq('id', req.params.id);
-
-    if (updateErr) throw updateErr;
+    if (supabase) {
+      const { error: updateErr } = await supabase
+        .from('products')
+        .update({ images, updatedAt: new Date().toISOString() })
+        .eq('id', req.params.id);
+      if (updateErr) throw updateErr;
+    } else {
+      const p = await localDb.read(productsFile, { products: [] });
+      p.products = p.products || [];
+      const idx = p.products.findIndex(x => x.id === req.params.id);
+      if (idx !== -1) {
+        p.products[idx].images = images;
+        p.products[idx].updatedAt = new Date().toISOString();
+        await localDb.write(productsFile, p);
+      }
+    }
     res.json({ imageUrl, product: { ...product, images } });
   } catch (err) {
     console.error('Product image upload error:', err);
@@ -702,12 +884,19 @@ app.post('/api/products/:id/image', authRequired('admin'), upload.single('image'
 // ── ORDERS CRUD ────────────────────────────────────────
 app.get('/api/orders', authRequired('admin'), async (_req, res) => {
   try {
-    const { data: orders, error } = await supabase
-      .from('orders')
-      .select('*')
-      .order('createdAt', { ascending: false });
-    if (error) throw error;
-    res.json({ orders: orders || [] });
+    let ordersList = [];
+    if (supabase) {
+      const { data: orders, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('createdAt', { ascending: false });
+      if (error) throw error;
+      ordersList = orders || [];
+    } else {
+      ordersList = await localDb.read(ordersFile, []);
+      ordersList.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    res.json({ orders: ordersList });
   } catch (err) {
     console.error('Get orders error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -718,19 +907,32 @@ app.get('/api/orders', authRequired('admin'), async (_req, res) => {
 app.get('/api/orders/export', authRequired('admin'), async (req, res) => {
   try {
     const { startDate, endDate, format } = req.query;
-    let query = supabase.from('orders').select('*');
+    let reportOrders = [];
     
-    if (startDate) {
-      query = query.gte('createdAt', `${startDate}T00:00:00.000Z`);
+    if (supabase) {
+      let query = supabase.from('orders').select('*');
+      if (startDate) {
+        query = query.gte('createdAt', `${startDate}T00:00:00.000Z`);
+      }
+      if (endDate) {
+        query = query.lte('createdAt', `${endDate}T23:59:59.999Z`);
+      }
+      const { data, error } = await query.order('createdAt', { ascending: false });
+      if (error) throw error;
+      reportOrders = data || [];
+    } else {
+      let localOrders = await localDb.read(ordersFile, []);
+      if (startDate) {
+        const startMs = new Date(`${startDate}T00:00:00.000Z`).getTime();
+        localOrders = localOrders.filter(o => new Date(o.createdAt).getTime() >= startMs);
+      }
+      if (endDate) {
+        const endMs = new Date(`${endDate}T23:59:59.999Z`).getTime();
+        localOrders = localOrders.filter(o => new Date(o.createdAt).getTime() <= endMs);
+      }
+      localOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+      reportOrders = localOrders;
     }
-    if (endDate) {
-      query = query.lte('createdAt', `${endDate}T23:59:59.999Z`);
-    }
-    
-    const { data: orders, error } = await query.order('createdAt', { ascending: false });
-    if (error) throw error;
-
-    const reportOrders = orders || [];
 
     if (format === 'csv') {
       const headers = [
@@ -850,12 +1052,19 @@ app.get('/api/orders/export', authRequired('admin'), async (req, res) => {
 
 app.get('/api/orders/:id', authRequired('admin'), async (req, res) => {
   try {
-    const { data: order, error } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('id', req.params.id)
-      .maybeSingle();
-    if (error) throw error;
+    let order = null;
+    if (supabase) {
+      const { data: orderData, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('id', req.params.id)
+        .maybeSingle();
+      if (error) throw error;
+      order = orderData;
+    } else {
+      const orders = await localDb.read(ordersFile, []);
+      order = orders.find(x => x.id === req.params.id);
+    }
     if (!order) return res.status(404).json({ error: 'Order not found' });
     res.json(order);
   } catch (err) {
@@ -896,13 +1105,21 @@ app.post('/api/orders', async (req, res) => {
       const variant = item.variant ? sanitizeText(item.variant, 80) : null;
       const qty = clampNumber(item.qty, 1, 999999, 1);
 
-      const { data: product, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', productId)
-        .maybeSingle();
+      let product = null;
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('id', productId)
+          .maybeSingle();
+        if (error) throw error;
+        product = data;
+      } else {
+        const p = await localDb.read(productsFile, { products: [] });
+        product = (p.products || []).find(x => x.id === productId);
+      }
 
-      if (error || !product) {
+      if (!product) {
         return res.status(400).json({ error: `Invalid product in cart: ${productId}` });
       }
 
@@ -954,8 +1171,15 @@ app.post('/api/orders', async (req, res) => {
     const total = subtotal + fee;
 
     // Generate Order Number
-    const { count } = await supabase.from('orders').select('id', { count: 'exact', head: true });
-    const orderNo = `ME-${new Date().getFullYear()}-${String((count || 0) + 1).padStart(4, '0')}`;
+    let orderCount = 0;
+    if (supabase) {
+      const { count } = await supabase.from('orders').select('id', { count: 'exact', head: true });
+      orderCount = count || 0;
+    } else {
+      const orders = await localDb.read(ordersFile, []);
+      orderCount = orders.length;
+    }
+    const orderNo = `ME-${new Date().getFullYear()}-${String(orderCount + 1).padStart(4, '0')}`;
 
     const customerObj = { name, phone, email, address, city, state, pincode, notes };
 
@@ -972,46 +1196,75 @@ app.post('/api/orders', async (req, res) => {
       updatedAt: new Date().toISOString()
     };
 
-    // 3. Write order to Supabase
-    const { error: orderInsertErr } = await supabase.from('orders').insert(order);
-    if (orderInsertErr) throw orderInsertErr;
+    // 3. Write order to Supabase/Local
+    if (supabase) {
+      const { error: orderInsertErr } = await supabase.from('orders').insert(order);
+      if (orderInsertErr) throw orderInsertErr;
+    } else {
+      const orders = await localDb.read(ordersFile, []);
+      orders.push(order);
+      await localDb.write(ordersFile, orders);
+    }
 
     // 4. Update Product Stock (Deduct quantity purchased)
     for (const item of orderItems) {
-      const { data: product } = await supabase
-        .from('products')
-        .select('stock, soldCount')
-        .eq('id', item.productId)
-        .maybeSingle();
-
-      if (product) {
-        const nextStock = Math.max(0, (product.stock || 0) - item.qty);
-        const nextSoldCount = (product.soldCount || 0) + item.qty;
-        
-        await supabase
+      if (supabase) {
+        const { data: product } = await supabase
           .from('products')
-          .update({
-            stock: nextStock,
-            soldCount: nextSoldCount,
-            updatedAt: new Date().toISOString()
-          })
-          .eq('id', item.productId);
+          .select('stock, soldCount')
+          .eq('id', item.productId)
+          .maybeSingle();
+
+        if (product) {
+          const nextStock = Math.max(0, (product.stock || 0) - item.qty);
+          const nextSoldCount = (product.soldCount || 0) + item.qty;
+          
+          await supabase
+            .from('products')
+            .update({
+              stock: nextStock,
+              soldCount: nextSoldCount,
+              updatedAt: new Date().toISOString()
+            })
+            .eq('id', item.productId);
+        }
+      } else {
+        const p = await localDb.read(productsFile, { products: [] });
+        p.products = p.products || [];
+        const idx = p.products.findIndex(x => x.id === item.productId);
+        if (idx !== -1) {
+          const nextStock = Math.max(0, (p.products[idx].stock || 0) - item.qty);
+          const nextSoldCount = (p.products[idx].soldCount || 0) + item.qty;
+          p.products[idx].stock = nextStock;
+          p.products[idx].soldCount = nextSoldCount;
+          p.products[idx].updatedAt = new Date().toISOString();
+          await localDb.write(productsFile, p);
+        }
       }
     }
 
     // 5. Update coupon usage if applicable
     if (couponCode) {
-      const { data: coupon } = await supabase
-        .from('coupons')
-        .select('usedCount')
-        .eq('code', couponCode.toUpperCase())
-        .maybeSingle();
-
-      if (coupon) {
-        await supabase
+      if (supabase) {
+        const { data: coupon } = await supabase
           .from('coupons')
-          .update({ usedCount: (coupon.usedCount || 0) + 1 })
-          .eq('code', couponCode.toUpperCase());
+          .select('usedCount')
+          .eq('code', couponCode.toUpperCase())
+          .maybeSingle();
+
+        if (coupon) {
+          await supabase
+            .from('coupons')
+            .update({ usedCount: (coupon.usedCount || 0) + 1 })
+            .eq('code', couponCode.toUpperCase());
+        }
+      } else {
+        const coupons = await localDb.read(couponsFile, []);
+        const idx = coupons.findIndex(c => c.code === couponCode.toUpperCase());
+        if (idx !== -1) {
+          coupons[idx].usedCount = (coupons[idx].usedCount || 0) + 1;
+          await localDb.write(couponsFile, coupons);
+        }
       }
     }
 
@@ -1028,13 +1281,21 @@ app.post('/api/orders/track', async (req, res) => {
     const phone = sanitizeText(req.body?.phone, 20);
     if (!orderNo) return res.status(400).json({ error: 'Order number required' });
 
-    const { data: order, error } = await supabase
-      .from('orders')
-      .select('*')
-      .eq('orderNo', orderNo)
-      .maybeSingle();
+    let order = null;
+    if (supabase) {
+      const { data: orderData, error } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('orderNo', orderNo)
+        .maybeSingle();
+      if (error) throw error;
+      order = orderData;
+    } else {
+      const orders = await localDb.read(ordersFile, []);
+      order = orders.find(x => x.orderNo === orderNo);
+    }
 
-    if (error || !order) return res.status(404).json({ error: 'Order not found' });
+    if (!order) return res.status(404).json({ error: 'Order not found' });
 
     // Validate phone number digits match
     const cleanOrderPhone = String(order.customer?.phone || '').replace(/\D/g, '');
@@ -1057,18 +1318,28 @@ app.patch('/api/orders/:id/status', authRequired('admin'), async (req, res) => {
     const valid = ['new', 'confirmed', 'packed', 'dispatched', 'delivered', 'cancelled'];
     if (!valid.includes(status)) return res.status(400).json({ error: 'Invalid status' });
 
-    // If cancelling, optionally restock quantities?
-    // The user's specification states: "after successful purchase the products quantity should update example i have 10 products customer ordered 2 and the purchase is done , the updated quantity will be 8".
-    // We already do this at checkout. If status transitions to cancelled, we can restock if needed. But for simple flow, we leave it as standard checkout stock deduction.
-    
-    const { data: order, error } = await supabase
-      .from('orders')
-      .update({ status, updatedAt: new Date().toISOString() })
-      .eq('id', req.params.id)
-      .select()
-      .maybeSingle();
+    let order = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('orders')
+        .update({ status, updatedAt: new Date().toISOString() })
+        .eq('id', req.params.id)
+        .select()
+        .maybeSingle();
+      if (error) throw error;
+      order = data;
+    } else {
+      const orders = await localDb.read(ordersFile, []);
+      const idx = orders.findIndex(x => x.id === req.params.id);
+      if (idx !== -1) {
+        orders[idx].status = status;
+        orders[idx].updatedAt = new Date().toISOString();
+        await localDb.write(ordersFile, orders);
+        order = orders[idx];
+      }
+    }
 
-    if (error || !order) return res.status(404).json({ error: 'Order not found' });
+    if (!order) return res.status(404).json({ error: 'Order not found' });
     res.json(order);
   } catch (err) {
     console.error('Update status error:', err);
@@ -1081,12 +1352,19 @@ app.patch('/api/orders/:id/status', authRequired('admin'), async (req, res) => {
 // ── COUPONS CRUD ───────────────────────────────────────
 app.get('/api/coupons', authRequired('admin'), async (_req, res) => {
   try {
-    const { data: coupons, error } = await supabase
-      .from('coupons')
-      .select('*')
-      .order('createdAt', { ascending: false });
-    if (error) throw error;
-    res.json({ coupons: coupons || [] });
+    let couponsList = [];
+    if (supabase) {
+      const { data: coupons, error } = await supabase
+        .from('coupons')
+        .select('*')
+        .order('createdAt', { ascending: false });
+      if (error) throw error;
+      couponsList = coupons || [];
+    } else {
+      couponsList = await localDb.read(couponsFile, []);
+      couponsList.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    res.json({ coupons: couponsList });
   } catch (err) {
     console.error('Get coupons error:', err);
     res.status(500).json({ error: 'Server error' });
@@ -1099,11 +1377,18 @@ app.post('/api/coupons', authRequired('admin'), async (req, res) => {
     if (!code || !type || !value) return res.status(400).json({ error: 'code, type, value required' });
     
     // Check duplication
-    const { data: existing } = await supabase
-      .from('coupons')
-      .select('id')
-      .eq('code', code.toUpperCase().trim())
-      .maybeSingle();
+    let existing = null;
+    if (supabase) {
+      const { data } = await supabase
+        .from('coupons')
+        .select('id')
+        .eq('code', code.toUpperCase().trim())
+        .maybeSingle();
+      existing = data;
+    } else {
+      const coupons = await localDb.read(couponsFile, []);
+      existing = coupons.find(c => c.code === code.toUpperCase().trim());
+    }
 
     if (existing) return res.status(400).json({ error: 'Coupon code already exists' });
 
@@ -1118,8 +1403,14 @@ app.post('/api/coupons', authRequired('admin'), async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    const { error } = await supabase.from('coupons').insert(coupon);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('coupons').insert(coupon);
+      if (error) throw error;
+    } else {
+      const coupons = await localDb.read(couponsFile, []);
+      coupons.push(coupon);
+      await localDb.write(couponsFile, coupons);
+    }
     res.json(coupon);
   } catch (err) {
     console.error('Create coupon error:', err);
@@ -1129,8 +1420,14 @@ app.post('/api/coupons', authRequired('admin'), async (req, res) => {
 
 app.delete('/api/coupons/:id', authRequired('admin'), async (req, res) => {
   try {
-    const { error } = await supabase.from('coupons').delete().eq('id', req.params.id);
-    if (error) throw error;
+    if (supabase) {
+      const { error } = await supabase.from('coupons').delete().eq('id', req.params.id);
+      if (error) throw error;
+    } else {
+      const coupons = await localDb.read(couponsFile, []);
+      const filtered = coupons.filter(c => c.id !== req.params.id);
+      await localDb.write(couponsFile, filtered);
+    }
     res.json({ ok: true });
   } catch (err) {
     console.error('Delete coupon error:', err);
@@ -1143,13 +1440,21 @@ app.post('/api/coupons/validate', async (req, res) => {
     const { code, subtotal = 0 } = req.body;
     if (!code) return res.status(400).json({ error: 'Code required' });
     
-    const { data: coupon, error } = await supabase
-      .from('coupons')
-      .select('*')
-      .eq('code', code.toUpperCase().trim())
-      .maybeSingle();
+    let coupon = null;
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('coupons')
+        .select('*')
+        .eq('code', code.toUpperCase().trim())
+        .maybeSingle();
+      if (error) throw error;
+      coupon = data;
+    } else {
+      const coupons = await localDb.read(couponsFile, []);
+      coupon = coupons.find(c => c.code === code.toUpperCase().trim());
+    }
 
-    if (error || !coupon) return res.status(404).json({ error: 'Invalid coupon code' });
+    if (!coupon) return res.status(404).json({ error: 'Invalid coupon code' });
     if (coupon.maxUses > 0 && coupon.usedCount >= coupon.maxUses) {
       return res.status(400).json({ error: 'Coupon usage limit reached' });
     }
@@ -1168,16 +1473,27 @@ app.post('/api/coupons/validate', async (req, res) => {
 // ── ANALYTICS ──────────────────────────────────────────
 app.get('/api/admin/analytics', authRequired('admin'), async (_req, res) => {
   try {
-    const { data: orders, error: oErr } = await supabase
-      .from('orders')
-      .select('*')
-      .neq('status', 'cancelled');
-      
-    const { data: products, error: pErr } = await supabase
-      .from('products')
-      .select('*');
+    let orders = [];
+    let products = [];
+    if (supabase) {
+      const { data: oData, error: oErr } = await supabase
+        .from('orders')
+        .select('*')
+        .neq('status', 'cancelled');
+        
+      const { data: pData, error: pErr } = await supabase
+        .from('products')
+        .select('*');
 
-    if (oErr || pErr) throw (oErr || pErr);
+      if (oErr || pErr) throw (oErr || pErr);
+      orders = oData || [];
+      products = pData || [];
+    } else {
+      const o = await localDb.read(ordersFile, []);
+      orders = o.filter(x => x.status !== 'cancelled');
+      const p = await localDb.read(productsFile, { products: [] });
+      products = p.products || [];
+    }
 
     const now = new Date();
     const dailyRevenue = [];
@@ -1215,11 +1531,19 @@ app.get('/api/admin/analytics', authRequired('admin'), async (_req, res) => {
 // ── ADMIN CUSTOMERS ────────────────────────────────────
 app.get('/api/admin/customers', authRequired('admin'), async (_req, res) => {
   try {
-    const { data: users, error } = await supabase
-      .from('users')
-      .select('id, name, email, phone, createdAt')
-      .order('createdAt', { ascending: false });
-    if (error) throw error;
+    let users = [];
+    if (supabase) {
+      const { data: usersData, error } = await supabase
+        .from('users')
+        .select('id, name, email, phone, createdAt')
+        .order('createdAt', { ascending: false });
+      if (error) throw error;
+      users = usersData || [];
+    } else {
+      const u = await localDb.read(usersFile, []);
+      u.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+      users = u.map(x => ({ id: x.id, name: x.name, email: x.email, phone: x.phone, createdAt: x.createdAt }));
+    }
     res.json({ users: users || [] });
   } catch (err) {
     console.error('Get admin customers error:', err);

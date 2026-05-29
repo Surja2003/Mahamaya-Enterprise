@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
-Sitemap: /sitemap.xml
+Disallow: /admin.html
+Disallow: /backend/
+Disallow: /scratch/
+
+Sitemap: https://mahamaya-enterprise.vercel.app/sitemap.xml

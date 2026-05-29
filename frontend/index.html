@@ -11,8 +11,52 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  
+  <!-- Local Business structured data for Local SEO / Geo-targeting -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HardwareStore",
+    "name": "Mahamaya Enterprise",
+    "image": "https://mahamaya-enterprise.onrender.com/logo.png",
+    "@id": "https://mahamaya-enterprise.onrender.com/#store",
+    "url": "https://mahamaya-enterprise.onrender.com",
+    "telephone": "+919434661990",
+    "priceRange": "₹₹",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Vill & PO - Eraur, P.S - Bhatar",
+      "addressLocality": "Bhatar",
+      "addressRegion": "Purba Bardhaman, West Bengal",
+      "postalCode": "713121",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 23.415053,
+      "longitude": 87.868774
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "07:00",
+        "closes": "13:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "16:00",
+        "closes": "20:30"
+      }
+    ],
+    "sameAs": [
+      "https://wa.me/919434661990"
+    ]
+  }
+  </script>
 </head>
 <body class="page-shop" data-page="shop">
   <a href="#main" class="sr-only" style="position:absolute;left:-9999px;top:auto">Skip to content</a>
