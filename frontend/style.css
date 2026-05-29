@@ -2699,6 +2699,29 @@ input, textarea, select {
   }
 }
 
+/* ===== EXTRA MOBILE IMPROVEMENTS ===== */
+@media(max-width: 768px) {
+  /* Hide category selector in search bar - use cat nav instead */
+  .search-wrap .search-cat { display: none; }
+  /* Filter toggle always visible */
+  #filter-toggle { display: inline-flex !important; }
+  /* Category nav tighter on mobile */
+  .category-nav { padding: 0 0.5rem; }
+  .cat-nav-link { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
+  /* Category cards smaller on mobile */
+  .cat-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 0.7rem; }
+  .cat-card { padding: 1rem 0.5rem; }
+  .cat-card-ico { font-size: 1.8rem; }
+  .cat-card-name { font-size: 0.75rem; }
+  /* Shop toolbar stacks on mobile */
+  .shop-toolbar { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  .toolbar-right { width: 100%; justify-content: space-between; }
+  /* Pincode full width */
+  .pincode-widget { max-width: 100% !important; }
+  /* Search btn text on mobile */
+  .btn-search { padding: 0.7rem 0.9rem; font-size: 0.8rem; }
+}
+
 @media(max-width: 480px) {
   .product-grid {
     grid-template-columns: 1fr 1fr;

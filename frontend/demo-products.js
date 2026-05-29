@@ -1197,7 +1197,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1229,7 +1229,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1261,7 +1261,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1293,7 +1293,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1325,7 +1325,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1357,7 +1357,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1389,7 +1389,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1674,7 +1674,7 @@ const PRODUCTS = {
         "leak proof"
       ],
       "images": [
-        "/assets/safety_helmet.webp"
+        "/assets/water-line.jpg"
       ],
       "featured": false,
       "bestSeller": true,
@@ -1707,7 +1707,7 @@ const PRODUCTS = {
         "seal"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/safety_helmet.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1739,7 +1739,7 @@ const PRODUCTS = {
         "overhead storage"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "/assets/sand-stone.jpg"
       ],
       "featured": true,
       "bestSeller": false,
@@ -1771,7 +1771,7 @@ const PRODUCTS = {
         "overhead storage"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "/assets/sand-stone.jpg"
       ],
       "featured": true,
       "bestSeller": true,
@@ -1804,7 +1804,7 @@ const PRODUCTS = {
         "0.5 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1837,7 +1837,7 @@ const PRODUCTS = {
         "0.75 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1870,7 +1870,7 @@ const PRODUCTS = {
         "1.0 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1903,7 +1903,7 @@ const PRODUCTS = {
         "1.5 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": true,
@@ -1936,7 +1936,7 @@ const PRODUCTS = {
         "2.5 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": true,
@@ -1969,7 +1969,7 @@ const PRODUCTS = {
         "4.0 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2002,7 +2002,7 @@ const PRODUCTS = {
         "6.0 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2035,7 +2035,7 @@ const PRODUCTS = {
         "8.0 mm"
       ],
       "images": [
-        "/assets/goldmedal_wire.webp"
+        "/assets/wire_coil.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2233,7 +2233,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "/assets/roma_switch.webp"
+        "/assets/plug_top.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2266,7 +2266,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "/assets/roma_switch.webp"
+        "/assets/plug_top.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2458,7 +2458,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "/assets/goldmedal_fan.webp"
+        "/assets/electrical-items.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2686,7 +2686,7 @@ const PRODUCTS = {
         "paints"
       ],
       "images": [
-        "/assets/birla_samrat.webp"
+        "/assets/putty_bag.webp"
       ],
       "featured": true,
       "bestSeller": true,
@@ -2718,7 +2718,7 @@ const PRODUCTS = {
         "paints"
       ],
       "images": [
-        "/assets/jsw_cement.webp"
+        "/assets/cement-bag.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2784,7 +2784,7 @@ const PRODUCTS = {
         "off white"
       ],
       "images": [
-        "/assets/berger_silk.webp"
+        "/assets/paint-berger.jpg"
       ],
       "featured": false,
       "bestSeller": true,
@@ -2838,7 +2838,7 @@ const PRODUCTS = {
         "royal blue"
       ],
       "images": [
-        "/assets/berger_silk.webp"
+        "/assets/paint-berger.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2892,7 +2892,7 @@ const PRODUCTS = {
         "golden yellow"
       ],
       "images": [
-        "/assets/berger_silk.webp"
+        "/assets/paint-berger.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2946,7 +2946,7 @@ const PRODUCTS = {
         "cherry red"
       ],
       "images": [
-        "/assets/berger_silk.webp"
+        "/assets/paint-berger.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3000,7 +3000,7 @@ const PRODUCTS = {
         "ocean green"
       ],
       "images": [
-        "/assets/berger_silk.webp"
+        "/assets/paint-berger.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3550,7 +3550,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/pvc_pipe.webp"
+        "/assets/wall_plugs.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3583,7 +3583,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/ball_valve.webp"
+        "/assets/wall_plugs.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3682,7 +3682,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/safety_helmet.webp"
+        "/assets/wall_plugs.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3748,7 +3748,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/roma_switch.webp"
+        "/assets/wall_plugs.webp"
       ],
       "featured": false,
       "bestSeller": false,

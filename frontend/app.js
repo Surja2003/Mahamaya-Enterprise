@@ -1472,16 +1472,37 @@ function initAccount(){
   const token=store.get('userToken','');
   if(token){
     fetch(api('/api/auth/me'),{headers:{Authorization:`Bearer ${token}`}}).then(r=>r.json()).then(u=>{
-      document.getElementById('acc-name')&&(document.getElementById('acc-name').textContent=u.name||'');
-      document.getElementById('acc-email')&&(document.getElementById('acc-email').textContent=u.email||'');
-      document.getElementById('acc-phone')&&(document.getElementById('acc-phone').textContent=u.phone||'');
+      // Populate profile fields
+      const name=u.name||''; const email=u.email||''; const phone=u.phone||'';
+      document.getElementById('acc-name')&&(document.getElementById('acc-name').textContent=name);
+      document.getElementById('acc-email')&&(document.getElementById('acc-email').textContent=email);
+      document.getElementById('acc-phone')&&(document.getElementById('acc-phone').textContent=phone?`📱 ${phone}`:'');
+      // Sidebar nav
+      document.getElementById('acc-nav-name')&&(document.getElementById('acc-nav-name').textContent=name);
+      document.getElementById('acc-nav-email')&&(document.getElementById('acc-nav-email').textContent=email);
+      // Avatar initials
+      const initials=(name||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+      document.getElementById('acc-avatar')&&(document.getElementById('acc-avatar').textContent=initials);
+      document.getElementById('acc-avatar-sm')&&(document.getElementById('acc-avatar-sm').textContent=initials);
+      // Stats
+      document.getElementById('stat-wishlist')&&(document.getElementById('stat-wishlist').textContent=getWish().length);
+      // Show logged in
       document.getElementById('logged-out-view')&&(document.getElementById('logged-out-view').style.display='none');
       document.getElementById('logged-in-view')&&(document.getElementById('logged-in-view').style.display='block');
+      // Load wishlist for tab
+      const wGrid=document.getElementById('acc-wishlist-grid');
+      if(wGrid){ const wl=getWish(); const items=wl.map(id=>S.products.find(p=>p.id===id)).filter(Boolean); wGrid.innerHTML=items.length?items.map(renderProductCard).join(''):"<div class='empty-state'><div class='empty-ico'>♥</div><p>No items in wishlist</p></div>"; }
+      // Load orders
+      fetch(api('/api/orders'),{headers:{Authorization:`Bearer ${token}`}}).then(r=>r.json()).then(data=>{
+        const orders=data.orders||data||[]; 
+        document.getElementById('stat-orders')&&(document.getElementById('stat-orders').textContent=orders.length||0);
+        if(orders.length) renderAccountOrders(orders);
+      }).catch(()=>{});
     }).catch(()=>showLoggedOut());
   } else showLoggedOut();
 
   function showLoggedOut(){
-    document.getElementById('logged-out-view')&&(document.getElementById('logged-out-view').style.display='block');
+    document.getElementById('logged-out-view')&&(document.getElementById('logged-out-view').style.display='flex');
     document.getElementById('logged-in-view')&&(document.getElementById('logged-in-view').style.display='none');
   }
 
@@ -1491,8 +1512,8 @@ function initAccount(){
     try{
       const res=await fetch(api('/api/auth/login'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:fd.get('email'),password:fd.get('password')})});
       if(res.ok){ const d=await res.json(); store.set('userToken',d.token); toast('Signed in successfully!','success'); location.reload(); }
-      else{ toast('Invalid email or password','error'); btn.disabled=false; btn.textContent='Sign In'; }
-    }catch{ toast('Network error','error'); btn.disabled=false; btn.textContent='Sign In'; }
+      else{ toast('Invalid email or password','error'); btn.disabled=false; btn.textContent='Sign In →'; }
+    }catch{ toast('Network error','error'); btn.disabled=false; btn.textContent='Sign In →'; }
   });
 
   document.getElementById('signup-form')?.addEventListener('submit',async e=>{
@@ -1502,11 +1523,32 @@ function initAccount(){
     try{
       const res=await fetch(api('/api/auth/signup'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:fd.get('name'),email:fd.get('email'),phone:fd.get('phone'),password:fd.get('password')})});
       if(res.ok){ const d=await res.json(); store.set('userToken',d.token); toast('Account created successfully!','success'); location.reload(); }
-      else{ const err=await res.json(); toast(err.error||'Signup failed','error'); btn.disabled=false; btn.textContent='Create Account'; }
-    }catch{ toast('Network error','error'); btn.disabled=false; btn.textContent='Create Account'; }
+      else{ const err=await res.json(); toast(err.error||'Signup failed','error'); btn.disabled=false; btn.textContent='Create Account →'; }
+    }catch{ toast('Network error','error'); btn.disabled=false; btn.textContent='Create Account →'; }
   });
 
   document.getElementById('logout-btn')?.addEventListener('click',()=>{ store.set('userToken',''); toast('Signed out','info'); location.reload(); });
+}
+
+function renderAccountOrders(orders){
+  const el=document.getElementById('my-orders-list');
+  if(!el||!orders.length) return;
+  el.innerHTML=orders.map(o=>{
+    const status=(o.status||'processing').toLowerCase();
+    const date=o.createdAt?new Date(o.createdAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—';
+    const total=o.total||o.amount||0;
+    return `<div class="order-card">
+      <div class="order-card-header">
+        <span class="order-id">#${o.id||o.orderId||'ORD-'+Math.random().toString(36).slice(2,8).toUpperCase()}</span>
+        <span class="order-status ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span>
+      </div>
+      <div class="order-meta">
+        <span>📅 ${date}</span>
+        <span>💰 Rs. ${Number(total).toLocaleString('en-IN')}</span>
+        ${o.items?.length?`<span>🛒 ${o.items.length} item${o.items.length>1?'s':''}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ── GLOBAL EVENT BINDINGS ──────────────────────────────

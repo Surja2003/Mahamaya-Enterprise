@@ -10,6 +10,353 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── ACCOUNT PAGE SPECIFIC STYLES ── */
+    .auth-page-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem calc(2rem + env(safe-area-inset-bottom));
+      background: var(--surface);
+    }
+    .auth-card {
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+    }
+    .auth-tabs {
+      display: flex;
+      border-bottom: 2px solid var(--edge);
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 1rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font);
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+    }
+    .auth-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .auth-tab-btn:hover:not(.active) {
+      color: var(--ink);
+      background: var(--surface);
+    }
+    .auth-form-wrap {
+      padding: 1.8rem;
+    }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .auth-logo {
+      text-align: center;
+      padding: 1.5rem 1.8rem 0;
+    }
+    .auth-logo .brand-mark {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius);
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin: 0 auto 0.5rem;
+    }
+    .auth-logo h1 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .auth-logo p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    .auth-divider {
+      text-align: center;
+      position: relative;
+      margin: 1.2rem 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .auth-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--edge);
+      z-index: 0;
+    }
+    .auth-divider span {
+      position: relative;
+      z-index: 1;
+      background: var(--panel);
+      padding: 0 0.75rem;
+    }
+    .auth-footer-link {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .auth-footer-link a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    /* Account layout (logged in) */
+    .account-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+    .account-nav {
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem;
+      border: 1px solid var(--edge);
+      height: fit-content;
+      position: sticky;
+      top: 6rem;
+    }
+    .account-nav-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.6rem 0 1rem;
+      border-bottom: 1px solid var(--edge);
+      margin-bottom: 0.8rem;
+    }
+    .account-avatar-sm {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #fb923c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .account-nav-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .account-nav-email {
+      font-size: 0.72rem;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .account-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.7rem 0.8rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .account-nav-link:hover {
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .account-nav-link.active {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .account-nav-link .nav-ico {
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .account-panel {
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--edge);
+      padding: 1.8rem;
+      min-height: 400px;
+    }
+    .account-tab { display: none; }
+    .account-tab.active { display: block; }
+    .account-profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1.2rem;
+      background: linear-gradient(135deg, var(--primary), #fb923c);
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      color: #fff;
+    }
+    .account-avatar-lg {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      border: 3px solid rgba(255,255,255,0.4);
+    }
+    .account-profile-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .account-profile-meta {
+      font-size: 0.82rem;
+      opacity: 0.85;
+      margin-top: 0.2rem;
+    }
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+    }
+    .stat-card .val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .stat-card .lbl {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+    .order-card {
+      border: 1px solid var(--edge);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+    .order-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+    .order-id {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .order-status {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.7rem;
+      border-radius: var(--radius-pill);
+    }
+    .order-status.processing { background: #fef3c7; color: #92400e; }
+    .order-status.confirmed { background: #d1fae5; color: #065f46; }
+    .order-status.dispatched { background: #dbeafe; color: #1e40af; }
+    .order-status.delivered { background: #d1fae5; color: #065f46; }
+    .order-status.cancelled { background: #fee2e2; color: #991b1b; }
+    .order-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    /* MOBILE ACCOUNT */
+    @media(max-width: 768px) {
+      .auth-page-wrap {
+        align-items: flex-start;
+        padding-top: 1rem;
+      }
+      .auth-card {
+        max-width: 100%;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .account-layout {
+        grid-template-columns: 1fr;
+        padding: 0.75rem;
+        gap: 1rem;
+      }
+      .account-nav {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        gap: 0;
+        padding: 0.5rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .account-nav::-webkit-scrollbar { display: none; }
+      .account-nav-header { display: none; }
+      .account-nav-link {
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.72rem;
+        text-align: center;
+        white-space: nowrap;
+        border-radius: var(--radius-sm);
+        min-width: fit-content;
+      }
+      .account-nav-link .nav-ico { font-size: 1.2rem; }
+      .account-panel {
+        padding: 1.2rem;
+        border-radius: var(--radius);
+      }
+      .stat-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+      }
+      .stat-card .val { font-size: 1.2rem; }
+      .account-profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+    }
+    @media(max-width: 480px) {
+      .auth-form-wrap { padding: 1.2rem; }
+      .auth-logo { padding: 1.2rem 1.2rem 0; }
+    }
+  </style>
 </head>
 <body class="page-account" data-page="account">
   <div class="topbar">
@@ -30,72 +377,130 @@
   <nav class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>My Account</span></nav>
 
   <main>
-    <div class="account-layout">
-      <!-- SIDEBAR NAV -->
-      <nav class="account-nav" aria-label="Account navigation">
-        <div class="account-nav-link active" data-tab="profile"><span class="nav-ico">👤</span> Profile</div>
-        <div class="account-nav-link" data-tab="orders"><span class="nav-ico">📦</span> My Orders</div>
-        <div class="account-nav-link" data-tab="wishlist-tab"><span class="nav-ico">♥</span> Wishlist</div>
-        <div class="account-nav-link" data-tab="security"><span class="nav-ico">🔒</span> Security</div>
-        <div style="border-top:1px solid var(--edge);margin:.5rem 0"></div>
-        <div class="account-nav-link" id="logout-btn" style="color:var(--danger)"><span class="nav-ico">↩</span> Sign Out</div>
-      </nav>
+    <!-- ══ LOGGED OUT VIEW ══ -->
+    <div id="logged-out-view">
+      <div class="auth-page-wrap">
+        <div class="auth-card">
+          <div class="auth-logo">
+            <div class="brand-mark" style="width:52px;height:52px;border-radius:var(--radius);font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--primary),#fb923c);display:flex;align-items:center;justify-content:center;color:#fff;margin:0 auto 0.5rem">ME</div>
+            <h1>Welcome Back</h1>
+            <p>Sign in to your account or create a new one</p>
+          </div>
 
-      <!-- MAIN CONTENT -->
-      <div class="account-panel">
+          <div class="auth-tabs">
+            <button class="auth-tab-btn active" id="tab-login-btn" onclick="switchAuthTab('login')">Sign In</button>
+            <button class="auth-tab-btn" id="tab-signup-btn" onclick="switchAuthTab('signup')">Create Account</button>
+          </div>
 
-        <!-- LOGGED OUT -->
-        <div id="logged-out-view">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
-            <!-- LOGIN -->
-            <div>
-              <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem">Sign In</h2>
+          <div class="auth-form-wrap">
+            <!-- LOGIN FORM -->
+            <div class="auth-form active" id="auth-form-login">
               <form id="login-form">
                 <div class="field"><label>Email Address</label><input type="email" name="email" required autocomplete="email" placeholder="you@example.com"/></div>
-                <div class="field"><label>Password</label><input type="password" name="password" required autocomplete="current-password" placeholder="Your password"/></div>
-                <button class="btn btn-primary btn-full" type="submit" style="margin-top:.4rem">Sign In</button>
+                <div class="field">
+                  <label>Password</label>
+                  <div style="position:relative">
+                    <input type="password" name="password" id="login-pw" required autocomplete="current-password" placeholder="Your password" style="padding-right:2.8rem"/>
+                    <button type="button" onclick="togglePw('login-pw',this)" style="position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.1rem;background:none;border:none;cursor:pointer">👁</button>
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-full" type="submit" style="margin-top:.8rem;padding:.85rem">Sign In →</button>
               </form>
+              <div class="auth-divider"><span>or</span></div>
+              <div class="auth-footer-link">
+                No account? <a href="#" onclick="switchAuthTab('signup');return false">Create one free</a>
+              </div>
+              <div style="margin-top:1rem;padding:.8rem;background:var(--accent-soft);border-radius:var(--radius-sm);font-size:.78rem;color:var(--muted)">
+                💡 <strong>Tip:</strong> You can also <a href="track.html" style="color:var(--primary)">track your order</a> without signing in.
+              </div>
             </div>
-            <!-- SIGNUP -->
-            <div>
-              <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1rem">Create Account</h2>
+
+            <!-- SIGNUP FORM -->
+            <div class="auth-form" id="auth-form-signup">
               <form id="signup-form">
                 <div class="field"><label>Full Name</label><input type="text" name="name" required autocomplete="name" placeholder="Your full name"/></div>
                 <div class="field"><label>Email Address</label><input type="email" name="email" required autocomplete="email" placeholder="you@example.com"/></div>
                 <div class="field"><label>Phone Number</label><input type="tel" name="phone" autocomplete="tel" placeholder="10-digit mobile number"/></div>
-                <div class="field"><label>Password</label><input type="password" name="password" required autocomplete="new-password" placeholder="Min. 6 characters"/></div>
+                <div class="field">
+                  <label>Password</label>
+                  <div style="position:relative">
+                    <input type="password" name="password" id="signup-pw" required autocomplete="new-password" placeholder="Min. 6 characters" style="padding-right:2.8rem"/>
+                    <button type="button" onclick="togglePw('signup-pw',this)" style="position:absolute;right:0.8rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1.1rem;background:none;border:none;cursor:pointer">👁</button>
+                  </div>
+                </div>
                 <div class="field"><label>Confirm Password</label><input type="password" name="confirmPassword" required autocomplete="new-password" placeholder="Repeat password"/></div>
-                <button class="btn btn-accent btn-full" type="submit" style="margin-top:.4rem">Create Account</button>
+                <button class="btn btn-primary btn-full" type="submit" style="margin-top:.8rem;padding:.85rem">Create Account →</button>
               </form>
+              <div class="auth-footer-link" style="margin-top:.8rem">
+                Already have an account? <a href="#" onclick="switchAuthTab('login');return false">Sign in</a>
+              </div>
             </div>
           </div>
-          <div style="margin-top:1.5rem;padding:1rem;background:var(--accent-soft);border-radius:var(--radius);font-size:.85rem">
-            💡 <strong>Tip:</strong> Create an account to track orders and get faster checkout. Or <a href="track.html" style="color:var(--primary)">track your order</a> without an account.
-          </div>
         </div>
+      </div>
+    </div>
 
-        <!-- LOGGED IN -->
-        <div id="logged-in-view" style="display:none">
+    <!-- ══ LOGGED IN VIEW ══ -->
+    <div id="logged-in-view" style="display:none">
+      <div class="account-layout">
+        <!-- SIDEBAR NAV -->
+        <nav class="account-nav" aria-label="Account navigation">
+          <div class="account-nav-header">
+            <div class="account-avatar-sm" id="acc-avatar-sm">👤</div>
+            <div>
+              <div class="account-nav-name" id="acc-nav-name">—</div>
+              <div class="account-nav-email" id="acc-nav-email">—</div>
+            </div>
+          </div>
+          <div class="account-nav-link active" data-tab="profile"><span class="nav-ico">👤</span><span>Profile</span></div>
+          <div class="account-nav-link" data-tab="orders"><span class="nav-ico">📦</span><span>My Orders</span></div>
+          <div class="account-nav-link" data-tab="wishlist-tab"><span class="nav-ico">♥</span><span>Wishlist</span></div>
+          <div class="account-nav-link" data-tab="security"><span class="nav-ico">🔒</span><span>Security</span></div>
+          <div style="border-top:1px solid var(--edge);margin:.5rem 0"></div>
+          <div class="account-nav-link" id="logout-btn" style="color:var(--danger)"><span class="nav-ico">↩</span><span>Sign Out</span></div>
+        </nav>
+
+        <!-- MAIN CONTENT PANEL -->
+        <div class="account-panel">
           <!-- PROFILE TAB -->
           <div class="account-tab active" id="tab-profile">
-            <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1.2rem">My Profile</h2>
-            <div style="display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;margin-bottom:1.5rem">
-              <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.8rem;font-weight:800" id="acc-avatar">👤</div>
+            <div class="account-profile-header">
+              <div class="account-avatar-lg" id="acc-avatar">👤</div>
               <div>
-                <div style="font-size:1.3rem;font-weight:800" id="acc-name">—</div>
-                <div style="color:var(--muted);font-size:.88rem" id="acc-email">—</div>
-                <div style="color:var(--muted);font-size:.88rem" id="acc-phone">—</div>
+                <div class="account-profile-name" id="acc-name">—</div>
+                <div class="account-profile-meta" id="acc-email">—</div>
+                <div class="account-profile-meta" id="acc-phone"></div>
+              </div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-card">
+                <div class="val" id="stat-orders">0</div>
+                <div class="lbl">Orders</div>
+              </div>
+              <div class="stat-card">
+                <div class="val" id="stat-wishlist">0</div>
+                <div class="lbl">Wishlist</div>
+              </div>
+              <div class="stat-card">
+                <div class="val">GST</div>
+                <div class="lbl">Bills</div>
               </div>
             </div>
             <div style="padding:1rem;background:var(--accent-soft);border-radius:var(--radius);font-size:.85rem">
               📞 Need help? Call <a href="tel:+919434661990" style="color:var(--primary)">+91 9434661990</a> or <a href="https://wa.me/919475653294" target="_blank" rel="noopener" style="color:#25D366">WhatsApp us</a>.
+            </div>
+            <div style="margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap">
+              <a href="index.html#shop" class="btn btn-primary btn-sm">🛒 Start Shopping</a>
+              <a href="track.html" class="btn btn-outline btn-sm">📦 Track Order</a>
             </div>
           </div>
 
           <!-- ORDERS TAB -->
           <div class="account-tab" id="tab-orders">
             <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1.2rem">My Orders</h2>
-            <div id="my-orders-list"><div class="empty-state"><div class="empty-ico">📦</div><p>No orders found. <a href="index.html#shop" style="color:var(--primary)">Start shopping</a></p></div></div>
+            <div id="my-orders-list">
+              <div class="empty-state"><div class="empty-ico">📦</div><p>No orders found. <a href="index.html#shop" style="color:var(--primary)">Start shopping</a></p></div>
+            </div>
           </div>
 
           <!-- WISHLIST TAB -->
@@ -107,9 +512,10 @@
           <!-- SECURITY TAB -->
           <div class="account-tab" id="tab-security">
             <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:1.2rem">Security</h2>
-            <div style="padding:1rem;background:var(--surface);border-radius:var(--radius);font-size:.88rem;color:var(--muted)">
-              Password changes and 2FA settings — contact support via WhatsApp to update account credentials.
+            <div style="padding:1rem;background:var(--surface);border-radius:var(--radius);font-size:.88rem;color:var(--muted);margin-bottom:1rem">
+              🔒 Password changes and 2FA settings — contact support via WhatsApp to update account credentials.
             </div>
+            <a href="https://wa.me/919475653294?text=I+need+to+update+my+account+password" target="_blank" rel="noopener" class="btn btn-outline btn-sm">💬 Contact Support</a>
           </div>
         </div>
       </div>
@@ -125,33 +531,30 @@
     <div class="drawer-header"><h3>♥ Wishlist</h3><button class="btn btn-ghost btn-sm btn-icon" id="close-wishlist" type="button">✕</button></div>
     <div id="wishlist-items" class="drawer-body"></div>
   </div>
+
   <!-- MOBILE BOTTOM NAVIGATION -->
   <div class="mobile-bottom-nav">
-    <a href="index.html" class="mobile-bottom-nav-item" id="mob-nav-home">
-      <span class="ico">🏠</span>
-      <span>Home</span>
-    </a>
-    <a href="index.html#shop" class="mobile-bottom-nav-item" id="mob-nav-shop">
-      <span class="ico">⚙</span>
-      <span>Filter</span>
-    </a>
-    <button class="mobile-bottom-nav-item" id="mob-nav-wishlist" type="button">
-      <span class="ico">♥</span>
-      <span>Wishlist</span>
-      <span class="mobile-bottom-badge" id="wishlist-badge-mob" style="display:none">0</span>
-    </button>
-    <button class="mobile-bottom-nav-item" id="mob-nav-cart" type="button">
-      <span class="ico">🛒</span>
-      <span>Cart</span>
-      <span class="mobile-bottom-badge" id="cart-badge-mob" style="display:none">0</span>
-    </button>
-    <a href="account.html" class="mobile-bottom-nav-item active" id="mob-nav-account">
-      <span class="ico">👤</span>
-      <span>Account</span>
-    </a>
+    <a href="index.html" class="mobile-bottom-nav-item" id="mob-nav-home"><span class="ico">🏠</span><span>Home</span></a>
+    <a href="index.html#shop" class="mobile-bottom-nav-item" id="mob-nav-shop"><span class="ico">🛍</span><span>Shop</span></a>
+    <button class="mobile-bottom-nav-item" id="mob-nav-wishlist" type="button"><span class="ico">♥</span><span>Wishlist</span><span class="mobile-bottom-badge" id="wishlist-badge-mob" style="display:none">0</span></button>
+    <button class="mobile-bottom-nav-item" id="mob-nav-cart" type="button"><span class="ico">🛒</span><span>Cart</span><span class="mobile-bottom-badge" id="cart-badge-mob" style="display:none">0</span></button>
+    <a href="account.html" class="mobile-bottom-nav-item active" id="mob-nav-account"><span class="ico">👤</span><span>Account</span></a>
   </div>
 
   <div class="toast-container" id="toast-container" aria-live="polite"></div>
+  <script>
+    function switchAuthTab(tab) {
+      document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+      document.getElementById('tab-'+tab+'-btn').classList.add('active');
+      document.getElementById('auth-form-'+tab).classList.add('active');
+    }
+    function togglePw(id, btn) {
+      const el = document.getElementById(id);
+      if (el.type === 'password') { el.type = 'text'; btn.textContent = '🙈'; }
+      else { el.type = 'password'; btn.textContent = '👁'; }
+    }
+  </script>
   <script src="demo-products.js"></script>
   <script src="app.js" defer></script>
 </body>
