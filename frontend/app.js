@@ -662,14 +662,20 @@ function updateCategoryCounts(){
   const counts={};
   S.products.forEach(p=>{ if(p.category) counts[p.category]=(counts[p.category]||0)+1; });
   Object.entries(counts).forEach(([cat,cnt])=>{
-    const cardEl = document.querySelector(`.cat-card[data-cat="${cat}"]`);
-    if (cardEl) {
-      const countEl = cardEl.querySelector('.cat-card-count');
-      if (countEl) { countEl.textContent = `${cnt} items`; return; }
+    // Try matching via data-cat attribute (use querySelectorAll + text comparison to handle & entities)
+    let found = false;
+    document.querySelectorAll('.cat-card[data-cat]').forEach(card=>{
+      if(card.dataset.cat === cat){
+        const countEl = card.querySelector('.cat-card-count');
+        if(countEl){ countEl.textContent = `${cnt} item${cnt!==1?'s':''}`; found=true; }
+      }
+    });
+    if(!found){
+      // Fallback: try by ID using sanitised category name
+      const elId='cnt-'+cat.replace(/[^a-z0-9]/gi,'');
+      const el=document.getElementById(elId)||document.getElementById('cnt-'+cat.split(' ')[0]);
+      if(el) el.textContent=`${cnt} item${cnt!==1?'s':''}`;
     }
-    const elId='cnt-'+cat.replace(/[^a-z0-9]/gi,'');
-    const el=document.getElementById(elId)||document.getElementById('cnt-'+cat.split(' ')[0]);
-    if(el) el.textContent=`${cnt} items`;
   });
   const statEl=document.getElementById('stat-products');
   if(statEl) statEl.textContent=S.products.length>0?`${S.products.length}+`:'500+';

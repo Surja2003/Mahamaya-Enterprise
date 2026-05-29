@@ -790,7 +790,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "/assets/roma_switch.webp"
+        "/assets/pritam_led_panel.webp"
       ],
       "featured": true,
       "bestSeller": true,
@@ -1674,7 +1674,7 @@ const PRODUCTS = {
         "leak proof"
       ],
       "images": [
-        "/assets/water-line.jpg"
+        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": true,
@@ -1707,7 +1707,7 @@ const PRODUCTS = {
         "seal"
       ],
       "images": [
-        "/assets/safety_helmet.webp"
+        "https://images.unsplash.com/photo-1578761560889-1e2ed59b2df4?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1739,7 +1739,7 @@ const PRODUCTS = {
         "overhead storage"
       ],
       "images": [
-        "/assets/sand-stone.jpg"
+        "https://images.unsplash.com/photo-1558618047-3d6e282c2e5e?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": true,
       "bestSeller": false,
@@ -1771,7 +1771,7 @@ const PRODUCTS = {
         "overhead storage"
       ],
       "images": [
-        "/assets/sand-stone.jpg"
+        "https://images.unsplash.com/photo-1558618047-3d6e282c2e5e?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": true,
       "bestSeller": true,
@@ -2458,7 +2458,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "/assets/electrical-items.jpg"
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2686,7 +2686,7 @@ const PRODUCTS = {
         "paints"
       ],
       "images": [
-        "/assets/putty_bag.webp"
+        "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": true,
       "bestSeller": true,
@@ -2718,7 +2718,7 @@ const PRODUCTS = {
         "paints"
       ],
       "images": [
-        "/assets/cement-bag.jpg"
+        "https://images.unsplash.com/photo-1600585152915-d954f41f2a2d?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2751,7 +2751,7 @@ const PRODUCTS = {
         "berger"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2838,7 +2838,7 @@ const PRODUCTS = {
         "royal blue"
       ],
       "images": [
-        "/assets/paint-berger.jpg"
+        "https://images.unsplash.com/photo-1562259929-b44a9b19f9b2?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2892,7 +2892,7 @@ const PRODUCTS = {
         "golden yellow"
       ],
       "images": [
-        "/assets/paint-berger.jpg"
+        "https://images.unsplash.com/photo-1567301872716-09c3f7c56faf?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2946,7 +2946,7 @@ const PRODUCTS = {
         "cherry red"
       ],
       "images": [
-        "/assets/paint-berger.jpg"
+        "https://images.unsplash.com/photo-1614267157481-ca2b81ac6fcc?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3000,7 +3000,7 @@ const PRODUCTS = {
         "ocean green"
       ],
       "images": [
-        "/assets/paint-berger.jpg"
+        "https://images.unsplash.com/photo-1504706876914-f03c87040c19?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3106,7 +3106,7 @@ const PRODUCTS = {
         "terracotta red"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "https://images.unsplash.com/photo-1614267157481-ca2b81ac6fcc?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3159,7 +3159,7 @@ const PRODUCTS = {
         "slate grey"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3212,7 +3212,7 @@ const PRODUCTS = {
         "mustard yellow"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "https://images.unsplash.com/photo-1567301872716-09c3f7c56faf?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3265,7 +3265,7 @@ const PRODUCTS = {
         "olive green"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "https://images.unsplash.com/photo-1504706876914-f03c87040c19?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3517,7 +3517,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/claw_hammer.webp"
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3616,7 +3616,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/claw_hammer.webp"
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3649,7 +3649,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/claw_hammer.webp"
+        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop"
       ],
       "featured": true,
       "bestSeller": false,
@@ -3715,7 +3715,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "/assets/claw_hammer.webp"
+        "/assets/wall_plugs.webp"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3946,7 +3946,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "/assets/wall_plugs.webp"
+        "/assets/tmt-bar.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3979,7 +3979,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "/assets/wall_plugs.webp"
+        "/assets/tmt-bar.jpg"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4012,7 +4012,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "/assets/wall_plugs.webp"
+        "/assets/tmt-bar.jpg"
       ],
       "featured": false,
       "bestSeller": false,
