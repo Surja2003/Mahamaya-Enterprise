@@ -2838,7 +2838,7 @@ const PRODUCTS = {
         "royal blue"
       ],
       "images": [
-        "https://placehold.co/400x400/1a56c4/ffffff?text=Berger+Silk%0ARoyal+Blue"
+        "https://placehold.co/400x400/1a56c4/ffffff?text=Berger+Silk+Royal+Blue"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2892,7 +2892,7 @@ const PRODUCTS = {
         "golden yellow"
       ],
       "images": [
-        "https://placehold.co/400x400/e6b800/333333?text=Berger+Silk%0AGolden+Yellow"
+        "https://placehold.co/400x400/e6b800/333333?text=Berger+Silk+Golden+Yellow"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2946,7 +2946,7 @@ const PRODUCTS = {
         "cherry red"
       ],
       "images": [
-        "https://placehold.co/400x400/c0392b/ffffff?text=Berger+Silk%0ACherry+Red"
+        "https://placehold.co/400x400/c0392b/ffffff?text=Berger+Silk+Cherry+Red"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3000,7 +3000,7 @@ const PRODUCTS = {
         "ocean green"
       ],
       "images": [
-        "https://placehold.co/400x400/0d9e4e/ffffff?text=Berger+Silk%0AOcean+Green"
+        "https://placehold.co/400x400/0d9e4e/ffffff?text=Berger+Silk+Ocean+Green"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3106,7 +3106,7 @@ const PRODUCTS = {
         "terracotta red"
       ],
       "images": [
-        "https://placehold.co/400x400/c1440e/ffffff?text=Berger+Weathercoat%0ATerracotta+Red"
+        "https://placehold.co/400x400/c1440e/ffffff?text=Berger+Weathercoat+Terracotta+Red"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3159,7 +3159,7 @@ const PRODUCTS = {
         "slate grey"
       ],
       "images": [
-        "https://placehold.co/400x400/667788/ffffff?text=Berger+Weathercoat%0ASlate+Grey"
+        "https://placehold.co/400x400/667788/ffffff?text=Berger+Weathercoat+Slate+Grey"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3212,7 +3212,7 @@ const PRODUCTS = {
         "mustard yellow"
       ],
       "images": [
-        "https://placehold.co/400x400/d4a019/ffffff?text=Berger+Weathercoat%0AMustard+Yellow"
+        "https://placehold.co/400x400/d4a019/ffffff?text=Berger+Weathercoat+Mustard+Yellow"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3265,7 +3265,7 @@ const PRODUCTS = {
         "olive green"
       ],
       "images": [
-        "https://placehold.co/400x400/5d7a26/ffffff?text=Berger+Weathercoat%0AOlive+Green"
+        "https://placehold.co/400x400/5d7a26/ffffff?text=Berger+Weathercoat+Olive+Green"
       ],
       "featured": false,
       "bestSeller": false,

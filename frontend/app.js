@@ -148,6 +148,8 @@ function animateCartFly(el) {
   setTimeout(() => fly.remove(), 800);
 }
 function renderCartDrawer() {
+  // Safe helper — avoids TypeError if element not in DOM on current page
+  const setText = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
   const el = document.getElementById('cart-items');
   if (!el) return;
   const cart = getCart();
@@ -158,9 +160,9 @@ function renderCartDrawer() {
       <p>Your cart is empty.</p>
       <a href="index.html" class="btn btn-primary btn-sm" style="margin-top:.8rem">Browse Products</a>
     </div>`;
-    document.getElementById('cart-subtotal').textContent = Rs(0);
-    document.getElementById('cart-delivery').textContent = Rs(0);
-    document.getElementById('cart-total').textContent = Rs(0);
+    setText('cart-subtotal', Rs(0));
+    setText('cart-delivery', Rs(0));
+    setText('cart-total', Rs(0));
     return;
   }
   
@@ -214,9 +216,9 @@ function renderCartDrawer() {
   const ship = S.settings.shipping || { fee: 150, freeAbove: 5000 };
   const fee = ship.freeAbove > 0 && subtotal >= ship.freeAbove ? 0 : (ship.fee || 0);
   
-  document.getElementById('cart-subtotal').textContent = Rs(subtotal);
-  document.getElementById('cart-delivery').textContent = fee > 0 ? Rs(fee) : 'FREE';
-  document.getElementById('cart-total').textContent = Rs(subtotal + fee);
+  setText('cart-subtotal', Rs(subtotal));
+  setText('cart-delivery', fee > 0 ? Rs(fee) : 'FREE');
+  setText('cart-total', Rs(subtotal + fee));
 }
 async function openQuickView(productId) {
   const p = S.products.find(x => x.id === productId);
