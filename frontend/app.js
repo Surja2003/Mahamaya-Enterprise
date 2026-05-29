@@ -229,7 +229,7 @@ async function openQuickView(productId) {
   const title = document.getElementById('qv-title');
   if (!modal || !body) return;
   
-  title.textContent = p.name;
+  if (title) title.textContent = p.name;
   
   const img = (p.images && p.images[0]) || PLACEHOLDER;
   const inStock = Number(p.stock || 0) > 0;
@@ -1190,9 +1190,13 @@ function renderProductPageUI(p) {
   
   const disc = initialMrp > initialPrice ? Math.round((initialMrp - initialPrice) / initialMrp * 100) : 0;
   
-  document.getElementById('bc-category').textContent = p.category || 'Products';
-  document.getElementById('bc-category').href = `index.html#shop`;
-  document.getElementById('bc-name').textContent = p.name;
+  const bcCat = document.getElementById('bc-category');
+  if (bcCat) {
+    bcCat.textContent = p.category || 'Products';
+    bcCat.href = `index.html#shop`;
+  }
+  const bcName = document.getElementById('bc-name');
+  if (bcName) bcName.textContent = p.name;
 
   const minQty = typeof p.minQty === 'number' ? p.minQty : 1;
   const qtyStep = typeof p.qtyStep === 'number' ? p.qtyStep : 1;
@@ -1292,11 +1296,13 @@ function renderProductPageUI(p) {
   // Qty stepper events
   document.getElementById('qty-dec')?.addEventListener('click', () => {
     qty = Math.max(minQty, qty - qtyStep);
-    document.getElementById('qty-val').textContent = qty;
+    const qtyVal = document.getElementById('qty-val');
+    if (qtyVal) qtyVal.textContent = qty;
   });
   document.getElementById('qty-inc')?.addEventListener('click', () => {
     qty = Math.min(stock, qty + qtyStep);
-    document.getElementById('qty-val').textContent = qty;
+    const qtyVal = document.getElementById('qty-val');
+    if (qtyVal) qtyVal.textContent = qty;
   });
   
   // Add to cart / wishlist
@@ -1363,11 +1369,18 @@ async function initCheckout(){
   const ship=S.settings.shipping||{};
   const fee=ship.freeAbove>0&&subtotal>=ship.freeAbove?0:(ship.fee||0);
   const updateTotals=()=>{
-    document.getElementById('checkout-subtotal').textContent=Rs(subtotal);
-    document.getElementById('checkout-delivery').textContent=fee>0?Rs(fee):'FREE';
+    const subtotalEl = document.getElementById('checkout-subtotal');
+    if (subtotalEl) subtotalEl.textContent = Rs(subtotal);
+    const deliveryEl = document.getElementById('checkout-delivery');
+    if (deliveryEl) deliveryEl.textContent = fee>0?Rs(fee):'FREE';
     const dr=document.getElementById('checkout-discount-row');
-    if(discount>0&&dr){ dr.style.display='flex'; document.getElementById('checkout-discount').textContent=`-${Rs(discount)}`; }
-    document.getElementById('checkout-total').textContent=Rs(subtotal+fee-discount);
+    if(discount>0&&dr){ 
+      dr.style.display='flex'; 
+      const discountEl = document.getElementById('checkout-discount');
+      if (discountEl) discountEl.textContent = `-${Rs(discount)}`; 
+    }
+    const totalEl = document.getElementById('checkout-total');
+    if (totalEl) totalEl.textContent = Rs(subtotal+fee-discount);
     const note=document.getElementById('checkout-delivery-note');
     if(note&&ship.freeAbove>0&&subtotal<ship.freeAbove) note.textContent=`🎁 Add ${Rs(ship.freeAbove-subtotal)} more for free delivery!`;
     else if(note&&fee===0) note.textContent='🎉 You qualify for free delivery!';
@@ -1402,9 +1415,11 @@ async function initCheckout(){
       if(res.ok){
         const order=await res.json();
         setCart([]);
-        document.getElementById('success-order-no').textContent=`Order No: ${order.orderNo}`;
-        const wa=waUrl(S.settings.shopInfo?.whatsapp||'919475653294',`Hi! I placed Order ${order.orderNo} on Mahamaya Enterprise. Please confirm.`);
-        document.getElementById('success-wa-btn').href=wa;
+        const successOrderNo = document.getElementById('success-order-no');
+        if (successOrderNo) successOrderNo.textContent = `Order No: ${order.orderNo}`;
+        const wa = waUrl(S.settings.shopInfo?.whatsapp||'919475653294',`Hi! I placed Order ${order.orderNo} on Mahamaya Enterprise. Please confirm.`);
+        const successWaBtn = document.getElementById('success-wa-btn');
+        if (successWaBtn) successWaBtn.href = wa;
         document.getElementById('order-success-modal')?.classList.add('show');
         document.getElementById('overlay')?.classList.add('show');
       } else {
