@@ -534,7 +534,7 @@ const PRODUCTS = {
         "silk"
       ],
       "images": [
-        "/assets/paint-berger.jpg"
+        "/assets/berger_weathercoat.png"
       ],
       "featured": true,
       "bestSeller": true,
@@ -2718,7 +2718,7 @@ const PRODUCTS = {
         "paints"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1600585152915-d954f41f2a2d?w=400&q=75&auto=format&fit=crop"
+        "/assets/white_cement_bag.png"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2784,7 +2784,7 @@ const PRODUCTS = {
         "off white"
       ],
       "images": [
-        "/assets/paint-berger.jpg"
+        "/assets/berger_weathercoat.png"
       ],
       "featured": false,
       "bestSeller": true,
@@ -2838,7 +2838,7 @@ const PRODUCTS = {
         "royal blue"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1562259929-b44a9b19f9b2?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/1a56c4/ffffff?text=Berger+Silk%0ARoyal+Blue"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2892,7 +2892,7 @@ const PRODUCTS = {
         "golden yellow"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1567301872716-09c3f7c56faf?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/e6b800/333333?text=Berger+Silk%0AGolden+Yellow"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2946,7 +2946,7 @@ const PRODUCTS = {
         "cherry red"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1614267157481-ca2b81ac6fcc?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/c0392b/ffffff?text=Berger+Silk%0ACherry+Red"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3000,7 +3000,7 @@ const PRODUCTS = {
         "ocean green"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1504706876914-f03c87040c19?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/0d9e4e/ffffff?text=Berger+Silk%0AOcean+Green"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3053,7 +3053,7 @@ const PRODUCTS = {
         "bright white"
       ],
       "images": [
-        "/assets/apex_paint.webp"
+        "/assets/berger_weathercoat.png"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3106,7 +3106,7 @@ const PRODUCTS = {
         "terracotta red"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1614267157481-ca2b81ac6fcc?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/c1440e/ffffff?text=Berger+Weathercoat%0ATerracotta+Red"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3159,7 +3159,7 @@ const PRODUCTS = {
         "slate grey"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/667788/ffffff?text=Berger+Weathercoat%0ASlate+Grey"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3212,7 +3212,7 @@ const PRODUCTS = {
         "mustard yellow"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1567301872716-09c3f7c56faf?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/d4a019/ffffff?text=Berger+Weathercoat%0AMustard+Yellow"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3265,7 +3265,7 @@ const PRODUCTS = {
         "olive green"
       ],
       "images": [
-        "https://images.unsplash.com/photo-1504706876914-f03c87040c19?w=400&q=75&auto=format&fit=crop"
+        "https://placehold.co/400x400/5d7a26/ffffff?text=Berger+Weathercoat%0AOlive+Green"
       ],
       "featured": false,
       "bestSeller": false,

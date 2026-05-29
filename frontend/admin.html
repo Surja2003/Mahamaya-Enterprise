@@ -302,6 +302,13 @@
       flex: 1;
     }
 
+    /* 2-column grid used in overview dashboard */
+    .admin-overview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+    }
+
     .admin-page {
       display: none;
       flex-direction: column;
@@ -706,19 +713,99 @@
       display: block;
     }
 
-    /* Responsive side panel for mobile */
+    /* ===== RESPONSIVE / MOBILE ADMIN ===== */
     @media(max-width: 992px) {
       .admin-layout {
         grid-template-columns: 1fr;
+        overflow-x: hidden;
       }
       .admin-sidebar {
         display: none;
       }
+      .admin-main {
+        height: auto;
+        min-height: 100vh;
+      }
       .admin-content {
-        padding: 1.2rem;
+        padding: 1rem;
+        overflow-x: hidden;
       }
       .admin-form-grid {
         grid-template-columns: 1fr;
+      }
+      .admin-form-grid.three {
+        grid-template-columns: 1fr;
+      }
+      /* Topbar compact on mobile */
+      .admin-topbar {
+        padding: 0.9rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .admin-topbar-title {
+        font-size: 1.05rem;
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .admin-topbar-right {
+        gap: 0.6rem;
+        flex-wrap: nowrap;
+      }
+      .admin-topbar-right span {
+        display: none; /* Hide email text on mobile — show only icon/button */
+      }
+      /* Stats grid: 2 columns on tablet, handled by auto-fit already */
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .stat-card {
+        padding: 1.2rem;
+      }
+      .stat-card-val {
+        font-size: 1.5rem;
+      }
+      /* Overview cards grid: single column */
+      .admin-overview-grid,
+      .admin-card-body .admin-form-grid,
+      .overview-grid,
+      [style*="grid-template-columns: repeat(2"] {
+        grid-template-columns: 1fr !important;
+      }
+      /* Tables: horizontal scroll */
+      .admin-card table {
+        min-width: 500px;
+      }
+      .admin-card .admin-card-body {
+        padding: 1rem;
+        overflow-x: auto;
+      }
+      /* Chart bar wrap */
+      .chart-bar-wrap {
+        overflow-x: auto;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.7rem;
+      }
+      .stat-card {
+        padding: 1rem;
+      }
+      .stat-card-val {
+        font-size: 1.3rem;
+      }
+      .admin-topbar-title {
+        font-size: 0.95rem;
+      }
+      .admin-content {
+        padding: 0.75rem;
+        gap: 1rem;
       }
     }
 
@@ -799,7 +886,7 @@
             <div class="admin-card stat-card"><div class="stat-card-title">Products <span class="stat-card-icon">📦</span></div><div class="stat-card-val" id="stat-prods">—</div></div>
             <div class="admin-card stat-card"><div class="stat-card-title">Customers <span class="stat-card-icon">👥</span></div><div class="stat-card-val" id="stat-customers">—</div></div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem">
+          <div class="admin-overview-grid">
             <div class="admin-card">
               <div class="admin-card-header"><div class="admin-card-title">📈 Daily Revenue (last 14 days)</div></div>
               <div class="admin-card-body"><div class="chart-bar-wrap" id="revenue-chart"></div><div id="chart-labels" style="display:flex;gap:.3rem;font-size:.62rem;color:var(--muted);padding:0 .5rem"></div></div>
