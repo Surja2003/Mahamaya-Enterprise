@@ -647,14 +647,15 @@ function updateFilterSidebarCounts(){
 }
 
 function renderFilterSidebar(){
-  const cats=[...new Set(S.products.map(p=>p.category).filter(Boolean))];
-  const brands=[...new Set(S.products.map(p=>p.brand).filter(Boolean))];
+  const cats=[...new Set(S.products.map(p=>p.category).filter(Boolean))].sort();
   const cEl=document.getElementById('filter-categories');
-  const bEl=document.getElementById('filter-brands');
-  if(cEl) cEl.innerHTML=cats.map(c=>{ return `<label class="filter-option"><input type="checkbox" value="${c}" ${S.filters.categories.includes(c)?'checked':''}/><span>${c}</span><span class="filter-option-count" data-count-cat="${c}">0</span></label>`; }).join('');
-  if(bEl) bEl.innerHTML=brands.map(b=>{ return `<label class="filter-option"><input type="checkbox" value="${b}" ${S.filters.brands.includes(b)?'checked':''}/><span>${b}</span><span class="filter-option-count" data-count-brand="${b}">0</span></label>`; }).join('');
-  cEl?.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{ if(inp.checked) S.filters.categories.push(inp.value); else S.filters.categories=S.filters.categories.filter(x=>x!==inp.value); applyFilters(); }));
-  bEl?.querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{ if(inp.checked) S.filters.brands.push(inp.value); else S.filters.brands=S.filters.brands.filter(x=>x!==inp.value); applyFilters(); }));
+  if(cEl) cEl.innerHTML=cats.map(c=>{
+    const cnt = S.products.filter(p=>p.category===c).length;
+    const checked = S.filters.categories.includes(c) ? 'checked' : '';
+    return `<label class="filter-option"><input type="checkbox" value="${c}" ${checked}/><span>${c}</span><span class="filter-option-count">${cnt}</span></label>`;
+  }).join('');
+  // Checkboxes only update pending state — user must click Apply to see results
+  // (no applyFilters() called here on change)
 }
 
 function updateCategoryCounts(){
@@ -910,6 +911,18 @@ function initShop(){
   cf?.addEventListener('click',clearAllFilters);
 
   // search-cat-filter removed — category filtering done via filter panel or cat cards only
+
+  // Apply Filters button — reads checked boxes, updates S.filters, applies, closes panel on mobile
+  document.getElementById('apply-filters')?.addEventListener('click', () => {
+    const checkedCats = [...document.querySelectorAll('#filter-categories input:checked')].map(i=>i.value);
+    S.filters.categories = checkedCats;
+    applyFilters();
+    // Close mobile panel
+    fp?.classList.remove('mobile-open');
+    if(fo) fo.style.display='none';
+    // Scroll to products
+    document.getElementById('shop')?.scrollIntoView({behavior:'smooth'});
+  });
 
   // Mobile filter toggle
   ft?.addEventListener('click',()=>{ fp?.classList.toggle('mobile-open'); if(fo) fo.style.display=fp?.classList.contains('mobile-open')?'block':'none'; });

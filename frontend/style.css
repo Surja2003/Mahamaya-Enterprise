@@ -795,8 +795,34 @@ input, textarea, select {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  max-height: 200px;
+  max-height: 360px;
   overflow-y: auto;
+}
+
+/* Apply Filters sticky button at bottom of panel */
+.filter-apply-wrap {
+  padding: 1rem 1.4rem 1.4rem;
+  border-top: 1px solid var(--edge);
+  position: sticky;
+  bottom: 0;
+  background: var(--panel);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.filter-apply-wrap .btn-primary {
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.85rem;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+  transition: all 0.25s ease;
+}
+.filter-apply-wrap .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
+}
+.filter-apply-wrap .btn-primary:active {
+  transform: translateY(0);
 }
 .filter-option {
   display: flex;

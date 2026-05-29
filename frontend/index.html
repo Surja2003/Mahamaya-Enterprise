@@ -151,60 +151,24 @@
       </div>
     </div>
 
-    <!-- CATEGORIES GRID -->
-    <div class="section" id="categories-section">
-      <div class="section-hd">
-        <h2 class="section-title">Shop by <span>Category</span></h2>
-        <a class="see-all" href="#shop">View All →</a>
-      </div>
-      <div class="cat-grid" id="cat-grid">
-        <div class="cat-card" data-cat="Hardware"><div class="cat-card-ico">🔩</div><div class="cat-card-name">Hardware</div><div class="cat-card-count" id="cnt-Hardware">Loading...</div></div>
-        <div class="cat-card" data-cat="Electrical"><div class="cat-card-ico">⚡</div><div class="cat-card-name">Electrical</div><div class="cat-card-count" id="cnt-Electrical">Loading...</div></div>
-        <div class="cat-card" data-cat="Plumbing"><div class="cat-card-ico">🚿</div><div class="cat-card-name">Plumbing</div><div class="cat-card-count" id="cnt-Plumbing">Loading...</div></div>
-        <div class="cat-card" data-cat="Paints"><div class="cat-card-ico">🎨</div><div class="cat-card-name">Paints</div><div class="cat-card-count" id="cnt-Paints">Loading...</div></div>
-        <div class="cat-card" data-cat="Tools"><div class="cat-card-ico">🔧</div><div class="cat-card-name">Tools</div><div class="cat-card-count" id="cnt-Tools">Loading...</div></div>
-        <div class="cat-card" data-cat="Cement & Steel"><div class="cat-card-ico">🏗️</div><div class="cat-card-name">Cement & Steel</div><div class="cat-card-count" id="cnt-Cement">Loading...</div></div>
-        <div class="cat-card" data-cat="Bricks & Aggregates"><div class="cat-card-ico">🧱</div><div class="cat-card-name">Bricks & Aggregates</div><div class="cat-card-count" id="cnt-Bricks">Loading...</div></div>
-        <div class="cat-card" data-cat="Safety"><div class="cat-card-ico">🦺</div><div class="cat-card-name">Safety</div><div class="cat-card-count" id="cnt-Safety">Loading...</div></div>
-        <div class="cat-card" data-cat="Fasteners"><div class="cat-card-ico">🪛</div><div class="cat-card-name">Fasteners</div><div class="cat-card-count" id="cnt-Fasteners">Loading...</div></div>
-        <div class="cat-card" data-cat="Pesticides"><div class="cat-card-ico">🌱</div><div class="cat-card-name">Pesticides</div><div class="cat-card-count" id="cnt-Pesticides">Loading...</div></div>
-      </div>
-    </div>
-
     <!-- SHOP SECTION -->
     <div class="section-divider"></div>
     <section id="shop" class="shop-layout">
       <!-- FILTERS -->
       <aside class="filters-panel" id="filters-panel" aria-label="Product filters">
         <div class="filter-section-title">
-          Filters
+          🔍 Filters
           <span class="filter-clear-all" id="clear-filters">Clear All</span>
         </div>
         <div class="filter-group" id="fg-category">
           <div class="filter-group-title" data-group="category">Category</div>
           <div class="filter-list" id="filter-categories"></div>
         </div>
-        <div class="filter-group" id="fg-brand">
-          <div class="filter-group-title" data-group="brand">Brand</div>
-          <div class="filter-list" id="filter-brands"></div>
-        </div>
-        <div class="filter-group">
-          <div class="filter-group-title" data-group="price">Price Range</div>
-          <div class="price-range-wrap">
-            <input id="min-price" type="number" placeholder="Min" min="0" />
-            <span class="price-range-sep">–</span>
-            <input id="max-price" type="number" placeholder="Max" min="0" />
-          </div>
-          <button class="btn btn-outline btn-sm btn-full" id="apply-price" type="button" style="margin-top:.6rem">Apply</button>
-        </div>
-        <div class="filter-group">
-          <div class="filter-group-title">Quick Filters</div>
-          <div class="filter-list">
-            <label class="filter-option"><input id="filter-featured" type="checkbox" /><span>Featured</span></label>
-            <label class="filter-option"><input id="filter-bestseller" type="checkbox" /><span>Best Sellers</span></label>
-            <label class="filter-option"><input id="filter-instock" type="checkbox" /><span>In Stock Only</span></label>
-            <label class="filter-option"><input id="filter-onsale" type="checkbox" /><span>On Sale</span></label>
-          </div>
+        <!-- Apply Filters Button -->
+        <div class="filter-apply-wrap">
+          <button class="btn btn-primary btn-full" id="apply-filters" type="button">
+            ✅ Apply Filters
+          </button>
         </div>
       </aside>
       <div class="filter-overlay" id="filter-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:240"></div>
