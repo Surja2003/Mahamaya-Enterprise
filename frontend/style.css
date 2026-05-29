@@ -124,7 +124,7 @@ input, textarea, select {
   background: #0f172a;
   color: #94a3b8;
   font-size: 0.8rem;
-  padding: 0.6rem 2rem;
+  padding: calc(0.6rem + env(safe-area-inset-top)) 2rem 0.6rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1277,7 +1277,7 @@ input, textarea, select {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.4rem 1.6rem;
+  padding: calc(1.4rem + env(safe-area-inset-top)) 1.6rem 1.4rem;
   border-bottom: 1px solid var(--edge);
   flex-shrink: 0;
 }
@@ -1297,7 +1297,7 @@ input, textarea, select {
   gap: 1rem;
 }
 .drawer-footer {
-  padding: 1.4rem;
+  padding: 1.4rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--edge);
   flex-shrink: 0;
   display: flex;
@@ -2136,7 +2136,8 @@ input, textarea, select {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--edge);
-  height: 64px;
+  height: calc(64px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
   display: none;
   grid-template-columns: repeat(5, 1fr);
   z-index: 180;
@@ -2567,6 +2568,9 @@ input, textarea, select {
     border-radius: 0;
     overflow-y: auto;
     transition: left 0.3s ease;
+    padding-top: calc(1rem + env(safe-area-inset-top));
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+    padding-left: calc(1.4rem + env(safe-area-inset-left));
   }
   .filters-panel.mobile-open {
     display: block;
@@ -2601,7 +2605,7 @@ input, textarea, select {
 
 @media(max-width: 768px) {
   body {
-    padding-bottom: 64px; /* Space for sticky bottom tab nav */
+    padding-bottom: calc(64px + env(safe-area-inset-bottom)); /* Space for sticky bottom tab nav */
   }
   .topbar {
     display: none; /* Hide topbar on mobile to save vertical space */
@@ -2624,21 +2628,45 @@ input, textarea, select {
     display: none; /* Hide card on mobile */
   }
   .hero h1 {
-    font-size: 2.2rem;
+    font-size: clamp(1.8rem, 4vw + 1rem, 2.5rem);
+  }
+  .site-header {
+    padding: env(safe-area-inset-top) 1rem 0;
   }
   .header-inner {
     height: auto;
     padding: 0.8rem 0;
     flex-wrap: wrap;
     justify-content: space-between;
+    gap: 0.8rem;
+  }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  .brand-title {
+    font-size: 1.05rem;
+  }
+  .brand-tagline {
+    display: none; /* Hide tagline to fit header elements */
   }
   .search-wrap {
     order: 3;
     width: 100%;
     max-width: 100%;
   }
-  .site-header {
-    padding: 0 1rem;
+  .header-actions {
+    gap: 0.5rem;
+  }
+  .header-actions .hdr-btn:not(#cart-btn) {
+    display: none; /* Hide wishlist, account in main header to save space on mobile */
+  }
+  .hdr-btn-label {
+    display: none; /* Hide text under icon on mobile */
+  }
+  .hdr-btn {
+    padding: 0.5rem;
   }
   .shop-layout {
     padding: 1rem;
@@ -2662,11 +2690,8 @@ input, textarea, select {
   .mobile-bottom-nav {
     display: grid;
   }
-  .header-actions .hdr-btn:not(#cart-btn):not(#wishlist-btn) {
-    display: none; /* Hide account, etc in main header to avoid duplication */
-  }
   .float-actions {
-    bottom: 5rem; /* Move floating buttons up so they don't block bottom nav */
+    bottom: calc(5rem + env(safe-area-inset-bottom)); /* Move floating buttons up so they don't block bottom nav */
     right: 1rem;
   }
   .pincode-widget {

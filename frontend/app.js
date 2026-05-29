@@ -69,8 +69,13 @@ function setCart(cart) {
 function updateCartBadge() {
   const cart = getCart();
   const count = cart.length;
-  document.querySelectorAll('#cart-count, #cart-count-drawer').forEach(el => {
-    if (el) el.textContent = count;
+  document.querySelectorAll('#cart-count, #cart-count-drawer, #cart-badge-mob').forEach(el => {
+    if (el) {
+      el.textContent = count;
+      if (el.id === 'cart-badge-mob') {
+        el.style.display = count > 0 ? 'flex' : 'none';
+      }
+    }
   });
 }
 function addToCart(productId, qty = null, triggerEl = null, variant = null) {
@@ -354,11 +359,23 @@ async function openQuickView(productId) {
 
 // ── WISHLIST ───────────────────────────────────────────
 const getWish=()=>store.get('wishlist',[]);
+function updateWishlistBadge() {
+  const list = getWish();
+  const count = list.length;
+  document.querySelectorAll('#wishlist-count, #wishlist-count-drawer, #wishlist-badge-mob').forEach(el => {
+    if (el) {
+      el.textContent = count;
+      if (el.id === 'wishlist-badge-mob') {
+        el.style.display = count > 0 ? 'flex' : 'none';
+      }
+    }
+  });
+}
 function toggleWish(id){
   const list=getWish(), idx=list.indexOf(id);
   if(idx>=0) list.splice(idx,1); else list.push(id);
   store.set('wishlist',list);
-  document.querySelectorAll('#wishlist-count,#wishlist-count-drawer').forEach(el=>{ if(el) el.textContent=list.length; });
+  updateWishlistBadge();
   renderWishlist();
   const p=S.products.find(x=>x.id===id);
   toast(idx>=0?`Removed from wishlist`:`${p?.name||'Item'} wishlisted ♥`, idx>=0?'info':'success');
@@ -742,6 +759,7 @@ async function loadProducts(){
     renderFilterSidebar();
     applyFilters();
     renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
+    initSearchAutocomplete();
   } else {
     renderSkeletons();
   }
@@ -773,6 +791,7 @@ async function loadProducts(){
         renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
       }
       loadReviews();
+      initSearchAutocomplete();
     }
   } catch (err) {
     console.warn("Background products update failed or timed out:", err);
@@ -785,12 +804,85 @@ async function loadProducts(){
         renderFilterSidebar();
         applyFilters();
         renderCartDrawer(); renderWishlist(); renderCompareBar(); renderRecentlyViewed();
+        initSearchAutocomplete();
       } else {
         const g = document.getElementById('product-grid');
         if (g) g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-ico">⚠️</div><p>Could not load products. Backend may be starting up — please refresh in a moment.</p></div>';
       }
     }
   }
+}
+
+function initSearchAutocomplete() {
+  const si = document.getElementById('search-input');
+  const sa = document.getElementById('search-autocomplete');
+  if (!si || !sa) return;
+  if (si.dataset.searchAutocompleted === "true") return;
+  si.dataset.searchAutocompleted = "true";
+
+  let searchTimer;
+  si.addEventListener('input', e => {
+    clearTimeout(searchTimer);
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) {
+      sa.innerHTML = '';
+      sa.classList.remove('active');
+      return;
+    }
+
+    searchTimer = setTimeout(() => {
+      // Find matching products locally
+      const matches = S.products.filter(p => 
+        (p.name && p.name.toLowerCase().includes(q)) ||
+        (p.brand && p.brand.toLowerCase().includes(q)) ||
+        (p.category && p.category.toLowerCase().includes(q)) ||
+        (p.sku && p.sku.toLowerCase().includes(q)) ||
+        (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
+      ).slice(0, 5);
+
+      if (matches.length === 0) {
+        sa.innerHTML = '<div style="padding:1rem;color:var(--muted);font-size:0.85rem;text-align:center">No matches found</div>';
+      } else {
+        sa.innerHTML = matches.map(p => {
+          const img = (p.images && p.images[0]) || PLACEHOLDER;
+          return `
+            <div class="autocomplete-item" data-id="${p.id}">
+              <img src="${img}" alt="${p.name}" style="width:40px;height:40px;object-fit:contain;border-radius:var(--radius-sm);background:var(--panel)" />
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:600;font-size:0.85rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
+                <div style="font-size:0.72rem;color:var(--muted)">${p.brand || ''} · ${p.category || ''}</div>
+              </div>
+              <div style="font-weight:700;font-size:0.85rem;color:var(--primary)">${Rs(p.price)}</div>
+            </div>
+          `;
+        }).join('');
+      }
+      sa.classList.add('active');
+    }, 150);
+  });
+
+  // Handle item click
+  sa.addEventListener('click', e => {
+    const item = e.target.closest('.autocomplete-item');
+    if (item) {
+      const id = item.dataset.id;
+      window.location.href = `product.html?id=${id}`;
+    }
+  });
+
+  // Hide when clicking outside
+  document.addEventListener('click', e => {
+    if (!si.contains(e.target) && !sa.contains(e.target)) {
+      sa.classList.remove('active');
+    }
+  });
+
+  // Show when focused and has text
+  si.addEventListener('focus', () => {
+    if (si.value.trim()) {
+      sa.classList.add('active');
+    }
+  });
 }
 
 // ── SHOP PAGE ──────────────────────────────────────────
@@ -931,150 +1023,231 @@ async function initProductPage(){
   const id=new URLSearchParams(location.search).get('id');
   const layout=document.getElementById('product-detail-layout');
   if(!id||!layout) return;
-  try{
-    const res=await fetch(api(`/api/products/${id}`));
-    if(!res.ok){ layout.innerHTML='<div class="empty-state"><div class="empty-ico">❌</div><p>Product not found.</p><a href="index.html" class="btn btn-primary btn-sm" style="margin-top:.8rem">Back to Shop</a></div>'; return; }
-    const p=await res.json();
-    document.title=`${p.name} | Mahamaya Enterprise`;
-    addRecentlyViewed(p.id);
-    const imgs=p.images&&p.images.length?p.images:[PLACEHOLDER];
-    const inStock=Number(p.stock||0)>0;
-    const lowStock=inStock&&Number(p.stock)<=5;
-    
-    let initialPrice = p.price;
-    let initialMrp = p.mrp || p.price;
-    let initialVariant = '';
-    
-    let variantSelectHtml = '';
-    if (p.variants && p.variants.length > 0) {
-      initialVariant = p.variants[0].value;
-      initialPrice = p.variants[0].price;
-      initialMrp = p.variants[0].mrp || p.variants[0].price;
+
+  // 1. Optimistic Render from Local Cache / Demo Products
+  let localP = null;
+  
+  if (S.products && S.products.length) {
+    localP = S.products.find(x => x.id === id);
+  }
+  
+  if (!localP) {
+    const cachedProducts = store.get('cached_products', null);
+    if (cachedProducts && cachedProducts.length) {
+      localP = cachedProducts.find(x => x.id === id);
+    }
+  }
+  
+  if (!localP && typeof DEMO_PRODUCTS !== 'undefined' && DEMO_PRODUCTS.length) {
+    localP = DEMO_PRODUCTS.find(x => x.id === id);
+  }
+
+  if (localP) {
+    renderProductPageUI(localP);
+  }
+
+  // 2. Fetch fresh details from API in the background
+  try {
+    const res = await fetch(api(`/api/products/${id}`));
+    if (res.ok) {
+      const freshP = await res.json();
       
-      variantSelectHtml = `
-        <div style="margin: 1.2rem 0 0.8rem 0">
-          <label class="qty-label" style="display:block;margin-bottom:0.4rem">Select Option:</label>
-          <select class="variant-select" id="detail-variant-select" style="max-width:320px;padding:0.6rem;border-radius:var(--radius-md);border:1px solid var(--edge);background:var(--card);color:var(--text);font-weight:500">
-            ${p.variants.map(v => `<option value="${v.value}" data-price="${v.price}" data-mrp="${v.mrp || v.price}">${v.value} — ${Rs(v.price)}</option>`).join('')}
-          </select>
-        </div>
-      `;
+      const renderNeeded = !localP || 
+                           localP.price !== freshP.price || 
+                           localP.stock !== freshP.stock || 
+                           JSON.stringify(localP.variants) !== JSON.stringify(freshP.variants) ||
+                           JSON.stringify(localP.images) !== JSON.stringify(freshP.images);
+      
+      if (renderNeeded) {
+        renderProductPageUI(freshP);
+      }
+    } else if (!localP) {
+      layout.innerHTML = '<div class="empty-state"><div class="empty-ico">❌</div><p>Product not found.</p><a href="index.html" class="btn btn-primary btn-sm" style="margin-top:.8rem">Back to Shop</a></div>';
     }
-    
-    const disc = initialMrp > initialPrice ? Math.round((initialMrp - initialPrice) / initialMrp * 100) : 0;
-    
-    document.getElementById('bc-category').textContent=p.category||'Products';
-    document.getElementById('bc-category').href=`index.html#shop`;
-    document.getElementById('bc-name').textContent=p.name;
+  } catch (err) {
+    console.warn("Background product fetch failed:", err);
+    if (!localP) {
+      layout.innerHTML = '<div class="empty-state"><div class="empty-ico">⚠️</div><p>Error loading product. Please check your connection.</p><a href="index.html" class="btn btn-primary btn-sm" style="margin-top:.8rem">Back to Shop</a></div>';
+    }
+  }
+}
 
-    const minQty = typeof p.minQty === 'number' ? p.minQty : 1;
-    const qtyStep = typeof p.qtyStep === 'number' ? p.qtyStep : 1;
-    const stock = typeof p.stock === 'number' ? p.stock : 999999;
-
-    layout.innerHTML=`
-      <div class="gallery-wrap">
-        <div class="gallery-main"><img id="gallery-img" src="${imgs[0]}" alt="${p.name}"/></div>
-        ${imgs.length>1?`<div class="gallery-thumbs">${imgs.map((img,i)=>`<div class="gallery-thumb${i===0?' active':''}" data-img="${img}"><img src="${img}" alt="View ${i+1}"/></div>`).join('')}</div>`:''}
+function renderProductPageUI(p) {
+  const layout = document.getElementById('product-detail-layout');
+  if (!layout) return;
+  
+  document.title = `${p.name} | Mahamaya Enterprise`;
+  addRecentlyViewed(p.id);
+  
+  const imgs = p.images && p.images.length ? p.images : [PLACEHOLDER];
+  const inStock = Number(p.stock || 0) > 0;
+  const lowStock = inStock && Number(p.stock) <= 5;
+  
+  let initialPrice = p.price;
+  let initialMrp = p.mrp || p.price;
+  let initialVariant = '';
+  
+  let variantSelectHtml = '';
+  if (p.variants && p.variants.length > 0) {
+    initialVariant = p.variants[0].value;
+    initialPrice = p.variants[0].price;
+    initialMrp = p.variants[0].mrp || p.variants[0].price;
+    
+    variantSelectHtml = `
+      <div style="margin: 1.2rem 0 0.8rem 0">
+        <label class="qty-label" style="display:block;margin-bottom:0.4rem">Select Option:</label>
+        <select class="variant-select" id="detail-variant-select" style="max-width:320px;padding:0.6rem;border-radius:var(--radius-md);border:1px solid var(--edge);background:var(--card);color:var(--text);font-weight:500">
+          ${p.variants.map(v => `<option value="${v.value}" data-price="${v.price}" data-mrp="${v.mrp || v.price}">${v.value} — ${Rs(v.price)}</option>`).join('')}
+        </select>
       </div>
-      <div class="detail-info">
-        <div class="detail-brand">${p.brand||''}</div>
-        <h1 class="detail-name">${p.name}</h1>
-        ${p.sku?`<div class="detail-sku">SKU: ${p.sku}</div>`:''}
-        <div class="detail-rating"><span style="color:#f59e0b">${'⭐'.repeat(Math.round(p.rating||0))}</span><span style="color:var(--muted);font-size:.85rem">${p.rating||0} (${p.ratingCount||0} reviews)</span></div>
-        <div class="detail-price-box">
-          <div style="display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap">
-            <span class="detail-price" id="detail-price-span">${Rs(initialPrice)}</span>
-            <span class="detail-mrp" id="detail-mrp-span" style="display:${disc > 0 ? 'inline' : 'none'}">${Rs(initialMrp)}</span>
-            <span class="detail-off" id="detail-off-span" style="display:${disc > 0 ? 'inline' : 'none'}">-${disc}% OFF</span>
-          </div>
-          <div class="detail-stock ${inStock?(lowStock?'low-stock':'in-stock'):'out-stock'}" style="margin-top:.5rem">
-            ${inStock?(lowStock?`⚠ Only ${p.stock} left in stock!`:`✓ In Stock (${p.stock} units)`):'✕ Out of Stock'}
-          </div>
-        </div>
-        ${p.shortDesc?`<p style="font-size:.9rem;color:var(--muted);line-height:1.7">${p.shortDesc}</p>`:''}
-        
-        ${variantSelectHtml}
-        
-        <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin: 1.2rem 0">
-          <span class="qty-label">Qty:</span>
-          <div class="qty-stepper">
-            <button class="qty-step-btn" id="qty-dec">−</button>
-            <span class="qty-step-val" id="qty-val">${minQty}</span>
-            <button class="qty-step-btn" id="qty-inc">+</button>
-          </div>
-          <span style="font-size:0.8rem;color:var(--muted)">Min: ${minQty}, Step: ${qtyStep}</span>
-        </div>
-        <div class="detail-actions">
-          <button class="btn btn-primary btn-lg" id="detail-add" ${inStock?'':'disabled'}>${inStock?'🛒 Add to Cart':'Out of Stock'}</button>
-          <button class="btn btn-outline btn-lg" id="detail-wish">♥ Wishlist</button>
-          <a id="detail-wa-btn" href="${waUrl(S.settings.shopInfo?.whatsapp||'919475653294',`Hi! I want to enquire about: ${p.name}${initialVariant ? ` (${initialVariant})` : ''} - Price: ${Rs(initialPrice)}. Please share availability and bulk pricing.`)}" target="_blank" rel="noopener" class="btn btn-lg" style="background:#25D366;color:#fff;border-color:#25D366">💬 WhatsApp Enquiry</a>
-        </div>
-        <div class="detail-tabs">
-          <div class="tab-nav">
-            <button class="tab-btn active" data-tab="desc">Description</button>
-            ${p.sku?'<button class="tab-btn" data-tab="specs">Specifications</button>':''}
-          </div>
-          <div class="tab-content active" data-tab-content="desc"><p style="font-size:.9rem;color:var(--muted);line-height:1.8">${p.longDesc||p.shortDesc||'No description available.'}</p></div>
-          ${p.sku?`<div class="tab-content" data-tab-content="specs"><table class="spec-table"><tr><td>SKU</td><td>${p.sku}</td></tr><tr><td>Brand</td><td>${p.brand||'—'}</td></tr><tr><td>Category</td><td>${p.category||'—'}</td></tr><tr><td>Tags</td><td>${(p.tags||[]).join(', ')||'—'}</td></tr></table></div>`:''}
-        </div>
-      </div>`;
+    `;
+  }
+  
+  const disc = initialMrp > initialPrice ? Math.round((initialMrp - initialPrice) / initialMrp * 100) : 0;
+  
+  document.getElementById('bc-category').textContent = p.category || 'Products';
+  document.getElementById('bc-category').href = `index.html#shop`;
+  document.getElementById('bc-name').textContent = p.name;
 
-    // Gallery thumbs
-    document.querySelectorAll('.gallery-thumb').forEach(th=>{
-      th.addEventListener('click',()=>{ document.getElementById('gallery-img').src=th.dataset.img; document.querySelectorAll('.gallery-thumb').forEach(t=>t.classList.remove('active')); th.classList.add('active'); });
+  const minQty = typeof p.minQty === 'number' ? p.minQty : 1;
+  const qtyStep = typeof p.qtyStep === 'number' ? p.qtyStep : 1;
+  const stock = typeof p.stock === 'number' ? p.stock : 999999;
+
+  layout.innerHTML = `
+    <div class="gallery-wrap">
+      <div class="gallery-main"><img id="gallery-img" src="${imgs[0]}" alt="${p.name}"/></div>
+      ${imgs.length > 1 ? `<div class="gallery-thumbs">${imgs.map((img, i) => `<div class="gallery-thumb${i === 0 ? ' active' : ''}" data-img="${img}"><img src="${img}" alt="View ${i+1}"/></div>`).join('')}</div>` : ''}
+    </div>
+    <div class="detail-info">
+      <div class="detail-brand">${p.brand || ''}</div>
+      <h1 class="detail-name">${p.name}</h1>
+      ${p.sku ? `<div class="detail-sku">SKU: ${p.sku}</div>` : ''}
+      <div class="detail-rating"><span style="color:#f59e0b">${'⭐'.repeat(Math.round(p.rating || 0))}</span><span style="color:var(--muted);font-size:.85rem">${p.rating || 0} (${p.ratingCount || 0} reviews)</span></div>
+      <div class="detail-price-box">
+        <div style="display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap">
+          <span class="detail-price" id="detail-price-span">${Rs(initialPrice)}</span>
+          <span class="detail-mrp" id="detail-mrp-span" style="display:${disc > 0 ? 'inline' : 'none'}">${Rs(initialMrp)}</span>
+          <span class="detail-off" id="detail-off-span" style="display:${disc > 0 ? 'inline' : 'none'}">-${disc}% OFF</span>
+        </div>
+        <div class="detail-stock ${inStock ? (lowStock ? 'low-stock' : 'in-stock') : 'out-stock'}" style="margin-top:.5rem">
+          ${inStock ? (lowStock ? `⚠ Only ${p.stock} left in stock!` : `✓ In Stock (${p.stock} units)`) : '✕ Out of Stock'}
+        </div>
+      </div>
+      ${p.shortDesc ? `<p style="font-size:.9rem;color:var(--muted);line-height:1.7">${p.shortDesc}</p>` : ''}
+      
+      ${variantSelectHtml}
+      
+      <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin: 1.2rem 0">
+        <span class="qty-label">Qty:</span>
+        <div class="qty-stepper">
+          <button class="qty-step-btn" id="qty-dec">−</button>
+          <span class="qty-step-val" id="qty-val">${minQty}</span>
+          <button class="qty-step-btn" id="qty-inc">+</button>
+        </div>
+        <span style="font-size:0.8rem;color:var(--muted)">Min: ${minQty}, Step: ${qtyStep}</span>
+      </div>
+      <div class="detail-actions">
+        <button class="btn btn-primary btn-lg" id="detail-add" ${inStock ? '' : 'disabled'}>${inStock ? '🛒 Add to Cart' : 'Out of Stock'}</button>
+        <button class="btn btn-outline btn-lg" id="detail-wish">♥ Wishlist</button>
+        <a id="detail-wa-btn" href="${waUrl(S.settings.shopInfo?.whatsapp || '919475653294', `Hi! I want to enquire about: ${p.name}${initialVariant ? ` (${initialVariant})` : ''} - Price: ${Rs(initialPrice)}. Please share availability and bulk pricing.`)}" target="_blank" rel="noopener" class="btn btn-lg" style="background:#25D366;color:#fff;border-color:#25D366">💬 WhatsApp Enquiry</a>
+      </div>
+      <div class="detail-tabs">
+        <div class="tab-nav">
+          <button class="tab-btn active" data-tab="desc">Description</button>
+          ${p.sku ? '<button class="tab-btn" data-tab="specs">Specifications</button>' : ''}
+        </div>
+        <div class="tab-content active" data-tab-content="desc"><p style="font-size:.9rem;color:var(--muted);line-height:1.8">${p.longDesc || p.shortDesc || 'No description available.'}</p></div>
+        ${p.sku ? `<div class="tab-content" data-tab-content="specs"><table class="spec-table"><tr><td>SKU</td><td>${p.sku}</td></tr><tr><td>Brand</td><td>${p.brand || '—'}</td></tr><tr><td>Category</td><td>${p.category || '—'}</td></tr><tr><td>Tags</td><td>${(p.tags || []).join(', ') || '—'}</td></tr></table></div>` : ''}
+      </div>
+    </div>`;
+
+  // Gallery thumbs interaction
+  document.querySelectorAll('.gallery-thumb').forEach(th => {
+    th.addEventListener('click', () => {
+      document.getElementById('gallery-img').src = th.dataset.img;
+      document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+      th.classList.add('active');
     });
+  });
 
-    let qty = minQty;
-    let selectedVariant = initialVariant;
-    
-    const detailPriceSpan = document.getElementById('detail-price-span');
-    const detailMrpSpan = document.getElementById('detail-mrp-span');
-    const detailOffSpan = document.getElementById('detail-off-span');
-    const variantSelect = document.getElementById('detail-variant-select');
-    const waBtn = document.getElementById('detail-wa-btn');
+  let qty = minQty;
+  let selectedVariant = initialVariant;
+  
+  const detailPriceSpan = document.getElementById('detail-price-span');
+  const detailMrpSpan = document.getElementById('detail-mrp-span');
+  const detailOffSpan = document.getElementById('detail-off-span');
+  const variantSelect = document.getElementById('detail-variant-select');
+  const waBtn = document.getElementById('detail-wa-btn');
 
-    if (variantSelect) {
-      variantSelect.addEventListener('change', e => {
-        selectedVariant = e.target.value;
-        const opt = e.target.options[e.target.selectedIndex];
-        const pr = Number(opt.dataset.price);
-        const mr = Number(opt.dataset.mrp);
-        
-        detailPriceSpan.textContent = Rs(pr);
-        if (mr > pr) {
-          detailMrpSpan.textContent = Rs(mr);
-          detailMrpSpan.style.display = 'inline';
-          const discPct = Math.round((mr - pr) / mr * 100);
-          detailOffSpan.textContent = `-${discPct}% OFF`;
-          detailOffSpan.style.display = 'inline';
-        } else {
-          detailMrpSpan.style.display = 'none';
-          detailOffSpan.style.display = 'none';
-        }
-        
-        if (waBtn) {
-          waBtn.href = waUrl(S.settings.shopInfo?.whatsapp || '919475653294', `Hi! I want to enquire about: ${p.name} (${selectedVariant}) - Price: ${Rs(pr)}. Please share availability and bulk pricing.`);
-        }
+  if (variantSelect) {
+    variantSelect.addEventListener('change', e => {
+      selectedVariant = e.target.value;
+      const opt = e.target.options[e.target.selectedIndex];
+      const pr = Number(opt.dataset.price);
+      const mr = Number(opt.dataset.mrp);
+      
+      detailPriceSpan.textContent = Rs(pr);
+      if (mr > pr) {
+        detailMrpSpan.textContent = Rs(mr);
+        detailMrpSpan.style.display = 'inline';
+        const discPct = Math.round((mr - pr) / mr * 100);
+        detailOffSpan.textContent = `-${discPct}% OFF`;
+        detailOffSpan.style.display = 'inline';
+      } else {
+        detailMrpSpan.style.display = 'none';
+        detailOffSpan.style.display = 'none';
+      }
+      
+      if (waBtn) {
+        waBtn.href = waUrl(S.settings.shopInfo?.whatsapp || '919475653294', `Hi! I want to enquire about: ${p.name} (${selectedVariant}) - Price: ${Rs(pr)}. Please share availability and bulk pricing.`);
+      }
+    });
+  }
+
+  // Qty stepper events
+  document.getElementById('qty-dec')?.addEventListener('click', () => {
+    qty = Math.max(minQty, qty - qtyStep);
+    document.getElementById('qty-val').textContent = qty;
+  });
+  document.getElementById('qty-inc')?.addEventListener('click', () => {
+    qty = Math.min(stock, qty + qtyStep);
+    document.getElementById('qty-val').textContent = qty;
+  });
+  
+  // Add to cart / wishlist
+  document.getElementById('detail-add')?.addEventListener('click', () => addToCart(p.id, qty, null, selectedVariant));
+  document.getElementById('detail-wish')?.addEventListener('click', () => toggleWish(p.id));
+
+  // Specs tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`[data-tab-content="${btn.dataset.tab}"]`)?.classList.add('active');
+    });
+  });
+
+  // Load related products
+  const rg = document.getElementById('related-grid');
+  const rs = document.getElementById('related-section');
+  if (rg && rs) {
+    const related = S.products.filter(x => x.id !== p.id && x.category === p.category).slice(0, 4);
+    if (related.length) {
+      rs.style.display = 'block';
+      rg.innerHTML = related.map(renderProductCard).join('');
+      // Set up click delegator
+      rg.addEventListener('click', e => {
+        const action = e.target.closest('[data-action]')?.dataset.action;
+        const card = e.target.closest('.product-card');
+        if (!action || !card) return;
+        if (action === 'add') addToCart(card.dataset.id);
+        else if (action === 'wish') toggleWish(card.dataset.id);
       });
+    } else {
+      rs.style.display = 'none';
     }
-
-    // Qty stepper
-    document.getElementById('qty-dec')?.addEventListener('click',()=>{ qty=Math.max(minQty,qty-qtyStep); document.getElementById('qty-val').textContent=qty; });
-    document.getElementById('qty-inc')?.addEventListener('click',()=>{ qty=Math.min(stock,qty+qtyStep); document.getElementById('qty-val').textContent=qty; });
-    document.getElementById('detail-add')?.addEventListener('click',()=>addToCart(p.id,qty,null,selectedVariant));
-    document.getElementById('detail-wish')?.addEventListener('click',()=>toggleWish(p.id));
-
-    // Tabs
-    document.querySelectorAll('.tab-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); btn.classList.add('active'); document.querySelector(`[data-tab-content="${btn.dataset.tab}"]`)?.classList.add('active'); }); });
-
-    // Load related products
-    const rg=document.getElementById('related-grid');
-    const rs=document.getElementById('related-section');
-    if(rg&&rs){
-      const related=S.products.filter(x=>x.id!==p.id&&x.category===p.category).slice(0,4);
-      if(related.length){ rs.style.display='block'; rg.innerHTML=related.map(renderProductCard).join(''); rg.addEventListener('click',e=>{ const action=e.target.closest('[data-action]')?.dataset.action; const card=e.target.closest('.product-card'); if(!action||!card) return; if(action==='add') addToCart(card.dataset.id); else if(action==='wish') toggleWish(card.dataset.id); }); }
-    }
-  }catch(err){ layout.innerHTML='<div class="empty-state"><div class="empty-ico">⚠️</div><p>Error loading product.</p></div>'; }
+  }
 }
 
 
@@ -1266,6 +1439,19 @@ function initAccount(){
 function bindGlobal(){
   document.getElementById('cart-btn')?.addEventListener('click',()=>openDrawer('cart-drawer'));
   document.getElementById('wishlist-btn')?.addEventListener('click',()=>openDrawer('wishlist-drawer'));
+  
+  // Mobile bottom nav bindings
+  document.getElementById('mob-nav-cart')?.addEventListener('click', (e) => { e.preventDefault(); openDrawer('cart-drawer'); });
+  document.getElementById('mob-nav-wishlist')?.addEventListener('click', (e) => { e.preventDefault(); openDrawer('wishlist-drawer'); });
+  document.getElementById('mob-nav-shop')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (document.body.dataset.page === 'shop') {
+      document.getElementById('filter-toggle')?.click();
+    } else {
+      window.location.href = 'index.html#shop';
+    }
+  });
+
   document.getElementById('close-cart')?.addEventListener('click',closeDrawers);
   document.getElementById('close-wishlist')?.addEventListener('click',closeDrawers);
   document.getElementById('close-quickview')?.addEventListener('click',closeDrawers);
@@ -1328,7 +1514,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   initDark();
   bindGlobal();
   updateCartBadge();
-  document.querySelectorAll('#wishlist-count,#wishlist-count-drawer').forEach(el=>{ if(el) el.textContent=store.get('wishlist',[]).length; });
+  updateWishlistBadge();
   await loadShopInfo();
   await loadProducts();
 

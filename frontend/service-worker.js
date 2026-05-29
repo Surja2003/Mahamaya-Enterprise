@@ -1,4 +1,4 @@
-const CACHE = 'mahamaya-v4';
+const CACHE = 'mahamaya-v5';
 const STATIC = [
   '/', '/index.html', '/style.css', '/app.js', '/demo-products.js',
   '/product.html', '/checkout.html', '/track.html', '/account.html',
