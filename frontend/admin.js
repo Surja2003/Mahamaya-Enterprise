@@ -67,6 +67,34 @@ document.getElementById('admin-logout')?.addEventListener('click',()=>{TOKEN='';
 
 // ── OVERVIEW ───────────────────────────────────────────
 async function loadOverview(){
+  const stats = ['stat-revenue', 'stat-orders', 'stat-prods', 'stat-customers'];
+  stats.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = `<div class="skeleton" style="height:2rem; width:80px; border-radius:4px; margin:.2rem 0"></div>`;
+  });
+  const recentOrdersTbody = document.getElementById('recent-orders-body');
+  if (recentOrdersTbody) {
+    recentOrdersTbody.innerHTML = Array(4).fill(0).map(() => `
+      <tr>
+        <td><div class="skeleton" style="height:1.2rem; width:60px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:100px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:70px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:50px;"></div></td>
+      </tr>
+    `).join('');
+  }
+  const topProdsList = document.getElementById('top-products-list');
+  if (topProdsList) {
+    topProdsList.innerHTML = Array(4).fill(0).map(() => `
+      <div style="display:flex;align-items:center;gap:.7rem;padding:.5rem 0;border-bottom:1px solid var(--edge)">
+        <div class="skeleton" style="width:20px; height:1rem;"></div>
+        <div style="flex:1;"><div class="skeleton" style="height:1rem; width:120px; margin-bottom:.3rem"></div><div class="skeleton" style="height:.8rem; width:50px"></div></div>
+        <div class="skeleton" style="width:60px; height:1rem;"></div>
+      </div>
+    `).join('');
+  }
   try{
     const [ordRes,prodRes,custRes,analyticsRes]=await Promise.all([
       fetch(api('/api/orders'),{headers:authHeaders()}),
@@ -122,6 +150,21 @@ function renderRecentOrders(orders){
 
 // ── PRODUCTS ───────────────────────────────────────────
 async function loadProducts(){
+  const tbody = document.getElementById('products-body');
+  if (tbody) {
+    tbody.innerHTML = Array(6).fill(0).map(() => `
+      <tr>
+        <td><div class="skeleton" style="height:44px; width:44px; border-radius:8px"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:150px; margin-bottom:.3rem"></div><div class="skeleton" style="height:1rem; width:80px"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:70px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:60px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:100px;"></div></td>
+      </tr>
+    `).join('');
+  }
   try{
     const res=await fetch(api('/api/products?limit=500'));
     const {products=[]}=await res.json();PRODUCTS=products;
@@ -264,6 +307,22 @@ async function uploadImage(id){
 
 // ── ORDERS ─────────────────────────────────────────────
 async function loadOrders(){
+  const tbody = document.getElementById('orders-body');
+  if (tbody) {
+    tbody.innerHTML = Array(6).fill(0).map(() => `
+      <tr>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:100px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:90px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:70px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:60px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td>
+        <td><div class="skeleton" style="height:1.2rem; width:100px;"></div></td>
+      </tr>
+    `).join('');
+  }
   try{
     const res=await fetch(api('/api/orders'),{headers:authHeaders()});
     const d=await res.json();ORDERS=d.orders||[];renderOrdersTable(ORDERS);
@@ -477,6 +536,10 @@ document.getElementById('export-csv-btn')?.addEventListener('click', e => {
 
 // ── COUPONS ────────────────────────────────────────────
 async function loadCoupons(){
+  const tbody=document.getElementById('coupons-body');
+  if(tbody){
+    tbody.innerHTML = Array(3).fill(0).map(() => `<tr><td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:90px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:70px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:60px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:70px;"></div></td></tr>`).join('');
+  }
   try{
     const res=await fetch(api('/api/coupons'),{headers:authHeaders()});
     const d=await res.json();const coupons=d.coupons||[];
@@ -499,6 +562,10 @@ async function deleteCoupon(id){
 
 // ── CUSTOMERS ──────────────────────────────────────────
 async function loadCustomers(){
+  const tbody=document.getElementById('customers-body');
+  if(tbody){
+    tbody.innerHTML = Array(3).fill(0).map(() => `<tr><td><div class="skeleton" style="height:1.2rem; width:100px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:130px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:90px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td></tr>`).join('');
+  }
   try{
     const res=await fetch(api('/api/admin/customers'),{headers:authHeaders()});
     const d=await res.json();const users=d.users||[];
@@ -509,6 +576,10 @@ async function loadCustomers(){
 
 // ── REVIEWS ────────────────────────────────────────────
 async function loadReviews(){
+  const tbody=document.getElementById('reviews-body');
+  if(tbody){
+    tbody.innerHTML = Array(3).fill(0).map(() => `<tr><td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:70px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:150px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:50px;"></div></td></tr>`).join('');
+  }
   try{
     const res=await fetch(api('/api/reviews'));
     const d=await res.json();const reviews=d.reviews||[];
@@ -523,6 +594,10 @@ async function deleteReview(id){
 
 // ── QUOTES ─────────────────────────────────────────────
 async function loadQuotes(){
+  const tbody=document.getElementById('quotes-body');
+  if(tbody){
+    tbody.innerHTML = Array(3).fill(0).map(() => `<tr><td><div class="skeleton" style="height:1.2rem; width:90px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:90px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:130px;"></div></td><td><div class="skeleton" style="height:1.2rem; width:80px;"></div></td></tr>`).join('');
+  }
   try{
     const res=await fetch(api('/api/quotes'),{headers:authHeaders()});
     const d=await res.json();const quotes=d.quotes||[];
