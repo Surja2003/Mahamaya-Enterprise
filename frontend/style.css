@@ -64,6 +64,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  overflow-x: hidden; /* Prevent any horizontal scroll on entire page */
 }
 
 body {
@@ -239,39 +240,23 @@ input, textarea, select {
 }
 .search-wrap input {
   flex: 1;
-  padding: 0.7rem 1.2rem;
+  padding: 0.75rem 1.2rem;
   border: none;
   font-size: 0.92rem;
   background: transparent;
   color: var(--ink);
   width: 100%;
-}
-.search-wrap .search-cat {
-  border: none;
-  border-right: 1px solid var(--edge);
-  padding: 0.7rem 1rem;
-  background: var(--surface);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--muted);
-  cursor: pointer;
-  transition: var(--transition);
-  border-top-left-radius: var(--radius-sm);
-  border-bottom-left-radius: var(--radius-sm);
-}
-.search-wrap .search-cat:hover {
-  background: var(--edge);
-  color: var(--ink);
+  border-radius: var(--radius) 0 0 var(--radius);
 }
 .search-wrap .btn-search {
   background: var(--primary);
   color: #fff;
-  padding: 0.7rem 1.4rem;
+  padding: 0.75rem 1.4rem;
   font-weight: 600;
   font-size: 0.9rem;
   white-space: nowrap;
-  border-top-right-radius: 9px;
-  border-bottom-right-radius: 9px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  flex-shrink: 0;
 }
 .search-wrap .btn-search:hover {
   background: var(--primary-dark);
@@ -457,6 +442,8 @@ input, textarea, select {
   padding: 4.5rem 2rem;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 .hero::before {
   content: '';
@@ -473,6 +460,8 @@ input, textarea, select {
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 .hero-eyebrow {
   font-size: 0.8rem;
@@ -2610,13 +2599,42 @@ input, textarea, select {
   .topbar {
     display: none; /* Hide topbar on mobile to save vertical space */
   }
+  .hero {
+    padding: 2.5rem 1rem; /* Tighter padding on mobile */
+    overflow: hidden;
+  }
   .hero-inner {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .hero-copy {
+    max-width: 100%;
+    overflow: hidden;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 6vw, 2.2rem);
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .hero-desc {
+    font-size: 0.9rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    word-break: break-word;
   }
   .hero-stats {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
   .hero-stat {
     border-left: none;
@@ -2627,8 +2645,8 @@ input, textarea, select {
   .hero-card {
     display: none; /* Hide card on mobile */
   }
-  .hero h1 {
-    font-size: clamp(1.8rem, 4vw + 1rem, 2.5rem);
+  .hero-actions {
+    justify-content: center;
   }
   .site-header {
     padding: env(safe-area-inset-top) 1rem 0;

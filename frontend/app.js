@@ -685,12 +685,7 @@ function syncFiltersUI(){
     searchInput.value=S.filters.search||'';
   }
 
-  // 2. Sync search category dropdown
-  const searchCatDropdown=document.getElementById('search-cat-filter');
-  if(searchCatDropdown){
-    if(cats.length===1) searchCatDropdown.value=cats[0];
-    else searchCatDropdown.value='';
-  }
+  // search-cat-filter removed from UI — no sync needed
 
   // 3. Sync header category navigation links
   document.querySelectorAll('.cat-nav-link').forEach(link=>{
@@ -908,12 +903,7 @@ function initShop(){
   lm?.addEventListener('click',()=>{ S.page++; renderProducts(); });
   cf?.addEventListener('click',clearAllFilters);
 
-  // Category filter from search bar
-  document.getElementById('search-cat-filter')?.addEventListener('change',e=>{
-    S.filters.categories=e.target.value?[e.target.value]:[];
-    applyFilters();
-    document.querySelectorAll('.cat-nav-link').forEach(l=>{ l.classList.toggle('active',l.dataset.cat===e.target.value); });
-  });
+  // search-cat-filter removed — category filtering done via filter panel or cat cards only
 
   // Mobile filter toggle
   ft?.addEventListener('click',()=>{ fp?.classList.toggle('mobile-open'); if(fo) fo.style.display=fp?.classList.contains('mobile-open')?'block':'none'; });
