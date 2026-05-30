@@ -750,7 +750,14 @@ function clearAllFilters(){
 // ── LOAD PRODUCTS ──────────────────────────────────────
 async function loadProducts(){
   // 1. Instantly populate state with cached products or fallback demo catalog to render immediately
-  const cachedProducts = store.get('cached_products', null);
+  let cachedProducts = store.get('cached_products', null);
+  if (cachedProducts && cachedProducts.length) {
+    const needsBust = cachedProducts.some(p => p.images && p.images.some(img => img.includes('placehold.co') || img.includes('berger_silk.webp')));
+    if (needsBust) {
+      store.remove('cached_products');
+      cachedProducts = null;
+    }
+  }
   if (cachedProducts && cachedProducts.length) {
     S.products = cachedProducts;
   } else if (typeof DEMO_PRODUCTS !== 'undefined' && DEMO_PRODUCTS.length) {

@@ -534,7 +534,7 @@ const PRODUCTS = {
         "silk"
       ],
       "images": [
-        "https://placehold.co/400x400/0369a1/ffffff?text=Berger%2BSilk%2BLuxury%2BEmulsion"
+        "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&q=75&auto=format&fit=crop&sig=prod_berger_silk"
       ],
       "featured": true,
       "bestSeller": true,
@@ -584,7 +584,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Goldmedal%2BWinzo%2BBLDC%2BFan"
+        "https://images.unsplash.com/photo-1618944847828-82e943c3dba7?w=400&q=75&auto=format&fit=crop&sig=prod_goldmedal_winzo"
       ],
       "featured": true,
       "bestSeller": false,
@@ -629,7 +629,7 @@ const PRODUCTS = {
         "premium"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Goldmedal%2BSpacio%2BBLDC%2BFan"
+        "https://images.unsplash.com/photo-1618944847828-82e943c3dba7?w=400&q=75&auto=format&fit=crop&sig=prod_goldmedal_spacio"
       ],
       "featured": false,
       "bestSeller": true,
@@ -674,7 +674,7 @@ const PRODUCTS = {
         "goldmedal"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Goldmedal%2BCopper%2BWire%2B(90m)"
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=400&q=75&auto=format&fit=crop&sig=prod_goldmedal_wire"
       ],
       "featured": false,
       "bestSeller": true,
@@ -790,7 +790,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Pritam%2BNorah%2BModular%2BSwitch"
+        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=75&auto=format&fit=crop&sig=prod_pritam_norah"
       ],
       "featured": true,
       "bestSeller": true,
@@ -835,7 +835,7 @@ const PRODUCTS = {
         "lighting"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Pritam%2BLED%2BSlim%2BPanel%2BLight"
+        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&q=75&auto=format&fit=crop&sig=prod_pritam_led"
       ],
       "featured": false,
       "bestSeller": false,
@@ -880,7 +880,7 @@ const PRODUCTS = {
         "pritam"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Pritam%2BDBoard%2BSwitchgear%2BBox"
+        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=75&auto=format&fit=crop&sig=prod_pritam_dboard"
       ],
       "featured": false,
       "bestSeller": false,
@@ -973,7 +973,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BPipe%2B(12%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_pipe_1/2_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1005,7 +1005,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BPipe%2B(34%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_pipe_3/4_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1037,7 +1037,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BPipe%2B(1%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_pipe_1_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1069,7 +1069,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BPipe%2B(15%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_pipe_1_5_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1101,7 +1101,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BPipe%2B(2%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_pipe_2_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1133,7 +1133,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BPipe%2B(3%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_pipe_3_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1165,7 +1165,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BPipe%2B(4%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_pipe_4_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1197,7 +1197,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BPipe%2B(12%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_pipe_1/2_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1229,7 +1229,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BPipe%2B(34%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_pipe_3/4_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1261,7 +1261,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BPipe%2B(1%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_pipe_1_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1293,7 +1293,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BPipe%2B(15%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_pipe_1_5_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1325,7 +1325,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BPipe%2B(2%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_pipe_2_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1357,7 +1357,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BPipe%2B(3%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_pipe_3_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1389,7 +1389,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BPipe%2B(4%2Binch%2B3m)"
+        "https://images.unsplash.com/photo-1542013936693-8848e5740a7a?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_pipe_4_inch"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1420,7 +1420,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2B90%2BDegree%2BElbow%2B(34%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_elbow_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1451,7 +1451,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BEqual%2BTee%2B(34%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_tee_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1483,7 +1483,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BCoupler%2BSocket%2B(34%2Binch)"
+        "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_socket_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1515,7 +1515,7 @@ const PRODUCTS = {
         "supreme"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BCPVC%2BBrass%2Btransition%2BElbow%2B(34%2Bx%2B12%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_cpvc_brass_elbow_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1546,7 +1546,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2B90%2BDegree%2BElbow%2B(34%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_elbow_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1577,7 +1577,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BEqual%2BTee%2B(34%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_tee_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1609,7 +1609,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BCoupler%2BSocket%2B(34%2Binch)"
+        "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_socket_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1641,7 +1641,7 @@ const PRODUCTS = {
         "astral"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Astral%2BUPVC%2BBrass%2Btransition%2BElbow%2B(34%2Bx%2B12%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_upvc_brass_elbow_34"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1739,7 +1739,7 @@ const PRODUCTS = {
         "overhead storage"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BWater%2BTank%2BTriple%2BLayer%2B(500L)"
+        "https://images.unsplash.com/photo-1622322481056-ac064f2619bb?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_tank_500"
       ],
       "featured": true,
       "bestSeller": false,
@@ -1771,7 +1771,7 @@ const PRODUCTS = {
         "overhead storage"
       ],
       "images": [
-        "https://placehold.co/400x400/0f766e/ffffff?text=Supreme%2BWater%2BTank%2BTriple%2BLayer%2B(1000L)"
+        "https://images.unsplash.com/photo-1622322481056-ac064f2619bb?w=400&q=75&auto=format&fit=crop&sig=prod_plumbing_tank_1000"
       ],
       "featured": true,
       "bestSeller": true,
@@ -1804,7 +1804,7 @@ const PRODUCTS = {
         "0.5 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(05%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_0_5_mm"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1837,7 +1837,7 @@ const PRODUCTS = {
         "0.75 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(075%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_0_75_mm"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1870,7 +1870,7 @@ const PRODUCTS = {
         "1.0 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(10%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_1_0_mm"
       ],
       "featured": false,
       "bestSeller": false,
@@ -1903,7 +1903,7 @@ const PRODUCTS = {
         "1.5 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(15%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_1_5_mm"
       ],
       "featured": false,
       "bestSeller": true,
@@ -1936,7 +1936,7 @@ const PRODUCTS = {
         "2.5 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(25%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_2_5_mm"
       ],
       "featured": false,
       "bestSeller": true,
@@ -1969,7 +1969,7 @@ const PRODUCTS = {
         "4.0 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(40%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_4_0_mm"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2002,7 +2002,7 @@ const PRODUCTS = {
         "6.0 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(60%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_6_0_mm"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2035,7 +2035,7 @@ const PRODUCTS = {
         "8.0 mm"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BLifeline%2BFR%2BCopper%2BCable%2B(80%2Bmm%2B90m)"
+        "https://images.unsplash.com/photo-1601597111158-2fceff270190?w=400&q=75&auto=format&fit=crop&sig=prod_elec_wire_8_0_mm"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2068,7 +2068,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BModular%2B1Way%2BSwitch%2B6A"
+        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_switch_1w_6a"
       ],
       "featured": false,
       "bestSeller": true,
@@ -2101,7 +2101,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BModular%2B2Way%2BSwitch%2B6A"
+        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_switch_2w_6a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2134,7 +2134,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BModular%2B1Way%2BSwitch%2B16A"
+        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_switch_1w_16a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2167,7 +2167,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BModular%2B2Way%2BSwitch%2B16A"
+        "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_switch_2w_16a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2233,7 +2233,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BModular%2B3Pin%2BSocket%2B6A"
+        "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_socket_6a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2266,7 +2266,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BModular%2B3Pin%2BSocket%2B16A"
+        "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_socket_16a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2330,7 +2330,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BSwitch%2BCover%2BPlate%2B(2%2BModule)"
+        "https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_plate_2_module"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2362,7 +2362,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BSwitch%2BCover%2BPlate%2B(4%2BModule)"
+        "https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_plate_4_module"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2394,7 +2394,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BSwitch%2BCover%2BPlate%2B(6%2BModule)"
+        "https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_plate_6_module"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2426,7 +2426,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Roma%2BSwitch%2BCover%2BPlate%2B(8%2BModule)"
+        "https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=75&auto=format&fit=crop&sig=prod_elec_roma_plate_8_module"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2458,7 +2458,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Orient%2BDeskForce%2BTable%2BFan%2B(12%2Binch)"
+        "https://images.unsplash.com/photo-1591871937573-74dbba515c4c?w=400&q=75&auto=format&fit=crop&sig=prod_elec_table_fan"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2490,7 +2490,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BArtemis%2BPremium%2BCeiling%2BFan"
+        "https://images.unsplash.com/photo-1618944847828-82e943c3dba7?w=400&q=75&auto=format&fit=crop&sig=prod_elec_ceiling_fan_decor"
       ],
       "featured": true,
       "bestSeller": true,
@@ -2523,7 +2523,7 @@ const PRODUCTS = {
         "mcb box"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BSingle%2BPole%2BMCB%2B(6A)"
+        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=75&auto=format&fit=crop&sig=prod_elec_mcb_6a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2556,7 +2556,7 @@ const PRODUCTS = {
         "mcb box"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BSingle%2BPole%2BMCB%2B(10A)"
+        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=75&auto=format&fit=crop&sig=prod_elec_mcb_10a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2589,7 +2589,7 @@ const PRODUCTS = {
         "mcb box"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BSingle%2BPole%2BMCB%2B(16A)"
+        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=75&auto=format&fit=crop&sig=prod_elec_mcb_16a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2622,7 +2622,7 @@ const PRODUCTS = {
         "mcb box"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BSingle%2BPole%2BMCB%2B(32A)"
+        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=75&auto=format&fit=crop&sig=prod_elec_mcb_32a"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2654,7 +2654,7 @@ const PRODUCTS = {
         "electrical"
       ],
       "images": [
-        "https://placehold.co/400x400/1d4ed8/ffffff?text=Havells%2BMCB%2BDistribution%2BBox%2B(8Way)"
+        "https://images.unsplash.com/photo-1498084393753-b411b2d26b34?w=400&q=75&auto=format&fit=crop&sig=prod_elec_mcb_box_8"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2751,7 +2751,7 @@ const PRODUCTS = {
         "berger"
       ],
       "images": [
-        "https://placehold.co/400x400/0369a1/ffffff?text=Berger%2BBison%2BSonosem%2BAcrylic%2BDistemper%2B(White%2B10kg)"
+        "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&q=75&auto=format&fit=crop&sig=prod_paints_sonosem_distemper"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2784,7 +2784,7 @@ const PRODUCTS = {
         "off white"
       ],
       "images": [
-        "https://placehold.co/400x400/0369a1/ffffff?text=Berger%2BSilk%2BLuxury%2BEmulsion%2B(Off%2BWhite)"
+        "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_silk_off_white"
       ],
       "featured": false,
       "bestSeller": true,
@@ -2838,7 +2838,7 @@ const PRODUCTS = {
         "royal blue"
       ],
       "images": [
-        "https://placehold.co/400x400/1a56c4/ffffff?text=Berger+Silk+Royal+Blue"
+        "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_silk_royal_blue"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2892,7 +2892,7 @@ const PRODUCTS = {
         "golden yellow"
       ],
       "images": [
-        "https://placehold.co/400x400/e6b800/333333?text=Berger+Silk+Golden+Yellow"
+        "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_silk_golden_yellow"
       ],
       "featured": false,
       "bestSeller": false,
@@ -2946,7 +2946,7 @@ const PRODUCTS = {
         "cherry red"
       ],
       "images": [
-        "https://placehold.co/400x400/c0392b/ffffff?text=Berger+Silk+Cherry+Red"
+        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_silk_cherry_red"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3000,7 +3000,7 @@ const PRODUCTS = {
         "ocean green"
       ],
       "images": [
-        "https://placehold.co/400x400/0d9e4e/ffffff?text=Berger+Silk+Ocean+Green"
+        "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_silk_ocean_green"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3106,7 +3106,7 @@ const PRODUCTS = {
         "terracotta red"
       ],
       "images": [
-        "https://placehold.co/400x400/c1440e/ffffff?text=Berger+Weathercoat+Terracotta+Red"
+        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_weather_terracotta_red"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3159,7 +3159,7 @@ const PRODUCTS = {
         "slate grey"
       ],
       "images": [
-        "https://placehold.co/400x400/667788/ffffff?text=Berger+Weathercoat+Slate+Grey"
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_weather_slate_grey"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3212,7 +3212,7 @@ const PRODUCTS = {
         "mustard yellow"
       ],
       "images": [
-        "https://placehold.co/400x400/d4a019/ffffff?text=Berger+Weathercoat+Mustard+Yellow"
+        "https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_weather_mustard_yellow"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3265,7 +3265,7 @@ const PRODUCTS = {
         "olive green"
       ],
       "images": [
-        "https://placehold.co/400x400/5d7a26/ffffff?text=Berger+Weathercoat+Olive+Green"
+        "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&q=75&auto=format&fit=crop&sig=prod_paints_berger_weather_olive_green"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3319,7 +3319,7 @@ const PRODUCTS = {
         "bayer"
       ],
       "images": [
-        "https://placehold.co/400x400/15803d/ffffff?text=Premium%2BTermite%2BControl%2BSpray%2B(500ml)"
+        "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=400&q=75&auto=format&fit=crop&sig=prod_pest_pest_termite"
       ],
       "featured": true,
       "bestSeller": false,
@@ -3352,7 +3352,7 @@ const PRODUCTS = {
         "bayer"
       ],
       "images": [
-        "https://placehold.co/400x400/15803d/ffffff?text=Garden%2BWeed%2BGrass%2BKiller%2BSpray%2B(1L)"
+        "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=400&q=75&auto=format&fit=crop&sig=prod_pest_pest_weed"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3385,7 +3385,7 @@ const PRODUCTS = {
         "bayer"
       ],
       "images": [
-        "https://placehold.co/400x400/15803d/ffffff?text=Agricultural%2BInsecticide%2BPowder%2B(1kg)"
+        "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=400&q=75&auto=format&fit=crop&sig=prod_pest_pest_insect"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3418,7 +3418,7 @@ const PRODUCTS = {
         "bayer"
       ],
       "images": [
-        "https://placehold.co/400x400/15803d/ffffff?text=Organic%2BLiquid%2BFertilizer%2BConc%2B(1L)"
+        "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&q=75&auto=format&fit=crop&sig=prod_pest_pest_fertilizer"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3451,7 +3451,7 @@ const PRODUCTS = {
         "bayer"
       ],
       "images": [
-        "https://placehold.co/400x400/15803d/ffffff?text=Ant%2BCockroach%2BInsecticide%2BSpray%2B(250ml)"
+        "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=400&q=75&auto=format&fit=crop&sig=prod_pest_pest_ant"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3484,7 +3484,7 @@ const PRODUCTS = {
         "bayer"
       ],
       "images": [
-        "https://placehold.co/400x400/15803d/ffffff?text=Mosquito%2BLarvicide%2BTreatment%2BOil%2B(5L)"
+        "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?w=400&q=75&auto=format&fit=crop&sig=prod_pest_pest_larvicide"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3517,7 +3517,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Antique%2BBrass%2BDoor%2BButt%2BHinges%2B(4%2Binch%2B2pcs)"
+        "https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?w=400&q=75&auto=format&fit=crop&sig=prod_hard_hinge_brass"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3550,7 +3550,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Telescopic%2BSoftClose%2BDrawer%2BSlides%2B(18%2Binch)"
+        "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=400&q=75&auto=format&fit=crop&sig=prod_hard_drawer_slide"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3583,7 +3583,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Godrej%2BDrawer%2BCabinet%2BLock%2Bwith%2B3%2BKeys"
+        "https://images.unsplash.com/photo-1510127034890-ba27508e9f1c?w=400&q=75&auto=format&fit=crop&sig=prod_hard_drawer_lock"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3616,7 +3616,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Stainless%2BSteel%2BBow%2BPull%2BHandle%2B(8%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_hard_door_handle"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3649,7 +3649,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Europa%2BMortise%2BDoor%2BLock%2BCylinder%2BSet"
+        "https://images.unsplash.com/photo-1558036117-15d82a90b9b1?w=400&q=75&auto=format&fit=crop&sig=prod_hard_mortise_lock"
       ],
       "featured": true,
       "bestSeller": false,
@@ -3682,7 +3682,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Magnetic%2BCabinet%2BDoor%2BCatch%2B(Pack%2Bof%2B10)"
+        "https://images.unsplash.com/photo-1540304190765-b152ea05b81a?w=400&q=75&auto=format&fit=crop&sig=prod_hard_door_magnet"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3715,7 +3715,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Aluminum%2BTower%2BSliding%2BBolt%2B(6%2Binch)"
+        "https://images.unsplash.com/photo-1540304190765-b152ea05b81a?w=400&q=75&auto=format&fit=crop&sig=prod_hard_tower_bolt"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3748,7 +3748,7 @@ const PRODUCTS = {
         "bracket"
       ],
       "images": [
-        "https://placehold.co/400x400/78350f/ffffff?text=Heavy%2BDuty%2BMetal%2BLShelf%2BBrackets%2B(8x10%2Binch%2B2pcs)"
+        "https://images.unsplash.com/photo-1540304190765-b152ea05b81a?w=400&q=75&auto=format&fit=crop&sig=prod_hard_shelf_bracket"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3781,7 +3781,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "https://placehold.co/400x400/475569/ffffff?text=Drywall%2BScrews%2BCoarse%2BThread%2B(1%2Binch%2B200pcs)"
+        "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400&q=75&auto=format&fit=crop&sig=prod_fast_screw_drywall_1"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3814,7 +3814,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "https://placehold.co/400x400/475569/ffffff?text=Drywall%2BScrews%2BCoarse%2BThread%2B(2%2Binch%2B100pcs)"
+        "https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400&q=75&auto=format&fit=crop&sig=prod_fast_screw_drywall_2"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3847,7 +3847,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "https://placehold.co/400x400/475569/ffffff?text=Stainless%2BSteel%2BWood%2BScrews%2BAssorted%2B(300pcs)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_fast_screw_wood_box"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3880,7 +3880,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "https://placehold.co/400x400/475569/ffffff?text=Hex%2BBolt%2Bwith%2BNut%2BWashers%2B(M8%2Bx%2B50mm%2B20pcs)"
+        "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?w=400&q=75&auto=format&fit=crop&sig=prod_fast_bolt_hex"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3946,7 +3946,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "https://placehold.co/400x400/475569/ffffff?text=Steel%2BWire%2BNails%2B(2%2Binch%2B1kg%2Bpack)"
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=400&q=75&auto=format&fit=crop&sig=prod_fast_nails_2"
       ],
       "featured": false,
       "bestSeller": false,
@@ -3979,7 +3979,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "https://placehold.co/400x400/475569/ffffff?text=Steel%2BWire%2BNails%2B(3%2Binch%2B1kg%2Bpack)"
+        "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=400&q=75&auto=format&fit=crop&sig=prod_fast_nails_3"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4012,7 +4012,7 @@ const PRODUCTS = {
         "anchor"
       ],
       "images": [
-        "https://placehold.co/400x400/475569/ffffff?text=Fluted%2BHardened%2BConcrete%2BNails%2B(2%2Binch%2B50pcs)"
+        "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=400&q=75&auto=format&fit=crop&sig=prod_fast_nails_concrete"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4045,7 +4045,7 @@ const PRODUCTS = {
         "tape"
       ],
       "images": [
-        "https://placehold.co/400x400/4f46e5/ffffff?text=Taparia%2B8in1%2BMagnetic%2BScrewdriver%2BSet"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_tools_screwdriver_set"
       ],
       "featured": false,
       "bestSeller": true,
@@ -4078,7 +4078,7 @@ const PRODUCTS = {
         "tape"
       ],
       "images": [
-        "https://placehold.co/400x400/4f46e5/ffffff?text=Taparia%2BHeavy%2BAdjustable%2BWrench%2B(10%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_tools_adjustable_wrench"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4111,7 +4111,7 @@ const PRODUCTS = {
         "tape"
       ],
       "images": [
-        "https://placehold.co/400x400/4f46e5/ffffff?text=Taparia%2BInsulated%2BCombination%2BPliers%2B(8%2Binch)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_tools_pliers_combination"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4144,7 +4144,7 @@ const PRODUCTS = {
         "tape"
       ],
       "images": [
-        "https://placehold.co/400x400/4f46e5/ffffff?text=Bosch%2BProfessional%2BHand%2BWood%2BSaw%2B(18%2Binch)"
+        "https://images.unsplash.com/photo-1508962914676-134849a727f0?w=400&q=75&auto=format&fit=crop&sig=prod_tools_hand_saw_wood"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4177,7 +4177,7 @@ const PRODUCTS = {
         "tape"
       ],
       "images": [
-        "https://placehold.co/400x400/4f46e5/ffffff?text=Freemans%2BSteel%2BMeasuring%2BTape%2B(5%2Bmeters)"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_tools_measuring_tape_5"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4210,7 +4210,7 @@ const PRODUCTS = {
         "tape"
       ],
       "images": [
-        "https://placehold.co/400x400/4f46e5/ffffff?text=Stanley%2BAluminum%2BSpirit%2BLevel%2BTool%2B(12%2Binch)"
+        "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400&q=75&auto=format&fit=crop&sig=prod_tools_spirit_level_12"
       ],
       "featured": false,
       "bestSeller": false,
@@ -4243,7 +4243,7 @@ const PRODUCTS = {
         "tape"
       ],
       "images": [
-        "https://placehold.co/400x400/4f46e5/ffffff?text=Taparia%2BTubular%2BHacksaw%2BFrame%2Bwith%2BBlade"
+        "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=75&auto=format&fit=crop&sig=prod_tools_hacksaw_frame"
       ],
       "featured": false,
       "bestSeller": false,
